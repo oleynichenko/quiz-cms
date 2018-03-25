@@ -1,0 +1,8 @@
+{
+  "verbose": true,
+  "ignore": [
+    "node_modules/*",
+    "front/*"
+  ],
+  "ext": "js json pug"
+}

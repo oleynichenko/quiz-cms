@@ -1,4 +1,6 @@
 const serverCommand = require(`./commands/serverCommand`);
+const generateCommand = require(`./commands/generateCommand`);
+const logger = require(`../libs/logger`);
 
 
 const helpCommand = {
@@ -21,6 +23,7 @@ const helpCommand = {
 
 const commands = {
   [serverCommand.name]: serverCommand,
+  [generateCommand.name]: generateCommand,
   [helpCommand.name]: helpCommand
 };
 
@@ -33,7 +36,14 @@ const handleCommand = (command) => {
     userCommand = helpCommand;
   }
 
-  userCommand.execute();
+  const promise = userCommand.execute();
+
+  if (promise instanceof Promise) {
+    promise.catch((err) => {
+      logger.error(err.message, err);
+      process.exit(1);
+    });
+  }
 };
 
 module.exports = {

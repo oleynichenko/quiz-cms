@@ -7,7 +7,6 @@ const rollup = require(`gulp-better-rollup`);
 const nodemon = require(`gulp-nodemon`);
 const server = require(`browser-sync`).create();
 
-
 gulp.task(`style`, function () {
   gulp.src(`front/sass/style.scss`)
       .pipe(plumber())
@@ -25,6 +24,23 @@ gulp.task(`style`, function () {
       // .pipe(rename(`style.min.css`))
       .pipe(gulp.dest(`static/css`));
       // .pipe(server.stream());
+});
+
+gulp.task(`style-front`, function () {
+  gulp.src(`front/sass/style.scss`)
+      .pipe(plumber())
+      .pipe(sass())
+      .pipe(postcss([
+        autoprefixer({browsers: [
+          `last 1 version`,
+          `last 2 Chrome versions`,
+          `last 2 Firefox versions`,
+          `last 2 Opera versions`,
+          `last 2 Edge versions`
+        ]})
+      ]))
+      .pipe(gulp.dest(`front/css`))
+      .pipe(server.stream());
 });
 
 gulp.task(`scripts`, function () {
@@ -63,9 +79,22 @@ gulp.task(`nodemon`, function (cb) {
   });
 });
 
+gulp.task(`browser-sync`, function () {
+  server.init({
+    server: `./front`
+  });
+});
+
 gulp.task(`watch`, function () {
   gulp.watch(`front/sass/**/*.scss`, [`style`]);
   gulp.watch(`front/js/**/*.js`, [`scripts`]);
 });
 
+gulp.task(`watch-front`, function () {
+  gulp.watch(`front/sass/**/*.scss`, [`style-front`]);
+  gulp.watch(`front/*.html`).on(`change`, server.reload);
+});
+
 gulp.task(`start`, [`watch`, `style`, `scripts`, `nodemon`]);
+gulp.task(`start-front`, [`watch-front`, `style-front`, `browser-sync`]);
+

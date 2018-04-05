@@ -25,12 +25,9 @@ class UserStore {
   }
 
   async saveUser(user) {
-    const customizedUser = {
-      login: user.login.toLowerCase(),
-      password: user.password
-    };
+    user.login = user.login.toLowerCase();
 
-    return (await this.collection).insertOne(customizedUser);
+    return (await this.collection).insertOne(user);
   }
 }
 

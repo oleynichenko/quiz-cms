@@ -1,0 +1,46 @@
+.drawer__box {
+  transition: max-height 0.4s;
+}
+
+.drawer__img-less {
+  display: none;  
+}
+
+.drawer__btn {
+  position: absolute;
+  display: block; 
+  right: 0;
+  bottom: -2px;
+
+  width: 72px;
+  height: 24px;
+  text-align: right;  
+  
+  cursor: pointer;
+  background: linear-gradient(to right, transparent, #fff 48px, #fff 48px);
+  background: -webkit-linear-gradient(to right, transparent, #fff 48px, #fff 48px);
+}
+
+
+input[id="drawer__switcher"] {
+  @include vh;
+
+  &:checked ~ .drawer__box {
+    max-height: 1000px; 
+    transition: max-height 0.8s;   
+  }
+
+  &:checked ~ .drawer__box .drawer__btn .drawer__img-less {
+    display: inline;  
+  }
+
+  &:checked ~ .drawer__box .drawer__btn .drawer__img-more {
+    display: none;  
+  }
+
+  &:checked ~ .drawer__box > .drawer__btn {
+    background: none;
+  }
+}
+
+

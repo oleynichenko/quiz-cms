@@ -1,8 +1,4 @@
-doctype html
 include partials/_head.pug
-body.mdc-typography
-  include partials/_header.pug
-  h1= message
-  script(src=`/vendor/material-components-web.min.js`)
-  script(src=`/js/index.js`)
-  script mdc.autoInit()
+include partials/_header.pug
+h1= message
+include partials/_scripts.pug

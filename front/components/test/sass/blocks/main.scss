@@ -1,0 +1,22 @@
+.main {
+	width: 94%;
+  max-width: 768px;
+
+  margin-top: 8%;
+  margin-right: auto;
+  margin-bottom: 12%;
+  margin-left: auto;
+}
+
+@media #{$tablet-width} {
+	$device-type: tablet;
+}
+
+@media #{$desktop-width} {
+	$device-type: desktop;
+
+	.main {
+		margin-top: fsz($device-type, d1)*2;
+		margin-bottom: fsz($device-type, d1)*3;
+	}
+}

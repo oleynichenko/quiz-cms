@@ -1,0 +1,39 @@
+$tablet-width: "(min-width: 768px)";
+$tablet-width-additional: "(min-width: 980px)";
+$desktop-width: "(min-width: 1000px)";
+$mobile-width-only: "(max-width: 767px)";
+$retina: "(min-resolution: 144dpi), (min-resolution: 1.5dppx)";
+
+$scale: 1.125;
+
+$base-font: (
+	mobile: 15px,
+	tablet: 15px,
+	desktop: 16px
+);
+
+$type-scale: (
+	d3: $scale*$scale*$scale*$scale*$scale*$scale,
+	d2: $scale*$scale*$scale*$scale*$scale,
+	d1: $scale*$scale*$scale*$scale,
+	h1: $scale*$scale*$scale,
+	h2: $scale*$scale,
+	h3: $scale, 
+	p: 1,
+	small: 1/$scale,
+);
+
+@function fsz($device-type, $scale) {
+	@return map-get($base-font, $device-type)*map-get($type-scale, $scale);
+}
+
+@function blocks-margin($device-type) {
+	@return 4*map-get($base-font, $device-type)
+}
+
+$c-background: #fff;
+$c-main: #202020;
+$c-main-light: #606060;
+$c-grey: rgba($c-main, 0.2);
+$c-accent: #ff0000;
+$c-green: #009A0B;

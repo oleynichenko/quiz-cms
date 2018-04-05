@@ -19,9 +19,9 @@ class TestsStore {
   //   return (await this.collection).findOne({id});
   // }
 
-  // async getUserById(id) {
-  //   return (await this.collection).findOne({_id: new ObjectId(id)});
-  // }
+  async getTestInfoById(id) {
+    return (await this.collection).findOne({id});
+  }
 
   async saveTest(data) {
     return (await this.collection).insertOne(data);

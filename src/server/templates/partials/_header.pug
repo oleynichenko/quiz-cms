@@ -1,10 +1,10 @@
 header.mdc-toolbar
-    .mdc-toolbar__row
-      section.mdc-toolbar__section.mdc-toolbar__section--align-start
-        a(href="#" class="material-icons mdc-toolbar__menu-icon") menu
-        span.mdc-toolbar__title Title
-      section.mdc-toolbar__section.mdc-toolbar__section--align-end
-        if user
-          a(class="mdc-typography--body1 mdc-theme--text-primary-on-primary js-logout" href="") ВЫХОД
-        else
-          a(class="mdc-typography--body1 mdc-theme--text-primary-on-primary" href="/login") ВХОД
+  .mdc-toolbar__row
+    section.mdc-toolbar__section.mdc-toolbar__section--align-start
+      a(href="#" class="material-icons mdc-toolbar__menu-icon") menu
+      span.mdc-toolbar__title Title
+    section.mdc-toolbar__section.mdc-toolbar__section--align-end
+      if user
+        a(class="mdc-typography--body1 mdc-theme--text-primary-on-primary js-logout" href="") ВЫХОД
+      else
+        a(class="mdc-typography--body1 mdc-theme--text-primary-on-primary" href="/login") ВХОД

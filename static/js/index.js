@@ -17,7 +17,7 @@ const logout = (elem) => {
 };
 
 const logoutLink = document.querySelector(`.js-logout`);
-console.log(`пока человечек`);
+console.log(`пока человек`);
 
 if (logoutLink) {
   logout(logoutLink);

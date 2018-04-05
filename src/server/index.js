@@ -5,6 +5,7 @@ const logger = require(`../libs/logger`);
 const config = require(`./config`);
 const routes = require(`./routes`);
 const db = require(`../database`);
+
 const loadUser = require(`./middleware/load-user`);
 
 const SESSION_SECRET = process.env.SESSION_SECRET;

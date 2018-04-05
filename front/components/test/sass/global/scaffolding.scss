@@ -1,0 +1,44 @@
+body {
+  font-family: 'PT Sans', 'Arial Narrow', Arial, sans-serif;
+  font-weight: normal;
+  min-width: 320px;
+  color: $c-main;
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+}
+
+.body__unvisible {
+  opacity: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+textarea,
+input {
+  font: inherit;
+  text-transform: inherit;
+  color: inherit;
+  background-color: transparent;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+address {
+  font-style: normal;
+}
+
+/*Для проекта*/
+

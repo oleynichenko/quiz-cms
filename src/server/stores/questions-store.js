@@ -15,9 +15,20 @@ class QuestionsStore {
     this.collection = collection;
   }
 
-  // async getQuestionById(id) {
-  //   return (await this.collection).findOne({id});
-  // }
+  async getQuestionsByIds(ids) {
+    const query = {"id": {$in: ids}};
+
+    const projection = {
+      "pointsAvailable": true,
+      "correctOptions": true,
+      "options": true,
+      "id": true,
+      "_id": false
+    };
+
+    // return (await this.collection).find(query).project(projection).toArray();
+    return (await this.collection).find(query).toArray();
+  }
 
   // async getUserById(id) {
   //   return (await this.collection).findOne({_id: new ObjectId(id)});

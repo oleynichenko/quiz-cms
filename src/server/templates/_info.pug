@@ -1,0 +1,14 @@
+<button type="button" class="header__item info__btn js-info__btn"><i class="material-icons">info_outline</i></button>
+.info__block-wrapper
+  article.info__block
+    <b>Тест</b>
+    h1= title
+    p= description
+    p!= introText
+    if stat
+      - const bestQuantityPhrase = (stat.bestQuantity > 1) ? ` получили #{stat.bestQuantity} человека` : ``;
+      <p>На текущий момент тест прошли #{stat.total} человек с средним результатом #{stat.average}%. Из них #{stat.profies} человека набрали от #{stat.profiLevel}% до #{stat.expertLevel}% что по мнению автора считается уровнем Профессионал и #{stat.experts} человек - больше #{stat.expertLevel}, что соответствует уровню Эксперт. Лучший результат - #{stat.best}%#{bestQuantityPhrase}.</p>
+    <p>На ответы отводиться #{testTime} минут. Следующая попытка сдачи будет доступна через #{inteval} дней.</p>
+    <p>После проверки теста вопросы с неверными ответами будут выделены красным цветом. Задача теста исключительно получение оценки своего уровня. Подробности ответов не раскрываются, тем не менее вы увидите ссылки на источники информации которые помогут быстро восполнить обнаруженные пробелы.</p>
+    <button class="mdc-button mdc-button--raised info__start-test js-info__start-test">Перейти к тесту</button>
+    include partials/_social-btns.pug

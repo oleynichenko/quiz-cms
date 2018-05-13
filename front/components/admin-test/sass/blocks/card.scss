@@ -1,0 +1,23 @@
+.card__primary-title {
+  padding: 16px;
+  padding-top: 24px;
+}
+
+.card__title {
+  margin: 0;
+}
+
+.card__title--table {
+  font-size: 20px;
+}
+
+@media #{$tablet-width} {
+  .card__primary-title {
+    padding: 24px;
+  }
+
+  .card__primary-title--table {
+    padding-bottom: 16px;
+  }
+}
+

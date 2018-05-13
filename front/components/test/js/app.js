@@ -1,5 +1,6 @@
 import Test from './test.js';
 import loader from './loader.js';
+import info from './info.js';
 import {showPage} from './help-function';
 
 
@@ -30,7 +31,9 @@ class App {
               this.test.init();
             } else {
               this.handleData(data);
+              info.hide();
             }
+
             showPage();
           });
     }

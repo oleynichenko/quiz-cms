@@ -19,20 +19,12 @@ class QuestionsStore {
     const query = {"id": {$in: ids}};
 
     const projection = {
-      "pointsAvailable": true,
-      "correctOptions": true,
-      "options": true,
-      "id": true,
-      "_id": false
+      "_id": 0,
+      "themes": 0
     };
 
-    // return (await this.collection).find(query).project(projection).toArray();
-    return (await this.collection).find(query).toArray();
+    return (await this.collection).find(query).project(projection).toArray();
   }
-
-  // async getUserById(id) {
-  //   return (await this.collection).findOne({_id: new ObjectId(id)});
-  // }
 
   async saveQuestion(data) {
     return (await this.collection).insertOne(data);

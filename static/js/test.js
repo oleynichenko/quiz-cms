@@ -1,13 +1,20 @@
 (function () {
 'use strict';
 
-const SERVER_URL_POST = `http://localhost:3000/links/md-fb`;
-
 const Class = Object.freeze({
+  HEADER: `js-header`,
   TEST: `js-test`,
+  TEST_TAG: `js-test__tag`,
+  TEST_TITLE: `js-test__title`,
   TEST_QUESTIONS: `js-test__questions`,
+  TEST_SOCIAL: `js-test__social`,
+  TEST_SHARE_FB: `js-test__share-fb`,
+  TEST_SOCIAL_VISIBLE: `test__social--visible`,
   TEST_QUESTIONS_DONE: `test__questions--done`,
-  RESULT_BUTTON: `js-test__btn--result`,
+  RETAKE_BTN: `js-test__retake-btn`,
+  RESULT_BTN: `js-test__result-btn`,
+  RETAKE_BTN_VISIBLE: `test__retake-btn--visible`,
+  RESULT_BTN_VISIBLE: `test__result-btn--visible`,
   QUESTION: `js-question`,
   QUESTION_OPTIONS: `js-question__options`,
   QUESTION_OPTION: `js-question__option`,
@@ -28,12 +35,17 @@ const getQuestionsAndOptions = () => {
 
 const dom = {
   test: document.querySelector(`.${Class.TEST}`),
+  header: document.querySelector(`.${Class.HEADER}`),
+  testTag: document.querySelector(`.${Class.TEST_TAG}`),
+  testTitle: document.querySelector(`.${Class.TEST_TITLE}`),
   testQuestions: document.querySelector(`.${Class.TEST_QUESTIONS}`),
+  testSocial: document.querySelector(`.${Class.TEST_SOCIAL}`),
   questionsAndOptions: getQuestionsAndOptions(),
-  resultButton: document.querySelector(`.${Class.RESULT_BUTTON}`),
+  resultBtn: document.querySelector(`.${Class.RESULT_BTN}`),
+  retakeBtn: document.querySelector(`.${Class.RETAKE_BTN}`),
 };
 
-const toggleAccessibility = (elem, condition) => {
+const toggleAbility = (elem, condition) => {
   elem.disabled = condition ? false : true;
 };
 
@@ -64,6 +76,10 @@ const checkIfClassInMap = (map, className) => {
 
 const showPage = () => {
   document.body.classList.remove(`body__unvisible`);
+};
+
+const scrollToTop = () => {
+  window.scrollTo(0, 0);
 };
 
 class TestView {
@@ -114,9 +130,25 @@ class TestView {
   }
 
   checkPass(data) {
+    toggleVisibility(this.dom.resultBtn, false);
     this.disableSelection(this.dom.testQuestions);
     this._markWrongAnsweredQuestion(data.wrongQuestionsIds);
-    toggleVisibility(this.dom.resultButton, false);
+  }
+
+  showFinalActions(retakeMessage) {
+    if (retakeMessage) {
+      const html = `<em>${retakeMessage}</em>`;
+
+      toggleAbility(this.dom.retakeBtn, false);
+      this.dom.retakeBtn.insertAdjacentHTML(`afterEnd`, html);
+    } else {
+      this.dom.retakeBtn.addEventListener(`click`, () => {
+        location.href = `?attempt=new`;
+      });
+    }
+
+    this.dom.retakeBtn.classList.add(Class.RETAKE_BTN_VISIBLE);
+    this.dom.testSocial.classList.add(Class.TEST_SOCIAL_VISIBLE);
   }
 
   // data = {"1": ["a", "b"], ...}
@@ -139,24 +171,52 @@ class TestView {
     });
   }
 
-  showSummary(html) {
-    this.dom.test.insertAdjacentHTML(`afterBegin`, html);
+  showSummary(html, id) {
+    scrollToTop();
+    this.dom.testTag.innerHTML = `Результаты теста`;
+    this.dom.testTitle.insertAdjacentHTML(`afterEnd`, html);
+
+    const fbShareBtn = document.querySelector(`.${Class.TEST_SHARE_FB}`);
+
+    if (fbShareBtn) {
+      const passUrl = `${location.origin}/${id}`;
+
+      fbShareBtn.addEventListener(`click`, () => {
+        window.FB.ui({method: `share`, href: passUrl});
+      });
+    }
   }
 
   bind() {
-    this.dom.testQuestions.addEventListener(`click`, (evt) => {
-      const elem = evt.target;
+    for (let questionOptions of this.dom.questionsAndOptions.values()) {
+      questionOptions.forEach((option) => {
+        option.addEventListener(`click`, (evt) => {
+          const elem = evt.currentTarget;
 
-      if (elem.classList.contains(Class.QUESTION_OPTION)) {
-        elem.classList.toggle(Class.QUESTION_OPTION_IS_CHECKED);
+          elem.classList.toggle(Class.QUESTION_OPTION_IS_CHECKED);
 
-        const areAllQuestionsAnswered = checkIfClassInMap(this.dom.questionsAndOptions, Class.QUESTION_OPTION_IS_CHECKED);
-        toggleAccessibility(this.dom.resultButton, areAllQuestionsAnswered);
-      }
-    });
+          const areAllQuestionsAnswered = checkIfClassInMap(this.dom.questionsAndOptions, Class.QUESTION_OPTION_IS_CHECKED);
 
-    this.dom.resultButton.addEventListener(`click`, () => {
-      toggleAccessibility(this.dom.resultButton, false);
+          toggleAbility(this.dom.resultBtn, areAllQuestionsAnswered);
+        });
+      });
+    }
+    // this.dom.testQuestions.addEventListener(`click`, (evt) => {
+    //   const elem = evt.target;
+
+    //   if (elem.classList.contains(Class.QUESTION_OPTION)) {
+    //     elem.classList.toggle(Class.QUESTION_OPTION_IS_CHECKED);
+
+    //     const areAllQuestionsAnswered = checkIfClassInMap(this.dom.questionsAndOptions, Class.QUESTION_OPTION_IS_CHECKED);
+
+    //     if (areAllQuestionsAnswered) {
+    //       toggleAbility(this.dom.resultBtn, true);
+    //     }
+    //   }
+    // });
+
+    this.dom.resultBtn.addEventListener(`click`, () => {
+      toggleAbility(this.dom.resultBtn, false);
       this.disableSelection(this.dom.testQuestions);
 
       const userAnswers = this.getUserAnswers(this.dom.questionsAndOptions);
@@ -173,7 +233,8 @@ class Test {
 
   showTestResult(data) {
     this._view.checkPass(data.pass.result);
-    this._view.showSummary(data.summary);
+    this._view.showSummary(data.summaryTemplate, data.pass._id);
+    this._view.showFinalActions(data.retakeMessage);
 
     if (data.pass.answers) {
       this._view.markChosenOptions(data.pass.answers);
@@ -189,6 +250,8 @@ class Test {
   }
 }
 
+// import {SERVER_URL_POST} from './const.js';
+
 const sendPass = (data) => {
   const dataJSON = JSON.stringify(data);
 
@@ -201,12 +264,46 @@ const sendPass = (data) => {
     credentials: `include`
   };
 
-  return fetch(`${SERVER_URL_POST}`, requestSettings)
-      .then((res) => res.json());
+  return fetch(location.href, requestSettings)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return {};
+        }
+        // console.log(res);
+      });
 };
 
 var loader = {
   sendPass
+};
+
+const infoContainer = dom.header;
+const secondBlock = dom.test;
+
+const init = (infoBtn) => {
+  infoContainer.classList.add(`js-info__container`, `info__container--on`);
+  secondBlock.classList.add(`info__second-block`);
+
+  const infoStartTest = document.querySelector(`.js-info__start-test`);
+
+  infoBtn.addEventListener(`click`, () => {
+    infoContainer.classList.toggle(`info__container--on`);
+  });
+
+  infoStartTest.addEventListener(`click`, () => {
+    infoContainer.classList.toggle(`info__container--on`);
+  });
+};
+
+const hide = () => {
+  infoContainer.classList.remove(`info__container--on`);
+};
+
+var info = {
+  hide,
+  init
 };
 
 class App {
@@ -236,7 +333,9 @@ class App {
               this.test.init();
             } else {
               this.handleData(data);
+              info.hide();
             }
+
             showPage();
           });
     }
@@ -247,6 +346,11 @@ class App {
 var app = new App();
 
 const param = location.search.replace(`?`, ``);
+const infoBtn = document.querySelector(`.js-info__btn`);
+
+if (infoBtn) {
+  info.init(infoBtn);
+}
 
 app.init(param);
 

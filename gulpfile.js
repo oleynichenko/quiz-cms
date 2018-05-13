@@ -7,11 +7,12 @@ const rollup = require(`gulp-better-rollup`);
 const nodemon = require(`gulp-nodemon`);
 const rename = require(`gulp-rename`);
 const server = require(`browser-sync`).create();
+const pug = require(`gulp-pug`);
 
 const componentFolder = `test`;
 
 gulp.task(`style`, function () {
-  gulp.src(`front/sass/style.scss`)
+  gulp.src(`front/sass/admin.scss`)
       .pipe(plumber())
       .pipe(sass())
       .pipe(postcss([
@@ -47,6 +48,12 @@ gulp.task(`style-component`, function () {
       .pipe(server.stream());
 });
 
+gulp.task(`pug-component`, function () {
+  gulp.src(`./front/components/${componentFolder}/*.pug`)
+      .pipe(pug())
+      .pipe(gulp.dest(`./front/components/${componentFolder}`));
+});
+
 gulp.task(`scripts-component`, function () {
   gulp.src(`front/components/${componentFolder}/js/index.js`)
       .pipe(plumber())
@@ -57,7 +64,7 @@ gulp.task(`scripts-component`, function () {
 });
 
 gulp.task(`scripts`, function () {
-  gulp.src(`front/js/index.js`)
+  gulp.src(`front/js/admin.js`)
       .pipe(plumber())
       .pipe(rollup({}, `iife`))
       .pipe(gulp.dest(`static/js`));
@@ -134,11 +141,12 @@ gulp.task(`watch`, function () {
 
 gulp.task(`watch-component`, function () {
   gulp.watch(`./front/components/${componentFolder}/sass/**/*.scss`, [`style-component`]);
+  gulp.watch(`./front/components/${componentFolder}/*.pug`, [`pug-component`]);
   gulp.watch(`./front/components/${componentFolder}/*.html`).on(`change`, server.reload);
   gulp.watch(`./front/components/${componentFolder}/js/**/*.js`, [`scripts-component`]).on(`change`, server.reload);
 });
 
 gulp.task(`start`, [`watch`, `style`, `scripts`, `nodemon-sync`]);
-gulp.task(`start-component`, [`watch-component`, `style-component`, `scripts-component`, `browser-sync`]);
+gulp.task(`start-component`, [`watch-component`, `style-component`, `scripts-component`, `pug-component`, `browser-sync`]);
 
 

@@ -1,0 +1,22 @@
+.header {
+  @include container;
+  margin-bottom: fsz($device-type, d1);
+  margin-top: 20px;
+}
+
+.header__item {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+@media #{$desktop-width} {
+  $device-type: desktop;
+
+  .header {
+    @include container-remove;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: fsz($device-type, d1)*2;
+  }
+}

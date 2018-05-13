@@ -1,10 +1,17 @@
-export const SERVER_URL_POST = `http://localhost:3000/links/md-fb`;
-
 export const Class = Object.freeze({
+  HEADER: `js-header`,
   TEST: `js-test`,
+  TEST_TAG: `js-test__tag`,
+  TEST_TITLE: `js-test__title`,
   TEST_QUESTIONS: `js-test__questions`,
+  TEST_SOCIAL: `js-test__social`,
+  TEST_SHARE_FB: `js-test__share-fb`,
+  TEST_SOCIAL_VISIBLE: `test__social--visible`,
   TEST_QUESTIONS_DONE: `test__questions--done`,
-  RESULT_BUTTON: `js-test__btn--result`,
+  RETAKE_BTN: `js-test__retake-btn`,
+  RESULT_BTN: `js-test__result-btn`,
+  RETAKE_BTN_VISIBLE: `test__retake-btn--visible`,
+  RESULT_BTN_VISIBLE: `test__result-btn--visible`,
   QUESTION: `js-question`,
   QUESTION_OPTIONS: `js-question__options`,
   QUESTION_OPTION: `js-question__option`,

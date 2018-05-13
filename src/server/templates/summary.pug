@@ -1,4 +1,16 @@
-<p class="test__tag">Результаты теста</p>
-<h1 class="test__title">Вы набрали #{pointsScored} баллов</h1>
-if retakesOpportunity
-  <a href="/links/#{permalink}?attempt=new" onclick="location.reload();" class="mdc-button mdc-button--raised test__btn js-test__btn--result" disabled>Повторить</a>
+section.summary
+  include summary/_conclusion.pug
+
+  include summary/_pass-result.pug
+
+  if (percentScored >= profiLevel)
+    include summary/_sharing.pug
+
+  include summary/_motivation.pug
+
+  if (percentScored < 100)
+    include summary/_recommendation.pug
+
+<label for="drawer__switcher" class="summary__questions-title typography--body">Проверенные ответы</label>
+<input id ="drawer__switcher" checked type="checkbox">
+

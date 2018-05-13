@@ -1,0 +1,31 @@
+.container__parent {
+  // width: 60%;
+  display: flex;
+}
+
+.container {
+  display: flex;
+  // width: 480px;
+  height: 200px;
+  // flex-direction: row;
+}
+
+.block {
+  // flex-basis: 20px;
+  // width: 20px;
+  width: 1%;
+  height: 200px;
+  margin-right: 150px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.block--1 {
+  background-color: red;
+}
+
+.block--2 {
+  background-color: green;
+}

@@ -6,6 +6,7 @@ const {async} = require(`../../libs/util`);
 const adminRouter = new express.Router();
 
 adminRouter.get(`/`, checkAuth, async(controller.showAdminPanel));
-adminRouter.get(`/:testId`, checkAuth, controller.showStat);
+adminRouter.get(`/tests`, checkAuth, async(controller.showTests));
+adminRouter.get(`/tests/:testId`, checkAuth, async(controller.showTestSettings));
 
 module.exports = adminRouter;

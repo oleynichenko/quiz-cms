@@ -15,16 +15,39 @@ class TestsStore {
     this.collection = collection;
   }
 
-  // async getQuestionById(id) {
-  //   return (await this.collection).findOne({id});
-  // }
+  async getTestById(id) {
+    const query = {id};
+    return (await this.collection).findOne(query);
+  }
 
-  async getTestInfoById(id) {
-    return (await this.collection).findOne({id});
+  async getTestByPermalink(permalink) {
+    const aggregation = [
+      {$match: {"links.permalink": permalink}},
+      {$unwind: `$links`},
+      {$match: {"links.permalink": permalink}},
+    ];
+
+    const result = (await this.collection).aggregate(aggregation).toArray();
+
+    return (await result)[0];
+  }
+
+  async getTests(ids) {
+    const query = (ids) ? {id: {$in: ids}} : {};
+    return (await this.collection).find(query).toArray();
   }
 
   async saveTest(data) {
     return (await this.collection).insertOne(data);
+  }
+
+  async getLinks(id) {
+    const query = {id};
+    const projection = {"id": 0, "links.name": 1, "links.permalink": 1};
+
+    const result = (await this.collection).findOne(query, projection);
+
+    return (await result).links;
   }
 }
 

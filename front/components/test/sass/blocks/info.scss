@@ -1,0 +1,96 @@
+.info__container--on {
+
+  & ~ .info__second-block {
+    display: none;
+  }
+
+  & .info__block-wrapper {
+    width: 100%;
+    height: 100%;
+
+    opacity: 1;
+    transition: opacity 1s;
+  }
+
+  & .info__block {
+    height: auto;
+  }
+}
+
+.info__block-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 0;
+  height: 0;
+  z-index: 100;
+
+  opacity: 0;
+  background-color: #fff;
+
+  transition: 0.4s;
+  // overflow: hidden;
+}
+
+.info__block {
+  @include container;
+  width: 90%;
+  height: 0;
+  overflow: hidden;
+  padding-top: 8%;
+  padding-bottom: 8%;
+
+  & b {
+    @extend .typography--body;
+
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  & h1 {
+    @extend .typography--d3;
+  }
+
+  & p {
+    @extend .typography--h3;
+  }
+}
+
+
+.info__btn {
+  @include reset-btn;
+  // padding: 20px;
+
+  & i {
+    display: block;
+    font-size: 24px;
+    margin-left: -2px;
+  }
+}
+
+.info__start-test {
+  display: block;
+
+  margin-top: fsz($device-type, d3);
+  margin-bottom: fsz($device-type, d3)*2;
+}
+
+@media #{$desktop-width} {
+  $device-type: desktop;
+
+  .info__block {
+    padding-top: fsz($device-type, d2)*4;
+  }
+
+  .info__btn {
+    & i {
+      font-size: 32px;
+    }
+  }
+  .info__start-test {
+    margin-top: fsz($device-type, d2);;
+    margin-bottom: fsz($device-type, d3)*2;
+  }
+}

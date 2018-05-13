@@ -1,8 +1,9 @@
 @import "mixins/font.scss";
+@import "mixins/container.scss";
 @import "../../mixins/reset-ul.scss";
 @import "../../mixins/pseudo.scss";
 @import "../../mixins/vh.scss";
-// @import "../../mixins/link-underline.scss";
+@import "../../mixins/reset-btn.scss";
 
 @import "../../@material/button/mdc-button.scss";
 @import "../../drawer/drawer.scss";
@@ -11,7 +12,9 @@
 @import "global/variables.scss";
 @import "global/scaffolding.scss";
 
+@import "blocks/header.scss";
 @import "blocks/main.scss";
+@import "blocks/info.scss";
+@import "blocks/summary.scss";
 @import "blocks/test.scss";
-// @import "blocks/article.scss";
 @import "blocks/question.scss";

@@ -16,8 +16,25 @@ const logout = (elem) => {
   });
 };
 
+const init = (elem, btn) => {
+  const drawer = new window.mdc.drawer.MDCPersistentDrawer(elem);
+
+  btn.addEventListener(`click`, () => {
+    if (drawer.open) {
+      drawer.open = false;
+    } else {
+      drawer.open = true;
+    }
+  });
+};
+
 const logoutLink = document.querySelector(`.js-logout`);
-console.log(`пока человек`);
+const drawerBlock = document.querySelector(`.mdc-drawer`);
+
+if (drawerBlock) {
+  const drawerBtn = document.querySelector(`.demo-menu`);
+  init(drawerBlock, drawerBtn);
+}
 
 if (logoutLink) {
   logout(logoutLink);

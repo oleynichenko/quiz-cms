@@ -1,4 +1,4 @@
-export const toggleAccessibility = (elem, condition) => {
+export const toggleAbility = (elem, condition) => {
   elem.disabled = condition ? false : true;
 };
 
@@ -29,4 +29,8 @@ export const checkIfClassInMap = (map, className) => {
 
 export const showPage = () => {
   document.body.classList.remove(`body__unvisible`);
+};
+
+export const scrollToTop = () => {
+  window.scrollTo(0, 0);
 };

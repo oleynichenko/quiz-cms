@@ -1,0 +1,17 @@
+mixin drawer(param)
+  -
+    const menu = [
+      {name: "Главная", icon: `home`, link: "/admin"},
+      {name: "Тесты", icon: `content_copy`, link: "/admin/tests"},
+    ];
+
+  aside.mdc-drawer.mdc-drawer--persistent.mobile-drawer
+    nav.mdc-drawer__drawer.mobile-drawer__drawer
+      nav.mdc-list
+        each item in menu
+          if param === item.link
+            a(class="mdc-list-item mdc-list-item--activated" href=item.link)
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">#{item.icon}</i>#{item.name}
+          else
+            a(class="mdc-list-item" href=item.link)
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">#{item.icon}</i>#{item.name}

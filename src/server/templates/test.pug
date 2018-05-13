@@ -1,32 +1,42 @@
 doctype html
-head
-  title= pageTitle
-  meta(name=`viewport` content=`width=device-width, initial-scale=1 user-scalable=no`)
-  link(rel=`stylesheet` href=`https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css`)
-  link(rel=`stylesheet` href=`https://fonts.googleapis.com/css?family=PT+Sans:400,700&amp;subset=cyrillic`)
-  link(rel=`stylesheet` href=`https://fonts.googleapis.com/icon?family=Material+Icons`)
-  link(rel=`stylesheet` href=`/css/test.css`)
-body
-  main.main.test.js-test
-      <p class="test__tag">Тест</p>
-      <h1 class="test__title">#{testTitle}</h1>
-      <input id ="drawer__switcher" type="checkbox">
-      <div class="test__lead-text drawer__box">
-        <label for="drawer__switcher" class ="drawer__btn">
-          <i class="material-icons drawer__img-more">expand_more</i>
-          <i class="material-icons drawer__img-less">expand_less</i>
-        </label>
-        <p>В одном вопросе может быть несколько правильных ответов. Если нужно дать только один ответ из нескольких, об этом прямо сказано в тесте: «выберите наилучший вариант», «выберите наихудший» или как то ещё. Ваша задача — отметить все правильные ответы.</p>
-        <p>Правильные ответы повышают, а неправильные — уменьшают оценку. Вопрос отображается как неправильный (после проверки выделен красным), даже если вы указали хотя бы один лишний или не доуказали хотя бы один правильный ответ.</p>
-        <p>Правильные ответы мы не раскрываем, но после прохождения теста вы увидите ссылки на пункты предисловия в которых их можно найти. Полный текст предисловия доступен в любой момент по ссылке в названии теста.</p>
-      </div>
-      ul.test__questions.js-test__questions
-        each question in questions
-          li(class="question js-question", id= question.id)
-            h3.question__title= question.wording
-            ul.question__options.js-question__options
-              each value, index in question.options
-                li(class="question__option js-question__option", id= `${question.id}_${index}`)= value
-
-      <button type="button" class="mdc-button mdc-button--raised test__btn js-test__btn--result" disabled>Проверить</button>
-  <script src="/js/test.js"></script>
+html(lang=`ru`)
+  head
+    title= title
+    meta(name=`viewport` content=`width=device-width, initial-scale=1 user-scalable=no`)
+    link(rel=`stylesheet` href=`https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css`)
+    link(rel=`stylesheet` href=`https://fonts.googleapis.com/css?family=PT+Sans:400,700&amp;subset=cyrillic`)
+    link(rel=`stylesheet` href=`https://fonts.googleapis.com/icon?family=Material+Icons`)
+    link(rel=`stylesheet` href=`/css/test.css`)
+    include partials/_og.pug
+  body.body__unvisible
+    include mixins/_fb-sdk.pug
+    header.header.js-header
+      if enabledInfo
+        include _info.pug
+      if time
+        <section class="header__item timer">#{time}</section>
+    main.main.test.js-test
+      <p class="test__tag js-test__tag typography--body">Тест</p>
+      <h1 class="test__title js-test__title typography--d3">#{title}</h1>
+      .drawer__box
+        .test__lead-text
+          <p class="typography--h3">В одном вопросе может быть несколько правильных ответов. Если нужно дать только один ответ из нескольких, об этом прямо сказано в тесте: «выберите наилучший вариант», «выберите наихудший» или как то ещё. Ваша задача — отметить все правильные ответы.</p>
+          <p class="typography--h3">Правильные ответы повышают, а неправильные — уменьшают оценку. Вопрос отображается как неправильный (после проверки выделен красным), даже если вы указали хотя бы один лишний или не доуказали хотя бы один правильный ответ.</p>
+        ul.test__questions.js-test__questions
+          each question in questions
+            li(class="question js-question", id= question.id)
+              if question.code
+                pre.question__code
+                  code
+                    = question.code
+              h3.question__title.typography--h3
+                != question.wording
+              ul.question__options.js-question__options
+                each value, index in question.options
+                  li(class="question__option js-question__option typography--body", id= `${question.id}_${index}`)
+                    != value
+      <button type="button" class="mdc-button mdc-button--raised test__result-btn js-test__result-btn" disabled>Проверить</button>
+      <button type="button" class="mdc-button mdc-button--raised test__retake-btn js-test__retake-btn"><i class="material-icons mdc-button__icon">&#xE5D5;</i>Повторить</button>
+      section.test__social.js-test__social
+        include partials/_social-btns.pug
+    <script src="/js/test.js"></script>

@@ -8,7 +8,8 @@ export default class Test {
 
   showTestResult(data) {
     this._view.checkPass(data.pass.result);
-    this._view.showSummary(data.summary);
+    this._view.showSummary(data.summaryTemplate, data.pass._id);
+    this._view.showFinalActions(data.retakeMessage);
 
     if (data.pass.answers) {
       this._view.markChosenOptions(data.pass.answers);

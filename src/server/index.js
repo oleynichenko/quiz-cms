@@ -2,6 +2,7 @@ const express = require(`express`);
 const session = require(`express-session`);
 const MongoStore = require(`connect-mongo`)(session);
 const logger = require(`../libs/logger`);
+const templatesUtil = require(`../libs/util/templates-util`);
 const config = require(`./config`);
 const routes = require(`./routes`);
 const db = require(`../database`);
@@ -15,6 +16,7 @@ const app = express();
 
 app.set(`views`, `${__dirname}/templates`);
 app.set(`view engine`, `pug`);
+templatesUtil.init(app);
 
 app.use(session({
   secret: SESSION_SECRET,
@@ -38,6 +40,7 @@ app.use((req, res) => {
 
 app.use((err, req, res, next) => {
   logger.error(err.message, err);
+  console.log(err.stack);
   res.status(500).send(`Something broke!`);
   next();
 });

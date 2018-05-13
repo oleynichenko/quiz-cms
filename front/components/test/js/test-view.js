@@ -1,9 +1,10 @@
 import {Class} from './const.js';
 import dom from './dom.js';
 import {
-  toggleAccessibility,
+  toggleAbility,
   toggleVisibility,
   checkIfClassInMap,
+  scrollToTop
 } from './help-function';
 
 export default class TestView {
@@ -54,9 +55,25 @@ export default class TestView {
   }
 
   checkPass(data) {
+    toggleVisibility(this.dom.resultBtn, false);
     this.disableSelection(this.dom.testQuestions);
     this._markWrongAnsweredQuestion(data.wrongQuestionsIds);
-    toggleVisibility(this.dom.resultButton, false);
+  }
+
+  showFinalActions(retakeMessage) {
+    if (retakeMessage) {
+      const html = `<em>${retakeMessage}</em>`;
+
+      toggleAbility(this.dom.retakeBtn, false);
+      this.dom.retakeBtn.insertAdjacentHTML(`afterEnd`, html);
+    } else {
+      this.dom.retakeBtn.addEventListener(`click`, () => {
+        location.href = `?attempt=new`;
+      });
+    }
+
+    this.dom.retakeBtn.classList.add(Class.RETAKE_BTN_VISIBLE);
+    this.dom.testSocial.classList.add(Class.TEST_SOCIAL_VISIBLE);
   }
 
   // data = {"1": ["a", "b"], ...}
@@ -79,24 +96,52 @@ export default class TestView {
     });
   }
 
-  showSummary(html) {
-    this.dom.test.insertAdjacentHTML(`afterBegin`, html);
+  showSummary(html, id) {
+    scrollToTop();
+    this.dom.testTag.innerHTML = `Результаты теста`;
+    this.dom.testTitle.insertAdjacentHTML(`afterEnd`, html);
+
+    const fbShareBtn = document.querySelector(`.${Class.TEST_SHARE_FB}`);
+
+    if (fbShareBtn) {
+      const passUrl = `${location.origin}/${id}`;
+
+      fbShareBtn.addEventListener(`click`, () => {
+        window.FB.ui({method: `share`, href: passUrl});
+      });
+    }
   }
 
   bind() {
-    this.dom.testQuestions.addEventListener(`click`, (evt) => {
-      const elem = evt.target;
+    for (let questionOptions of this.dom.questionsAndOptions.values()) {
+      questionOptions.forEach((option) => {
+        option.addEventListener(`click`, (evt) => {
+          const elem = evt.currentTarget;
 
-      if (elem.classList.contains(Class.QUESTION_OPTION)) {
-        elem.classList.toggle(Class.QUESTION_OPTION_IS_CHECKED);
+          elem.classList.toggle(Class.QUESTION_OPTION_IS_CHECKED);
 
-        const areAllQuestionsAnswered = checkIfClassInMap(this.dom.questionsAndOptions, Class.QUESTION_OPTION_IS_CHECKED);
-        toggleAccessibility(this.dom.resultButton, areAllQuestionsAnswered);
-      }
-    });
+          const areAllQuestionsAnswered = checkIfClassInMap(this.dom.questionsAndOptions, Class.QUESTION_OPTION_IS_CHECKED);
 
-    this.dom.resultButton.addEventListener(`click`, () => {
-      toggleAccessibility(this.dom.resultButton, false);
+          toggleAbility(this.dom.resultBtn, areAllQuestionsAnswered);
+        });
+      });
+    }
+    // this.dom.testQuestions.addEventListener(`click`, (evt) => {
+    //   const elem = evt.target;
+
+    //   if (elem.classList.contains(Class.QUESTION_OPTION)) {
+    //     elem.classList.toggle(Class.QUESTION_OPTION_IS_CHECKED);
+
+    //     const areAllQuestionsAnswered = checkIfClassInMap(this.dom.questionsAndOptions, Class.QUESTION_OPTION_IS_CHECKED);
+
+    //     if (areAllQuestionsAnswered) {
+    //       toggleAbility(this.dom.resultBtn, true);
+    //     }
+    //   }
+    // });
+
+    this.dom.resultBtn.addEventListener(`click`, () => {
+      toggleAbility(this.dom.resultBtn, false);
       this.disableSelection(this.dom.testQuestions);
 
       const userAnswers = this.getUserAnswers(this.dom.questionsAndOptions);

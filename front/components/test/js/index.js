@@ -1,11 +1,11 @@
 import app from './app.js';
-import info from './info.js';
+import infoModule from './info.js';
 
 const param = location.search.replace(`?`, ``);
-const infoBtn = document.querySelector(`.js-info__btn`);
+const info = document.querySelector(`.js-info`);
 
-if (infoBtn) {
-  info.init(infoBtn);
+if (info) {
+  infoModule.init(info);
 }
 
 app.init(param);

@@ -1,17 +1,13 @@
 const {MongoClient} = require(`mongodb`);
 const logger = require(`../libs/logger`);
+const config = require(`../server/config`);
 
-const DB_HOST = process.env.DB_HOST || `localhost:27017`;
-const DB_NAME = process.env.DB_NAME || `test`;
-
-const url = `mongodb://${DB_HOST}`;
-
-module.exports = MongoClient.connect(url)
+module.exports = MongoClient.connect(config.DB_HOST)
     .then((client) => {
-      logger.info(`Connected with ${DB_HOST}`);
-      return client.db(DB_NAME);
+      logger.info(`Connected with database`);
+      return client.db(config.DB_NAME);
     })
     .catch((error) => {
-      logger.error(`Failed to connect to MongoDB`, error);
+      logger.error(`Failed to connect to database`, error);
       process.exit(1);
     });

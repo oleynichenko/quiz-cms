@@ -3,6 +3,7 @@ html(lang=`ru`)
   head
     title= title
     meta(name=`viewport` content=`width=device-width, initial-scale=1 user-scalable=no`)
+    link(rel=`canonical` href=canonicalUrl)
     link(rel=`stylesheet` href=`https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css`)
     link(rel=`stylesheet` href=`https://fonts.googleapis.com/css?family=PT+Sans:400,700&amp;subset=cyrillic`)
     link(rel=`stylesheet` href=`https://fonts.googleapis.com/icon?family=Material+Icons`)
@@ -38,5 +39,6 @@ html(lang=`ru`)
       <button type="button" class="mdc-button mdc-button--raised test__result-btn js-test__result-btn" disabled>Проверить</button>
       <button type="button" class="mdc-button mdc-button--raised test__retake-btn js-test__retake-btn"><i class="material-icons mdc-button__icon">&#xE5D5;</i>Повторить</button>
       section.test__social.js-test__social
-        include partials/_social-btns.pug
+        include mixins/_social-btns.pug
+        +socialBtns(`test`)
     <script src="/js/test.js"></script>

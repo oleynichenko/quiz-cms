@@ -1,11 +1,9 @@
 const db = require(`../../database`);
 const logger = require(`../../libs/logger`);
-// const ObjectId = require(`mongodb`).ObjectId;
 
 const setupCollection = async () => {
   const dBase = await db;
   const collection = dBase.collection(`questions`);
-  collection.createIndex({id: -1}, {unique: true});
 
   return collection;
 };
@@ -23,11 +21,11 @@ class QuestionsStore {
       "themes": 0
     };
 
-    return (await this.collection).find(query).project(projection).toArray();
+    return (await this.collection).find(query).project(projection).sort({"id": 1}).toArray();
   }
 
-  async saveQuestion(data) {
-    return (await this.collection).insertOne(data);
+  async saveQuestions(questions) {
+    return (await this.collection).insertMany(questions, {ordered: false});
   }
 }
 

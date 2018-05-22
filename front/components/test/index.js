@@ -8,7 +8,7 @@ const Class = Object.freeze({
   TEST_TITLE: `js-test__title`,
   TEST_QUESTIONS: `js-test__questions`,
   TEST_SOCIAL: `js-test__social`,
-  TEST_SHARE_FB: `js-test__share-fb`,
+  SUMMARY_SHARE_FB: `js-summary__share-fb`,
   TEST_SOCIAL_VISIBLE: `test__social--visible`,
   TEST_QUESTIONS_DONE: `test__questions--done`,
   RETAKE_BTN: `js-test__retake-btn`,
@@ -20,6 +20,8 @@ const Class = Object.freeze({
   QUESTION_OPTION: `js-question__option`,
   QUESTION_OPTION_IS_CHECKED: `question__option--is-checked`,
   QUESTION_WRONG: `question--wrong`,
+  TEST_SHARE_FB: `js-test__share-fb`,
+  TEST_LIKE_FB: `js-test__like-fb`,
 });
 
 const getQuestionsAndOptions = () => {
@@ -43,6 +45,8 @@ const dom = {
   questionsAndOptions: getQuestionsAndOptions(),
   resultBtn: document.querySelector(`.${Class.RESULT_BTN}`),
   retakeBtn: document.querySelector(`.${Class.RETAKE_BTN}`),
+  testShareFb: document.querySelector(`.${Class.TEST_SHARE_FB}`),
+  testLikeFb: document.querySelector(`.${Class.TEST_LIKE_FB}`),
 };
 
 const toggleAbility = (elem, condition) => {
@@ -61,6 +65,59 @@ const _checkIfClassInArr = (arr, className) => {
   }
 
   return false;
+};
+
+const runIfEventFired = (status, event, callback, ...args) => {
+  if (status) {
+    callback(args[0], args[1]);
+  } else {
+    document.addEventListener(event, () => {
+      callback(args[0], args[1]);
+    });
+  }
+};
+
+const initFbBtns = (likeBtn, shareBtn) => {
+  if (likeBtn) {
+    likeBtn.addEventListener(`click`, () => {
+      window.FB.ui({
+        method: `share_open_graph`,
+        action_type: `og.likes`,
+        action_properties: JSON.stringify({
+          object: window.location.href,
+        })
+      });
+    });
+
+    window.FB.api(
+        `/`,
+        {
+          "id": window.location.href,
+          "fields": `engagement`,
+          "access_token": `1749739928442230|6c993bd89f7f20c463971b1582ad7cc0`
+        },
+        function (response) {
+          if (response && !response.error) {
+            const engagement = response.engagement;
+
+            if (engagement && engagement.share_count > 0) {
+              const likesQuantity = likeBtn.querySelector(`.likes-quantity`);
+
+              likesQuantity.innerHTML = engagement.share_count;
+            }
+          }
+        }
+    );
+  }
+
+  if (likeBtn) {
+    shareBtn.addEventListener(`click`, () => {
+      window.FB.ui({
+        method: `share`,
+        href: window.location.href
+      });
+    });
+  }
 };
 
 const checkIfClassInMap = (map, className) => {
@@ -90,7 +147,7 @@ class TestView {
   _markWrongAnsweredQuestion(ids) {
     ids.forEach((id) => {
       for (let key of this.dom.questionsAndOptions.keys()) {
-        if (key.id === id) {
+        if (key.id === `${id}`) {
           key.classList.add(Class.QUESTION_WRONG);
           break;
         }
@@ -171,18 +228,22 @@ class TestView {
     });
   }
 
-  showSummary(html, id) {
+  showSummary(html, ogData) {
     scrollToTop();
     this.dom.testTag.innerHTML = `Результаты теста`;
     this.dom.testTitle.insertAdjacentHTML(`afterEnd`, html);
 
-    const fbShareBtn = document.querySelector(`.${Class.TEST_SHARE_FB}`);
-
-    if (fbShareBtn) {
-      const passUrl = `${location.origin}/${id}`;
+    runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, this.dom.testLikeFb, this.dom.testShareFb);
+    if (ogData) {
+      const fbShareBtn = document.querySelector(`.${Class.SUMMARY_SHARE_FB}`);
 
       fbShareBtn.addEventListener(`click`, () => {
-        window.FB.ui({method: `share`, href: passUrl});
+        window.FB.ui({
+          method: `share_open_graph`,
+          hashtag: `#JavaScript_Ninja #JS_MASTER_OF_FUNCTIONS`,
+          action_type: `og.shares`,
+          action_properties: JSON.stringify(ogData)
+        });
       });
     }
   }
@@ -201,19 +262,6 @@ class TestView {
         });
       });
     }
-    // this.dom.testQuestions.addEventListener(`click`, (evt) => {
-    //   const elem = evt.target;
-
-    //   if (elem.classList.contains(Class.QUESTION_OPTION)) {
-    //     elem.classList.toggle(Class.QUESTION_OPTION_IS_CHECKED);
-
-    //     const areAllQuestionsAnswered = checkIfClassInMap(this.dom.questionsAndOptions, Class.QUESTION_OPTION_IS_CHECKED);
-
-    //     if (areAllQuestionsAnswered) {
-    //       toggleAbility(this.dom.resultBtn, true);
-    //     }
-    //   }
-    // });
 
     this.dom.resultBtn.addEventListener(`click`, () => {
       toggleAbility(this.dom.resultBtn, false);
@@ -233,7 +281,7 @@ class Test {
 
   showTestResult(data) {
     this._view.checkPass(data.pass.result);
-    this._view.showSummary(data.summaryTemplate, data.pass._id);
+    this._view.showSummary(data.summaryTemplate, data.awardOgData);
     this._view.showFinalActions(data.retakeMessage);
 
     if (data.pass.answers) {
@@ -249,8 +297,6 @@ class Test {
     this._view.bind();
   }
 }
-
-// import {SERVER_URL_POST} from './const.js';
 
 const sendPass = (data) => {
   const dataJSON = JSON.stringify(data);
@@ -271,7 +317,6 @@ const sendPass = (data) => {
         } else {
           return {};
         }
-        // console.log(res);
       });
 };
 
@@ -279,14 +324,18 @@ var loader = {
   sendPass
 };
 
-const infoContainer = dom.header;
-const secondBlock = dom.test;
+let infoContainer;
 
-const init = (infoBtn) => {
+const init = (info, secondBlock = dom.test) => {
+  infoContainer = info.parentElement;
+
+  const infoBtn = infoContainer.querySelector(`.js-info__btn`);
+  const infoStartTest = info.querySelector(`.js-info__start-test`);
+  const fbShareBtn = info.querySelector(`.js-info__share-fb`);
+  const fbLikeBtn = info.querySelector(`.js-info__like-fb`);
+
   infoContainer.classList.add(`js-info__container`, `info__container--on`);
   secondBlock.classList.add(`info__second-block`);
-
-  const infoStartTest = document.querySelector(`.js-info__start-test`);
 
   infoBtn.addEventListener(`click`, () => {
     infoContainer.classList.toggle(`info__container--on`);
@@ -295,6 +344,8 @@ const init = (infoBtn) => {
   infoStartTest.addEventListener(`click`, () => {
     infoContainer.classList.toggle(`info__container--on`);
   });
+
+  runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, fbLikeBtn, fbShareBtn);
 };
 
 const hide = () => {
@@ -346,10 +397,10 @@ class App {
 var app = new App();
 
 const param = location.search.replace(`?`, ``);
-const infoBtn = document.querySelector(`.js-info__btn`);
+const info$1 = document.querySelector(`.js-info`);
 
-if (infoBtn) {
-  info.init(infoBtn);
+if (info$1) {
+  info.init(info$1);
 }
 
 app.init(param);

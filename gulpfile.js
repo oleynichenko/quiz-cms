@@ -6,8 +6,10 @@ const autoprefixer = require(`autoprefixer`);
 const rollup = require(`gulp-better-rollup`);
 const nodemon = require(`gulp-nodemon`);
 const rename = require(`gulp-rename`);
+const run = require(`run-sequence`);
 const server = require(`browser-sync`).create();
 const pug = require(`gulp-pug`);
+const del = require(`del`);
 
 const componentFolder = `test`;
 
@@ -149,4 +151,22 @@ gulp.task(`watch-component`, function () {
 gulp.task(`start`, [`watch`, `style`, `scripts`, `nodemon-sync`]);
 gulp.task(`start-component`, [`watch-component`, `style-component`, `scripts-component`, `pug-component`, `browser-sync`]);
 
+gulp.task(`clean`, function () {
+  return del([`../quiz-production/**`, `!../quiz-production`], {force: true});
+});
 
+gulp.task(`copy`, function () {
+  gulp.src([
+    `./src/**/*`,
+    `./static/**/*`,
+    `./test/**/*`,
+    `./index.js`,
+    `./package.json`,
+
+  ], {base: `./`})
+      .pipe(gulp.dest(`../quiz-production`));
+});
+
+gulp.task(`build`, function (fn) {
+  run(`clean`, `copy`, fn);
+});

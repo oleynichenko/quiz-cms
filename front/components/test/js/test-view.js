@@ -4,7 +4,9 @@ import {
   toggleAbility,
   toggleVisibility,
   checkIfClassInMap,
-  scrollToTop
+  scrollToTop,
+  initFbBtns,
+  runIfEventFired
 } from './help-function';
 
 export default class TestView {
@@ -15,7 +17,7 @@ export default class TestView {
   _markWrongAnsweredQuestion(ids) {
     ids.forEach((id) => {
       for (let key of this.dom.questionsAndOptions.keys()) {
-        if (key.id === id) {
+        if (key.id === `${id}`) {
           key.classList.add(Class.QUESTION_WRONG);
           break;
         }
@@ -96,18 +98,22 @@ export default class TestView {
     });
   }
 
-  showSummary(html, id) {
+  showSummary(html, ogData) {
     scrollToTop();
     this.dom.testTag.innerHTML = `Результаты теста`;
     this.dom.testTitle.insertAdjacentHTML(`afterEnd`, html);
 
-    const fbShareBtn = document.querySelector(`.${Class.TEST_SHARE_FB}`);
-
-    if (fbShareBtn) {
-      const passUrl = `${location.origin}/${id}`;
+    runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, this.dom.testLikeFb, this.dom.testShareFb);
+    if (ogData) {
+      const fbShareBtn = document.querySelector(`.${Class.SUMMARY_SHARE_FB}`);
 
       fbShareBtn.addEventListener(`click`, () => {
-        window.FB.ui({method: `share`, href: passUrl});
+        window.FB.ui({
+          method: `share_open_graph`,
+          hashtag: `#JavaScript_Ninja #JS_MASTER_OF_FUNCTIONS`,
+          action_type: `og.shares`,
+          action_properties: JSON.stringify(ogData)
+        });
       });
     }
   }
@@ -126,19 +132,6 @@ export default class TestView {
         });
       });
     }
-    // this.dom.testQuestions.addEventListener(`click`, (evt) => {
-    //   const elem = evt.target;
-
-    //   if (elem.classList.contains(Class.QUESTION_OPTION)) {
-    //     elem.classList.toggle(Class.QUESTION_OPTION_IS_CHECKED);
-
-    //     const areAllQuestionsAnswered = checkIfClassInMap(this.dom.questionsAndOptions, Class.QUESTION_OPTION_IS_CHECKED);
-
-    //     if (areAllQuestionsAnswered) {
-    //       toggleAbility(this.dom.resultBtn, true);
-    //     }
-    //   }
-    // });
 
     this.dom.resultBtn.addEventListener(`click`, () => {
       toggleAbility(this.dom.resultBtn, false);

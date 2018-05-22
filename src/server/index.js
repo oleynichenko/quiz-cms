@@ -9,9 +9,6 @@ const db = require(`../database`);
 
 const loadUser = require(`./middleware/load-user`);
 
-const SESSION_SECRET = process.env.SESSION_SECRET;
-const SESSION_NAME = process.env.SESSION_NAME;
-
 const app = express();
 
 app.set(`views`, `${__dirname}/templates`);
@@ -19,8 +16,8 @@ app.set(`view engine`, `pug`);
 templatesUtil.init(app);
 
 app.use(session({
-  secret: SESSION_SECRET,
-  name: SESSION_NAME,
+  secret: config.SESSION_SECRET,
+  name: config.SESSION_NAME,
   resave: false,
   saveUninitialized: true,
   store: new MongoStore({
@@ -47,12 +44,12 @@ app.use((err, req, res, next) => {
 
 module.exports = {
   run() {
-    const server = app.listen(config.PORT, config.HOSTNAME, (err) => {
+    const server = app.listen(config.PORT, (err) => {
       if (err) {
         return logger.error(`Ошибка при запуске сервера`, err.message);
       }
       const port = server.address().port;
-      return logger.info(`Сервер запущен на ${config.HOSTNAME}:${port}`);
+      return logger.info(`Сервер запущен на порту ${port}`);
     });
   }
 };

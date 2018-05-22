@@ -12,13 +12,8 @@ const generateTests = () => {
   return tests;
 };
 
-// const generateLinks = () => {
-//   return links;
-// };
-
 module.exports = {
   generateUsers,
   generateQuestions,
-  // generateLinks,
   generateTests
 };

@@ -20,8 +20,8 @@ class PassesStore {
     );
   }
 
-  async getPassById(id) {
-    return (await this.collection).findOne({id});
+  async getPassById(_id) {
+    return (await this.collection).findOne({_id});
   }
 
   async deletePass(permalink, sessionId) {

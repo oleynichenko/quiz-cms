@@ -1,15 +1,21 @@
-<div id=`fb-root`></div>
 script.
-  //- window.fbAsyncInit = function() {
-  //- FB.init({
-  //-   appId      : '153452908560962',
-  //-   xfbml      : true,
-  //-   version    : 'v2.12'
-  //- });
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId           : #{fbAppId},
+      autoLogAppEvents: true,
+      xfbml           : false,
+      version         : 'v3.0'
+    });
+    const event = new Event(`fbApiInit`);
+    document.dispatchEvent(event);
+    window.isfbApiInited = true;
+
+    FB.AppEvents.logPageView();
+  };
   (function (d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
+    if (d.getElementById(id)) {return};
     js = d.createElement(s); js.id = id;
-    js.src = `https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v2.12`;
+    js.src = `https://connect.facebook.net/ru_RU/sdk.js`;
     fjs.parentNode.insertBefore(js, fjs);
   }(document, `script`, `facebook-jssdk`));

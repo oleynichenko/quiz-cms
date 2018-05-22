@@ -2,7 +2,6 @@ const {generateUsers, generateTests, generateQuestions} = require(`../../../test
 const usersStore = require(`../../server/stores/users-store`);
 const testsStore = require(`../../server/stores/tests-store`);
 const questionsStore = require(`../../server/stores/questions-store`);
-// const linksStore = require(`../../server/stores/links-store`);
 
 module.exports = {
   name: `--generate`,
@@ -21,12 +20,6 @@ module.exports = {
     for (let i = 0; i < tests.length; i++) {
       await testsStore.saveTest(tests[i]);
     }
-
-    // const links = generateLinks();
-
-    // for (let i = 0; i < links.length; i++) {
-    //   await linksStore.saveLink(links[i]);
-    // }
 
     const questions = generateQuestions();
 

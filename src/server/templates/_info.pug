@@ -1,6 +1,6 @@
 <button type="button" class="header__item info__btn js-info__btn"><i class="material-icons">info_outline</i></button>
-.info__block-wrapper
-  article.info__block
+.info.js-info
+  article.info__block.js-info__block
     <b>Тест</b>
     h1= title
     p= description
@@ -11,4 +11,5 @@
     <p>На ответы отводиться #{testTime} минут. Следующая попытка сдачи будет доступна через #{inteval} дней.</p>
     <p>После проверки теста вопросы с неверными ответами будут выделены красным цветом. Задача теста исключительно получение оценки своего уровня. Подробности ответов не раскрываются, тем не менее вы увидите ссылки на источники информации которые помогут быстро восполнить обнаруженные пробелы.</p>
     <button class="mdc-button mdc-button--raised info__start-test js-info__start-test">Перейти к тесту</button>
-    include partials/_social-btns.pug
+    include mixins/_social-btns.pug
+    +socialBtns(`info`)

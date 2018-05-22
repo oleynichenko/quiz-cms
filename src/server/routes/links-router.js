@@ -13,7 +13,7 @@ linksRouter.use((req, res, next) => {
 });
 
 linksRouter.get(`/:permalink`, async(controller.getTest));
-linksRouter.get(`/:permalink/:passId`, async(controller.getPassData));
+// linksRouter.get(`/:permalink/:passId`, async(controller.getPassData));
 linksRouter.post(`/:permalink`, async(controller.getCheckedTest));
 
 module.exports = linksRouter;

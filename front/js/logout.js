@@ -6,10 +6,10 @@ const logout = (elem) => {
       credentials: `include`
     };
 
-    fetch(`/logout`, options)
-        .then((res) => {
-          window.location.href = res.url;
-        });
+    fetch(`/logout`, options);
+        // .then((res) => {
+        //   window.location.href = res.url;
+        // });
   });
 };
 

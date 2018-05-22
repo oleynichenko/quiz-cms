@@ -5,7 +5,7 @@ export const Class = Object.freeze({
   TEST_TITLE: `js-test__title`,
   TEST_QUESTIONS: `js-test__questions`,
   TEST_SOCIAL: `js-test__social`,
-  TEST_SHARE_FB: `js-test__share-fb`,
+  SUMMARY_SHARE_FB: `js-summary__share-fb`,
   TEST_SOCIAL_VISIBLE: `test__social--visible`,
   TEST_QUESTIONS_DONE: `test__questions--done`,
   RETAKE_BTN: `js-test__retake-btn`,
@@ -17,4 +17,6 @@ export const Class = Object.freeze({
   QUESTION_OPTION: `js-question__option`,
   QUESTION_OPTION_IS_CHECKED: `question__option--is-checked`,
   QUESTION_WRONG: `question--wrong`,
+  TEST_SHARE_FB: `js-test__share-fb`,
+  TEST_LIKE_FB: `js-test__like-fb`,
 });

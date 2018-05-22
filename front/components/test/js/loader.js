@@ -1,5 +1,3 @@
-// import {SERVER_URL_POST} from './const.js';
-
 const sendPass = (data) => {
   const dataJSON = JSON.stringify(data);
 
@@ -19,7 +17,6 @@ const sendPass = (data) => {
         } else {
           return {};
         }
-        // console.log(res);
       });
 };
 

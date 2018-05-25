@@ -1,0 +1,7 @@
+- const bestQuantityPhrase = (stat.bestQuantity > 1) ? ` показали #{temp.getNumEnding(stat.bestQuantity, temp.PEOPLE)}` : ``;
+<p>На текущий момент тест прошли #{stat.total} #{temp.getNumEnding(stat.total, temp.PEOPLE)} с средним результатом #{stat.average}%. Из них:</p>
+<ul>
+  <li> #{stat.profies} #{temp.getNumEnding(stat.profies, temp.PEOPLE)} показали уровень PROFI, набрав от #{stat.profiLevel}% до #{stat.expertLevel}%,</li>
+  <li> #{stat.experts} #{temp.getNumEnding(stat.experts, temp.PEOPLE)} — уровень EXPERT (больше #{stat.expertLevel}%),</li>
+  <li>лучший результат — #{stat.best}%#{bestQuantityPhrase}.</li>
+</ul>

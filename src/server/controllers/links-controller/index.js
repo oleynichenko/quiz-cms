@@ -95,6 +95,7 @@ const getTest = async (req, res, next) => {
             title: test.title,
             imageURl: getImageUrl(test.images.main),
             description: test.description,
+            benefit: test.benefit,
             canonicalUrl,
             introText: test.introText,
             time: link.time,

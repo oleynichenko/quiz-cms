@@ -53,8 +53,8 @@ $device-type: mobile;
 }
 
 .typography--h3 {
-  @include font(fsz($device-type, h3), 1.4);
-  margin-bottom: fsz($device-type, h3)/2;
+  @include font(fsz($device-type, h3), 1.35);
+  margin-bottom: fsz($device-type, h3);
 }
 
 .typography--d1 {
@@ -85,8 +85,8 @@ $device-type: mobile;
   }
 
   .typography--h3 {
-    @include font(fsz($device-type, h3), 1.3);
-    margin-bottom: fsz($device-type, h3)/2;
+    @include font(fsz($device-type, h3), 1.25);
+    margin-bottom: fsz($device-type, h3);
   }
 
   .typography--d1 {

@@ -9,7 +9,7 @@ section.summary
   include summary/_motivation.pug
 
   if (percentScored < 100)
-    include summary/_recommendation.pug
+    | !{recommendText}
 
 <label for="drawer__switcher" class="summary__questions-title typography--body">Проверенные ответы</label>
 <input id ="drawer__switcher" checked type="checkbox">

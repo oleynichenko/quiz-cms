@@ -418,12 +418,12 @@ address {
   font-weight: normal;
   color: inherit; }
 
-.typography--h3, .info__block p, .summary p, .summary ul, .summary__link {
+.typography--h3, .info__block p, .info__block ul, .summary p, .summary ul, .summary__link {
   font-size: 16.875px;
-  line-height: 1.4;
+  line-height: 1.35;
   font-weight: normal;
   color: inherit;
-  margin-bottom: 8.4375px; }
+  margin-bottom: 16.875px; }
 
 .typography--d1 {
   font-size: 24.0271px;
@@ -458,12 +458,12 @@ address {
     line-height: 1.3;
     font-weight: normal;
     color: inherit; }
-  .typography--h3, .info__block p, .summary p, .summary ul, .summary__link {
+  .typography--h3, .info__block p, .info__block ul, .summary p, .summary ul, .summary__link {
     font-size: 18px;
-    line-height: 1.3;
+    line-height: 1.25;
     font-weight: normal;
     color: inherit;
-    margin-bottom: 9px; }
+    margin-bottom: 18px; }
   .typography--d1 {
     font-size: 25.62891px;
     line-height: 1.3;
@@ -555,6 +555,17 @@ address {
     line-height: 1;
     text-transform: uppercase;
     letter-spacing: 1px; }
+  .info__block ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: -16.875px;
+    margin-bottom: 16.875px;
+    padding-left: 24px; }
+    .info__block ul li {
+      margin-bottom: 6px; }
+      .info__block ul li:last-child {
+        margin-bottom: 0; }
 
 .info__btn {
   padding: 0;
@@ -586,6 +597,14 @@ address {
 @media (min-width: 815px) {
   .info__block {
     padding-top: 115.33008px; }
+    .info__block ul {
+      margin-top: -18px;
+      margin-bottom: 18px;
+      padding-left: 24px; }
+      .info__block ul li {
+        margin-bottom: 6px; }
+        .info__block ul li:last-child {
+          margin-bottom: 0; }
   .info__btn i {
     font-size: 32px; }
   .info__start-test {
@@ -596,11 +615,13 @@ address {
   list-style: none;
   padding: 0;
   margin: 0;
-  margin-top: -8.4375px;
-  margin-bottom: 8.4375px;
-  padding-left: 25px; }
+  margin-top: -16.875px;
+  margin-bottom: 16.875px;
+  padding-left: 24px; }
   .summary ul li {
-    margin-bottom: 5.625px; }
+    margin-bottom: 6px; }
+    .summary ul li:last-child {
+      margin-bottom: 0; }
 
 .summary__link {
   display: block;
@@ -623,6 +644,14 @@ address {
   letter-spacing: 1px; }
 
 @media (min-width: 815px) {
+  .summary ul {
+    margin-top: -18px;
+    margin-bottom: 18px;
+    padding-left: 24px; }
+    .summary ul li {
+      margin-bottom: 6px; }
+      .summary ul li:last-child {
+        margin-bottom: 0; }
   .summary__question-title {
     margin-bottom: 16px; }
   .summary__btn {
@@ -679,6 +708,7 @@ address {
 
 .question {
   display: block;
+  border-top: 1px solid transparent;
   margin-bottom: 45px; }
   .question:last-child {
     margin-bottom: 0; }
@@ -698,7 +728,11 @@ address {
   line-height: 1.25;
   font-size: 15px;
   background-color: #eff4f8;
-  overflow: auto; }
+  overflow: auto;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
 
 .question__options {
   list-style: none;

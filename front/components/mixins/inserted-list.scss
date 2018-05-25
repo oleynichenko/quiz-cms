@@ -1,0 +1,13 @@
+@mixin inserted-list($pMargin, $paddingLeft) {
+  margin-top: - $pMargin;
+  margin-bottom: $pMargin;
+  padding-left: $paddingLeft;
+
+  & li {
+    margin-bottom: $paddingLeft/4;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

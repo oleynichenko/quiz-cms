@@ -43,13 +43,15 @@ const getConclusionPhrase = (previous, current, min, max) => {
 
 const QUESTION = [`вопрос`, `вопроса`, `вопросов`];
 const SCORE = [`балл`, `балла`, `баллов`];
+const PEOPLE = [`человек`, `человека`, `человек`];
 
 const init = (app) => {
   app.locals.temp = {
     getNumEnding,
     getConclusionPhrase,
     QUESTION,
-    SCORE
+    SCORE,
+    PEOPLE
   };
 };
 

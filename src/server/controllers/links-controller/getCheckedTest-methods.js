@@ -36,6 +36,7 @@ const getSummaryTemplate = (pass, test, image, temp) => {
     percentScored,
     profiLevel: levels.profi,
     expertLevel: levels.expert,
+    levelExplanation: test.levelExplanation,
     recommendText: test.recommendText,
     infoSources: test.infoSources,
     event: test.event,

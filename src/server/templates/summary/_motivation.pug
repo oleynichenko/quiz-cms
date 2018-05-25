@@ -1,8 +1,7 @@
 - const isNotProfi = (percentScored < profiLevel);
 if isNotProfi
-  <p>Профессиональным уровнем владения темой, по мнению автора теста, стоит считать показатель от #{profiLevel}%.</p>
+  <p>#{levelExplanation.profi} и поэтому профессиональный уровень владения темой, по мнению автора, это минимум #{profiLevel}%.</p>
 
 - const isNotExpert = (percentScored > profiLevel) && (percentScored < expertLevel);
 if isNotExpert
-  <p>Экспертным уровнем владения темой, по мнению автора теста, стоит считать показатель от #{expertLevel}%.</p>
-
+  <p>#{levelExplanation.expert} и поэтому экспертным уровнем владения темой, по мнению автора, стоит считать минимум #{expertLevel}%.</p>

@@ -56,12 +56,17 @@
   & p {
     @extend .typography--h3;
   }
+
+  & ul {
+    @extend .typography--h3;
+    @include reset-ul;
+    @include inserted-list(fsz($device-type, h3), 24px);
+  }
 }
 
 
 .info__btn {
   @include reset-btn;
-  // padding: 20px;
 
   & i {
     display: block;
@@ -82,6 +87,10 @@
 
   .info__block {
     padding-top: fsz($device-type, d2)*4;
+
+    & ul {
+      @include inserted-list(fsz($device-type, h3), 24px);
+    }
   }
 
   .info__btn {

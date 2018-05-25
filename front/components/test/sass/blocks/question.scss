@@ -2,6 +2,7 @@ $device-type: mobile;
 
 .question {
   display: block;
+  border-top: 1px solid transparent;
 	margin-bottom: fsz($device-type, body)*3;
 
 	&:last-child {
@@ -32,6 +33,7 @@ $device-type: mobile;
 
   background-color: rgb(239, 244, 248);
   overflow: auto;
+  user-select: none;
 }
 
 .question__options {

@@ -7,7 +7,7 @@ const {
   getRetakeMessage,
   getAwardImageName,
   getTestResult,
-  getAwardOgData
+  getAwardShareData
 } = require(`./getCheckedTest-methods`);
 
 const {canPass} = require(`./getTest-methods`);
@@ -47,7 +47,7 @@ const getCheckedTest = async (req, res) => {
     };
 
     if (awardImageName) {
-      data.awardOgData = getAwardOgData(test, awardImageName, pass.result.percentScored);
+      data.awardShareData = getAwardShareData(test, awardImageName, pass.result.percentScored);
     }
 
     const interval = 7 * 24 * 60 * 60 * 1000;

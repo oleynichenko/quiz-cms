@@ -9,17 +9,38 @@ const getAwardImageName = (score, levels, images) => {
       : images.profi;
   }
 
-  return void 0;
+  return null;
 };
 
-const getAwardOgData = (test, image, percent) => {
+const _getAwardOgData = (test, image, percent) => {
   return {
     object: {
       'og:url': getTestLinkUrl(test.canonLink),
-      'og:title': `${test.title} - ${percent}%!`,
+      'og:title': `Тест "${test.title} — ${percent}%!`,
       'og:description': test.description,
       'og:image': getImageUrl(image)
     }
+  };
+};
+
+const _getAwardHashtag = (percentScored, levels, testHashtag) => {
+  if (percentScored >= levels.profi) {
+    const awardLevel = (percentScored >= levels.expert)
+      ? `EXPERT`
+      : `PROFI`;
+
+    return `#${testHashtag}_${awardLevel}`;
+  }
+
+  return null;
+};
+
+const getAwardShareData = (test, image, percentScored) => {
+  return {
+    method: `share_open_graph`,
+    hashtag: _getAwardHashtag(percentScored, test.levels, test.hashtag),
+    action_type: `og.shares`,
+    action_properties: JSON.stringify(_getAwardOgData(test, image, percentScored))
   };
 };
 
@@ -47,7 +68,7 @@ const getSummaryTemplate = (pass, test, image, temp) => {
   const previousResult = pass.previousResult;
 
   if (previousResult) {
-    summaryOptions.previousPercentScored = getPercent(previousResult.pointsScored, test.possibleScore);
+    summaryOptions.previousPercentScored = previousResult.pointsScored;
   }
 
   if (image !== void 0) {
@@ -161,5 +182,5 @@ module.exports = {
   getRetakeMessage,
   getAwardImageName,
   getTestResult,
-  getAwardOgData
+  getAwardShareData
 };

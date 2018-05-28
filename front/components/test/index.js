@@ -238,12 +238,7 @@ class TestView {
       const fbShareBtn = document.querySelector(`.${Class.SUMMARY_SHARE_FB}`);
 
       fbShareBtn.addEventListener(`click`, () => {
-        window.FB.ui({
-          method: `share_open_graph`,
-          hashtag: `#JavaScript_Ninja #JS_MASTER_OF_FUNCTIONS`,
-          action_type: `og.shares`,
-          action_properties: JSON.stringify(ogData)
-        });
+        window.FB.ui(ogData);
       });
     }
   }
@@ -281,7 +276,7 @@ class Test {
 
   showTestResult(data) {
     this._view.checkPass(data.pass.result);
-    this._view.showSummary(data.summaryTemplate, data.awardOgData);
+    this._view.showSummary(data.summaryTemplate, data.awardShareData);
     this._view.showFinalActions(data.retakeMessage);
 
     if (data.pass.answers) {

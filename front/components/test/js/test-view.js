@@ -98,22 +98,17 @@ export default class TestView {
     });
   }
 
-  showSummary(html, ogData) {
+  showSummary(html, awardShareData) {
     scrollToTop();
     this.dom.testTag.innerHTML = `Результаты теста`;
     this.dom.testTitle.insertAdjacentHTML(`afterEnd`, html);
 
     runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, this.dom.testLikeFb, this.dom.testShareFb);
-    if (ogData) {
+    if (awardShareData) {
       const fbShareBtn = document.querySelector(`.${Class.SUMMARY_SHARE_FB}`);
 
       fbShareBtn.addEventListener(`click`, () => {
-        window.FB.ui({
-          method: `share_open_graph`,
-          hashtag: `#JavaScript_Ninja #JS_MASTER_OF_FUNCTIONS`,
-          action_type: `og.shares`,
-          action_properties: JSON.stringify(ogData)
-        });
+        window.FB.ui(awardShareData);
       });
     }
   }

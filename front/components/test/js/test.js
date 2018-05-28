@@ -8,7 +8,7 @@ export default class Test {
 
   showTestResult(data) {
     this._view.checkPass(data.pass.result);
-    this._view.showSummary(data.summaryTemplate, data.awardOgData);
+    this._view.showSummary(data.summaryTemplate, data.awardShareData);
     this._view.showFinalActions(data.retakeMessage);
 
     if (data.pass.answers) {

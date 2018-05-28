@@ -6,7 +6,7 @@
 @import "../../mixins/reset-btn.scss";
 @import "../../mixins/inserted-list.scss";
 
-@import "../../@material/button/mdc-button.scss";
+@import "../../../../node_modules/@material/button/mdc-button.scss";
 @import "../../drawer/drawer.scss";
 
 @import "global/variables.scss";

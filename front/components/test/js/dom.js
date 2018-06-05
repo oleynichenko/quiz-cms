@@ -16,6 +16,7 @@ const dom = {
   header: document.querySelector(`.${Class.HEADER}`),
   testTag: document.querySelector(`.${Class.TEST_TAG}`),
   testTitle: document.querySelector(`.${Class.TEST_TITLE}`),
+  testLeadText: document.querySelector(`.${Class.TEST_LEAD_TEXT}`),
   testQuestions: document.querySelector(`.${Class.TEST_QUESTIONS}`),
   testSocial: document.querySelector(`.${Class.TEST_SOCIAL}`),
   questionsAndOptions: getQuestionsAndOptions(),

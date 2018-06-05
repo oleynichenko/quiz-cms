@@ -1,5 +1,6 @@
 import dom from './dom.js';
-import {initFbBtns, runIfEventFired} from './help-function';
+import {initFbBtns, runIfEventFired, scrollToTop} from './help-function';
+import {MDCRipple} from '@material/ripple';
 
 let infoContainer;
 
@@ -16,13 +17,17 @@ const init = (info, secondBlock = dom.test) => {
 
   infoBtn.addEventListener(`click`, () => {
     infoContainer.classList.toggle(`info__container--on`);
+    scrollToTop();
   });
 
   infoStartTest.addEventListener(`click`, () => {
     infoContainer.classList.toggle(`info__container--on`);
+    scrollToTop();
   });
 
   runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, fbLikeBtn, fbShareBtn);
+
+  MDCRipple.attachTo(infoStartTest);
 };
 
 const hide = () => {

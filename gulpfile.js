@@ -4,6 +4,7 @@ const plumber = require(`gulp-plumber`);
 const postcss = require(`gulp-postcss`);
 const autoprefixer = require(`autoprefixer`);
 const rollup = require(`gulp-better-rollup`);
+const rollupIncludePaths = require(`rollup-plugin-includepaths`);
 const nodemon = require(`gulp-nodemon`);
 const rename = require(`gulp-rename`);
 const run = require(`run-sequence`);
@@ -15,6 +16,7 @@ const componentFolder = `test`;
 
 gulp.task(`style`, function () {
   gulp.src(`front/sass/admin.scss`)
+      // .pipe(sass({includePaths: `./node_modules/`}))
       .pipe(plumber())
       .pipe(sass())
       .pipe(postcss([
@@ -34,6 +36,7 @@ gulp.task(`style`, function () {
 gulp.task(`style-component`, function () {
   gulp.src(`./front/components/${componentFolder}/sass/style.scss`)
       .pipe(plumber())
+      .pipe(sass({includePaths: `./node_modules/`}))
       .pipe(sass())
       .pipe(postcss([
         autoprefixer({browsers: [
@@ -59,7 +62,13 @@ gulp.task(`pug-component`, function () {
 gulp.task(`scripts-component`, function () {
   gulp.src(`front/components/${componentFolder}/js/index.js`)
       .pipe(plumber())
-      .pipe(rollup({}, `iife`))
+      .pipe(rollup({
+        plugins: [
+          rollupIncludePaths({
+            paths: [`node_modules`]
+          })
+        ]
+      }, `iife`))
       .pipe(gulp.dest(`front/components/${componentFolder}`))
       .pipe(rename(`test.js`))
       .pipe(gulp.dest(`static/js`));

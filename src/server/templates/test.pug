@@ -18,24 +18,24 @@ html(lang=`ru`)
         <section class="header__item timer">#{time}</section>
     main.main.test.js-test
       <p class="test__tag js-test__tag typography--body">Тест</p>
-      <h1 class="test__title js-test__title typography--d3">#{title}</h1>
-      .drawer__box
-        .test__lead-text
-          <p class="typography--h3">В одном вопросе может быть несколько правильных ответов. Если нужно дать только один ответ из нескольких, об этом прямо сказано в тесте: «выберите наилучший вариант», «выберите наихудший» или как то ещё. Ваша задача — отметить все правильные ответы.</p>
-          <p class="typography--h3">Правильные ответы повышают, а неправильные — уменьшают оценку. Вопрос отображается как неправильный (после проверки выделен красным), даже если вы указали хотя бы один лишний или не доуказали хотя бы один правильный ответ.</p>
-        ul.test__questions.js-test__questions
-          each question in questions
-            li(class="question js-question", id= question.id)
-              if question.code
-                pre.question__code
-                  code
-                    = question.code
-              h3.question__title.typography--h3
-                != question.wording
-              ul.question__options.js-question__options
-                each value, index in question.options
-                  li(class="question__option js-question__option typography--body", id= `${question.id}_${index}`)
-                    != value
+      <h1 class="test__title js-test__title">#{title}</h1>
+      .test__lead-text.js-test__lead-text
+        <p>В одном вопросе может быть несколько правильных ответов. Если нужно дать только один ответ из нескольких, об этом прямо сказано в тесте: «выберите наилучший вариант», «выберите наихудший» или как то ещё. Ваша задача — отметить все правильные ответы.</p>
+        <p>Правильные ответы повышают, а неправильные — уменьшают оценку. Вопрос отображается как неправильный (после проверки выделен красным), даже если вы указали хотя бы один лишний или не доуказали хотя бы один правильный ответ.</p>
+      h2.test__subtitle.test__subtitle--checking.accordion__title Проверенные ответы
+      ul.test__questions.js-test__questions.accordion__panel
+        each question in questions
+          li(class="question js-question", id= question.id)
+            if question.code
+              pre.question__code
+                code
+                  = question.code
+            h3.question__title.typography--h3
+              != question.wording
+            ul.question__options.js-question__options
+              each value, index in question.options
+                li(class="question__option js-question__option typography--body", id= `${question.id}_${index}`)
+                  != value
       <button type="button" class="mdc-button mdc-button--raised test__result-btn js-test__result-btn" disabled>Проверить</button>
       <button type="button" class="mdc-button mdc-button--raised test__retake-btn js-test__retake-btn"><i class="material-icons mdc-button__icon">&#xE5D5;</i>Повторить</button>
       section.test__social.js-test__social

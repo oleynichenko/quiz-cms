@@ -12,7 +12,7 @@ const ceilUp = (number, fraction = 0) => {
 
 const getPercent = (a, b) => {
   const percent = (a / b) * 100;
-  return roundUp(percent, 1);
+  return ceilUp(percent, 1);
 };
 
 const getDate = (date) => {

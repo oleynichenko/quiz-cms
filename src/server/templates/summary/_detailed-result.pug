@@ -1,0 +1,9 @@
+p.summary__detailed-result.js-summary__detailed-result
+  if rightAnswersQuantity === 0
+    | Вы не ответили правильно ни на один вопрос.
+  else if percentScored === 100
+    | Вы ответили правильно на все вопросы!
+  else
+    | Вы правильно ответили #[span.no-wrap на #{rightAnswersQuantity} #{temp.getNumEnding(rightAnswersQuantity, temp.QUESTION)}] #[span.no-wrap из #{questionsQuantity}] #[span.no-wrap и набрали] #[span.no-wrap #{pointsScored} #{temp.getNumEnding(pointsScored, temp.SCORE)}] #[span.no-wrap из #{possibleScore}]
+
+    //- | Вы правильно ответили на #{rightAnswersQuantity} #{temp.getNumEnding(rightAnswersQuantity, temp.QUESTION)} из #{questionsQuantity} и набрали #{pointsScored} #{temp.getNumEnding(pointsScored, temp.SCORE)} из #{possibleScore}, что составляет #{percentScored}%.

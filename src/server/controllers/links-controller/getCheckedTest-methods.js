@@ -68,10 +68,10 @@ const getSummaryTemplate = (pass, test, image, temp) => {
   const previousResult = pass.previousResult;
 
   if (previousResult) {
-    summaryOptions.previousPercentScored = previousResult.pointsScored;
+    summaryOptions.previousPercentScored = previousResult.percentScored;
   }
 
-  if (image !== void 0) {
+  if (image) {
     summaryOptions.awardImageRef = getImageRef(image);
   }
 

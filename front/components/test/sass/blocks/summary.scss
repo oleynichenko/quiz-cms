@@ -12,6 +12,19 @@ $device-type: mobile;
   }
 }
 
+.summary__block {
+  margin-right: auto;
+  margin-left: auto;
+
+  margin-top: 7%;
+  margin-bottom: 12%;
+}
+
+.summary__detailed-result {
+  text-align: left;
+  margin: 0;
+}
+
 .summary__link {
   display: block;
    @extend .typography--h3;
@@ -24,15 +37,9 @@ $device-type: mobile;
   right: (100% - $container-width)/2;
 }
 
-.summary__questions-title {
-  display: block;
-  margin-bottom: fsz($device-type, body);
-  text-decoration-line: underline;
-  text-decoration-style: dashed;
-
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+.summary__subtitle {
+  display: inline-block;
+  @extend .typography--h1;
 }
 
 @media #{$desktop-width} {

@@ -3,6 +3,8 @@ export const Class = Object.freeze({
   TEST: `js-test`,
   TEST_TAG: `js-test__tag`,
   TEST_TITLE: `js-test__title`,
+  TEST_LEAD_TEXT: `js-test__lead-text`,
+  TEST_IS_CHECKED: `test--is-checked`,
   TEST_QUESTIONS: `js-test__questions`,
   TEST_SOCIAL: `js-test__social`,
   SUMMARY_SHARE_FB: `js-summary__share-fb`,

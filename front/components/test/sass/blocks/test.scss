@@ -1,4 +1,7 @@
 $device-type: mobile;
+.test__title {
+  @extend .typography--d3;
+}
 
 .test__tag {
   display: block;
@@ -10,18 +13,31 @@ $device-type: mobile;
 }
 
 .test__lead-text {
- position: relative;
+  position: relative;
 
- margin-bottom: fsz($device-type, body)*3;
+  margin-bottom: fsz($device-type, body)*3;
 
- overflow: hidden;
+  overflow: hidden;
 
- & p {
+  & p {
+    @extend .typography--h3;
 
-	 &:last-child {
-	 	margin-bottom: 0;
-	 }
- }
+    &:last-child {
+    	margin-bottom: 0;
+    }
+  }
+}
+
+.test__lead-text--hidden {
+  display: none;
+}
+
+.test__subtitle {
+  @extend .typography--h1;
+}
+
+.test__subtitle--checking {
+  display: none;
 }
 
 .test__questions {
@@ -38,7 +54,7 @@ $device-type: mobile;
 }
 
 .test__result-btn--visible {
-  display: inline-block;
+  display: inline-flex;
 }
 
 .test__retake-btn {
@@ -48,7 +64,7 @@ $device-type: mobile;
 }
 
 .test__retake-btn--visible {
-  display: inline-block;
+  display: inline-flex;
 }
 
 .test__social {
@@ -57,6 +73,16 @@ $device-type: mobile;
 
 .test__social--visible {
   display: block;
+}
+
+.test--is-checked {
+  & .test__lead-text {
+    display: none;
+  }
+
+  & .test__subtitle--checking {
+    display: inline-block;
+  }
 }
 
 @media #{$desktop-width} {

@@ -38,7 +38,7 @@ const getConclusionPhrase = (previous, current, min, max) => {
     return `Отличный рост!`;
   }
 
-  return ``;
+  return null;
 };
 
 const QUESTION = [`вопрос`, `вопроса`, `вопросов`];

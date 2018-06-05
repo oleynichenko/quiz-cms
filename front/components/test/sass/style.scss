@@ -6,8 +6,8 @@
 @import "../../mixins/reset-btn.scss";
 @import "../../mixins/inserted-list.scss";
 
-@import "../../../../node_modules/@material/button/mdc-button.scss";
-@import "../../drawer/drawer.scss";
+@import "./@material/theme/_color-palette.scss";
+@import "./@material/button/mdc-button.scss";
 
 @import "global/variables.scss";
 @import "global/scaffolding.scss";
@@ -18,3 +18,5 @@
 @import "blocks/summary.scss";
 @import "blocks/test.scss";
 @import "blocks/question.scss";
+@import "blocks/comparing.scss";
+@import "blocks/accordion.scss";

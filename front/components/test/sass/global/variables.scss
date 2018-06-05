@@ -15,9 +15,9 @@ $base-font: (
 );
 
 $type-scale: (
-	d3: $scale*$scale*$scale*$scale*$scale*$scale,
-	d2: $scale*$scale*$scale*$scale*$scale,
-	d1: $scale*$scale*$scale*$scale,
+	d3: $scale*$scale*$scale*$scale*$scale*$scale*$scale*$scale*$scale,
+	d2: $scale*$scale*$scale*$scale*$scale*$scale*$scale,
+	d1: $scale*$scale*$scale*$scale*$scale,
 	h1: $scale*$scale*$scale,
 	h2: $scale*$scale,
 	h3: $scale,
@@ -37,5 +37,5 @@ $c-background: #fff;
 $c-main: #202020;
 $c-main-light: #606060;
 $c-grey: rgba($c-main, 0.2);
-$c-accent: #ff0000;
-$c-green: #009A0B;
+// $c-accent: #ff0000;
+// $c-green: #009A0B;

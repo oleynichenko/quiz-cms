@@ -1,5 +1,8 @@
 import {Class} from './const.js';
 import dom from './dom.js';
+import startFitty from './fitty.js';
+import Accordion from './accordion.js';
+import {MDCRipple} from '@material/ripple';
 import {
   toggleAbility,
   toggleVisibility,
@@ -62,9 +65,9 @@ export default class TestView {
     this._markWrongAnsweredQuestion(data.wrongQuestionsIds);
   }
 
-  showFinalActions(retakeMessage) {
-    if (retakeMessage) {
-      const html = `<em>${retakeMessage}</em>`;
+  _showRetakeBtn(message) {
+    if (message) {
+      const html = `<em>${message}</em>`;
 
       toggleAbility(this.dom.retakeBtn, false);
       this.dom.retakeBtn.insertAdjacentHTML(`afterEnd`, html);
@@ -75,7 +78,29 @@ export default class TestView {
     }
 
     this.dom.retakeBtn.classList.add(Class.RETAKE_BTN_VISIBLE);
+  }
+
+  _showSocial() {
+    // ставим обработчики на соц кнопки в блоке test
+    // обработчики повесятся асинхронно
+    runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, this.dom.testLikeFb, this.dom.testShareFb);
+
     this.dom.testSocial.classList.add(Class.TEST_SOCIAL_VISIBLE);
+  }
+
+  showFinalActions(retakeMessage) {
+    this._showRetakeBtn(retakeMessage);
+    this._showSocial();
+
+    const accordion = new Accordion(this.dom.test, `accordion__title`);
+    accordion.start();
+
+    //   // почему то не срабатывает при перезагрузке страницы
+    //   scrollToTop();
+    // });
+
+
+    // тут будет конец заглушки закгрузки результатов
   }
 
   // data = {"1": ["a", "b"], ...}
@@ -99,13 +124,22 @@ export default class TestView {
   }
 
   showSummary(html, awardShareData) {
-    scrollToTop();
     this.dom.testTag.innerHTML = `Результаты теста`;
     this.dom.testTitle.insertAdjacentHTML(`afterEnd`, html);
 
-    runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, this.dom.testLikeFb, this.dom.testShareFb);
+    this.dom.test.classList.add(Class.TEST_IS_CHECKED);
+
+    const summary = document.querySelector(`.js-summary`);
+    const comparingNumbers = summary.querySelector(`.js-comparing__numbers`);
+    const comparingPhrase = summary.querySelector(`.js-comparing__phrase`);
+    const detailedResult = summary.querySelector(`.summary__detailed-result`);
+
+    startFitty(comparingNumbers, {maxSize: 150});
+    startFitty(comparingPhrase, {maxSize: 70});
+    startFitty(detailedResult, {minSize: 23, multiLine: true});
+
     if (awardShareData) {
-      const fbShareBtn = document.querySelector(`.${Class.SUMMARY_SHARE_FB}`);
+      const fbShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_FB}`);
 
       fbShareBtn.addEventListener(`click`, () => {
         window.FB.ui(awardShareData);
@@ -136,5 +170,8 @@ export default class TestView {
 
       this.handleUserAnswers(userAnswers);
     });
+
+    MDCRipple.attachTo(this.dom.resultBtn);
+    MDCRipple.attachTo(this.dom.retakeBtn);
   }
 }

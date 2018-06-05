@@ -1,16 +1,11 @@
-section.summary
-  include summary/_conclusion.pug
+section.summary.js-summary
+  include summary/_short-result.pug
 
-  include summary/_pass-result.pug
+  //- include summary/_detailed-result.pug
 
   if (awardImageRef)
     include summary/_sharing.pug
 
-  include summary/_motivation.pug
+  include summary/_feedback.pug
 
-  if (percentScored < 100)
-    | !{recommendText}
-
-<label for="drawer__switcher" class="summary__questions-title typography--body">Проверенные ответы</label>
-<input id ="drawer__switcher" checked type="checkbox">
-
+  include summary/_recommendation.pug

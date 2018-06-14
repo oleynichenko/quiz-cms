@@ -4,12 +4,13 @@ html(lang=`ru`)
     title= title
     meta(name=`viewport` content=`width=device-width, initial-scale=1 user-scalable=no`)
     link(rel=`canonical` href=canonicalUrl)
-    link(rel=`stylesheet` href=`https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css`)
-    link(rel=`stylesheet` href=`https://fonts.googleapis.com/css?family=PT+Sans:400,700&amp;subset=cyrillic`)
+    link(rel=`stylesheet` href=`https://unpkg.com/normalize.css@8.0.0/normalize.css`)
+    link(rel=`stylesheet` href=`https://fonts.googleapis.com/css?family=Roboto+Condensed|Roboto:400,500&amp;subset=cyrillic`)
     link(rel=`stylesheet` href=`https://fonts.googleapis.com/icon?family=Material+Icons`)
     link(rel=`stylesheet` href=`/css/test.css`)
     include partials/_og.pug
   body.body__unvisible
+    include partials/_svg-sprite.pug
     include mixins/_fb-sdk.pug
     header.header.js-header
       if enabledInfo
@@ -17,11 +18,10 @@ html(lang=`ru`)
       if time
         <section class="header__item timer">#{time}</section>
     main.main.test.js-test
-      <p class="test__tag js-test__tag typography--body">Тест</p>
+      <p class="test__tag js-test__tag">Тест</p>
       <h1 class="test__title js-test__title">#{title}</h1>
       .test__lead-text.js-test__lead-text
-        <p>В одном вопросе может быть несколько правильных ответов. Если нужно дать только один ответ из нескольких, об этом прямо сказано в тесте: «выберите наилучший вариант», «выберите наихудший» или как то ещё. Ваша задача — отметить все правильные ответы.</p>
-        <p>Правильные ответы повышают, а неправильные — уменьшают оценку. Вопрос отображается как неправильный (после проверки выделен красным), даже если вы указали хотя бы один лишний или не доуказали хотя бы один правильный ответ.</p>
+        <p>В одном вопросе может быть несколько правильных ответов. Правильные ответы повышают, а неправильные — уменьшают оценку.  После проверки вопрос будет  выделен красным если вы указали хотя бы один лишний или не доуказали хотя бы один правильный ответ.         </p>
       h2.test__subtitle.test__subtitle--checking.accordion__title Проверенные ответы
       ul.test__questions.js-test__questions.accordion__panel
         each question in questions
@@ -30,14 +30,16 @@ html(lang=`ru`)
               pre.question__code
                 code
                   = question.code
-            h3.question__title.typography--h3
+            h3.question__title
               != question.wording
             ul.question__options.js-question__options
               each value, index in question.options
-                li(class="question__option js-question__option typography--body", id= `${question.id}_${index}`)
+                li(class="question__option js-question__option", id= `${question.id}_${index}`)
                   != value
-      <button type="button" class="mdc-button mdc-button--raised test__result-btn js-test__result-btn" disabled>Проверить</button>
-      <button type="button" class="mdc-button mdc-button--raised test__retake-btn js-test__retake-btn"><i class="material-icons mdc-button__icon">&#xE5D5;</i>Повторить</button>
+      <button type="button" class="test__result-btn js-test__result-btn" disabled>Проверить</button>
+      .test__retake-block.js-test__retake-block
+        <button type="button" class="test__retake-btn js-test__retake-btn"><i class="material-icons test__icon">&#xE5D5;</i>Повторить</button>
+        p.test__retake-message.js-test__retake-message *После нажатия текущие результаты проверки перестанут быть доступными
       section.test__social.js-test__social
         include mixins/_social-btns.pug
         +socialBtns(`test`)

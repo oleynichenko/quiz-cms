@@ -1,29 +1,27 @@
-$device-type: mobile;
 .test__title {
-  @extend .typography--d3;
+  @include mdc-typography(headline5);
+
+  margin-bottom: 0.5rem;
 }
 
 .test__tag {
+  @include mdc-typography(overline);
   display: block;
-  margin-bottom: 0;
 
-	line-height: 1;
-	text-transform: uppercase;
-	letter-spacing: 1px;
+  line-height: 1;
+  margin-bottom: 0.25rem;
 }
 
 .test__lead-text {
-  position: relative;
-
-  margin-bottom: fsz($device-type, body)*3;
-
-  overflow: hidden;
+  margin-bottom: 1.75rem;
 
   & p {
-    @extend .typography--h3;
+    @include mdc-typography(subtitle1);
+
+    margin-bottom: 1rem;
 
     &:last-child {
-    	margin-bottom: 0;
+      margin-bottom: 0;
     }
   }
 }
@@ -33,7 +31,9 @@ $device-type: mobile;
 }
 
 .test__subtitle {
-  @extend .typography--h1;
+  @include mdc-typography(headline6);
+  margin-top: 1.25rem;
+  margin-bottom: 0.75rem;
 }
 
 .test__subtitle--checking {
@@ -42,33 +42,64 @@ $device-type: mobile;
 
 .test__questions {
   @include reset-ul;
-  margin-bottom: fsz($device-type, h2)*3;
 }
 
 .test__questions--done {
   pointer-events: none;
 }
 
-.test__result-btn {
-  // margin-top: fsz($device-type, d3);
-}
-
 .test__result-btn--visible {
   display: inline-flex;
 }
 
+.test__result-btn {
+  @extend .mdc-button;
+  @extend .mdc-button--raised;
+
+  margin-top: 4.5rem;
+  margin-bottom: 3rem;
+
+  line-height: normal;
+}
+
 .test__retake-btn {
-  // margin-top: fsz($device-type, d3);
-  margin-bottom: fsz($device-type, d3)*2;
+  @extend .mdc-button;
+  @extend .mdc-button--raised;
+
+  margin-bottom: 0.5rem;
+
+  line-height: normal;
+}
+
+.test__icon {
+  @extend .mdc-button__icon;
+}
+
+.test__retake-message {
+  @extend .mdc-typography--caption;
+  width: 250px;
+}
+
+.test__retake-btn[disabled] .test__retake-message {
   display: none;
 }
 
-.test__retake-btn--visible {
-  display: inline-flex;
+.test__retake-block {
+  display: none;
+
+  margin-top: 4.5rem;
+  margin-bottom: 3rem;
+}
+
+.test__retake-block--visible {
+  display: block;
 }
 
 .test__social {
   display: none;
+
+  margin-left: -3px;
+  padding: 3px;
 }
 
 .test__social--visible {
@@ -85,22 +116,22 @@ $device-type: mobile;
   }
 }
 
-@media #{$desktop-width} {
-	$device-type: desktop;
+@media #{$tablet-width} {
 
-	.test__lead-text {
-	  margin-bottom: fsz($device-type, body)*3;
-	}
+  .test__title {
+    @include mdc-typography(headline4);
 
-	.test__questions {
-		margin-bottom: fsz($device-type, h2)*3;
-	}
-
-  .test__result-btn {
-    margin-top: fsz($device-type, d3);
+    margin-bottom: 0.75rem;
   }
 
-  .test__retake-btn {
-    margin-top: fsz($device-type, d3);
+	.test__lead-text {
+    & p {
+      @include mdc-typography(headline6);
+      font-weight: 400;
+    }
+	}
+
+  .test__subtitle {
+    @include mdc-typography(headline5);
   }
 }

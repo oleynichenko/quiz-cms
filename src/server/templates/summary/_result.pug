@@ -1,0 +1,13 @@
+- const awardClass = (percentScored >= profiLevel) ? "summary__result--award" : "";
+- const comparingSign = "&thinsp;<i class='summary__sign material-icons'>trending_flat</i>&thinsp;";
+- const conclusionPhrase = temp.getConclusionPhrase(previousPercentScored, percentScored, profiLevel, expertLevel)
+div(class=`summary__result ${awardClass}`)
+  if conclusionPhrase
+    p.summary__conclusion
+      | #{conclusionPhrase}
+  p.summary__percent.js-summary__percent
+    if previousPercentScored
+      | #{previousPercentScored}!{comparingSign}
+    | #{percentScored}%
+
+  include _result-phrase.pug

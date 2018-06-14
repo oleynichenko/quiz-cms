@@ -3,7 +3,7 @@ $device-type: mobile;
 .question {
   display: block;
   border-top: 1px solid transparent;
-	margin-bottom: fsz($device-type, body)*3;
+	margin-bottom: 2.5rem;
 
 	&:last-child {
 		margin-bottom: 0;
@@ -21,7 +21,7 @@ $device-type: mobile;
 }
 
 .question__title {
-	margin-bottom: 0;
+  @extend .mdc-typography--body1;
 }
 
 .question__code {
@@ -44,15 +44,12 @@ $device-type: mobile;
 }
 
 .question__option {
+  @extend .mdc-typography--body2;
 	position: relative;
 
-	padding-top: fsz($device-type, body);
-	padding-bottom: fsz($device-type, body)/3;
+	padding-top: 0.9rem;
+	padding-bottom: 0.4rem;
   margin-bottom: 0;
-
-	&:last-child {
-		margin-bottom: 0;
-	}
 
 	&:after {
 		@include pseudo();
@@ -80,24 +77,14 @@ $device-type: mobile;
 		@include pseudo(block, absolute, '✓');
     font-weight: bold;
 
-		left: -20px;
-		top: 16px;
+		left: -18px;
+		top: 15px;
 	}
 }
 
-@media #{$desktop-width} {
-	$device-type: desktop;
-
-	.question {
-		margin-bottom: fsz($device-type, body)*3;
-	}
+@media #{$tablet-width} {
 
   .question__code {
     font-size: 16px;
   }
-
-	.question__option {
-		padding-top: fsz($device-type, body);
-		padding-bottom: fsz($device-type, body)/3;
-	}
 }

@@ -22,6 +22,8 @@ const dom = {
   questionsAndOptions: getQuestionsAndOptions(),
   resultBtn: document.querySelector(`.${Class.RESULT_BTN}`),
   retakeBtn: document.querySelector(`.${Class.RETAKE_BTN}`),
+  retakeBlock: document.querySelector(`.${Class.RETAKE_BLOCK}`),
+  retakeMessage: document.querySelector(`.${Class.RETAKE_MESSAGE}`),
   testShareFb: document.querySelector(`.${Class.TEST_SHARE_FB}`),
   testLikeFb: document.querySelector(`.${Class.TEST_LIKE_FB}`),
 };

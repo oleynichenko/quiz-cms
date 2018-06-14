@@ -1,17 +1,17 @@
 <button type="button" class="header__item info__btn js-info__btn"><i class="material-icons">info_outline</i></button>
 .info.js-info
   article.info__block.js-info__block
-    <b>Тест</b>
-    h1= title
+    b.info__overline Тест
+    h1.info__title= title
     p= description
-    | !{introText}
+    p= authorInfo
     if stat
       include info/_stat.pug
     p= benefit
     if testTime
       include info/_test-time.pug
-    <p>После проверки неверные ответы будут выделены красным. Правильные ответы не раскрываются, но даются ссылки по которым обнаруженные пробелы в знаниях можно качественно восполнить.</p>
-    <p>Для уровней PROFI и EXPERT предусмотрена возможность поделиться своими результатами в соцсетях.</p>
-    <button class="mdc-button mdc-button--raised info__start-test js-info__start-test">Перейти к тесту</button>
+    p Разработчики уровней PROFI и EXPERT смогут поделиться своими результатами в соцсетях.
+    p После проверки неверные ответы будут выделены красным. Правильные ответы не раскрываются, но даются ссылки на материалы где их можно быстро найти. Страница с результатами привязывается к текущему браузеру и остается доступной в любое время по ссылке на тест.
+    <button class="info__start-test js-info__start-test">Перейти к тесту</button>
     include mixins/_social-btns.pug
     +socialBtns(`info`)

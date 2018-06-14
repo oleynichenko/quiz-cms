@@ -49,13 +49,15 @@ const getCheckedTest = async (req, res) => {
     if (awardImageName) {
       data.awardShareData = getAwardShareData(test, awardImageName, pass.result.percentScored);
     }
+    // должно быть в link "retakes": {attempts: 2, interval: time, message: "Возможно по решению преподавателя"}
+    if (link.attempts) {
+      const interval = 7 * 24 * 60 * 60 * 1000;
+      const retakeDate = pass.date + interval;
+      const isPassAllowed = checkPassAvailability(link.attempts, pass.usedAttempts, retakeDate);
 
-    const interval = 7 * 24 * 60 * 60 * 1000;
-    const retakeDate = pass.date + interval;
-    const isPassAllowed = checkPassAvailability(link.attempts, pass.usedAttempts, retakeDate);
-
-    if (!isPassAllowed) {
-      data.retakeMessage = getRetakeMessage(link.retakeMessage, retakeDate);
+      if (!isPassAllowed) {
+        data.retakeMessage = getRetakeMessage(link.retakeMessage, retakeDate);
+      }
     }
 
     res.send(data);
@@ -97,7 +99,7 @@ const getTest = async (req, res, next) => {
             description: test.description,
             benefit: test.benefit,
             canonicalUrl,
-            introText: test.introText,
+            authorInfo: test.introText,
             time: link.time,
             enabledInfo: link.enabledInfo,
             interval: link.interval,
@@ -105,18 +107,15 @@ const getTest = async (req, res, next) => {
             fbAppId: FB_APP_ID
           };
 
-          const passesStat = await passesStore.getPassesStat(test.testId);
+          const passesStat = await passesStore.getPassesStat(test.id, test.levels.profi, test.levels.expert);
 
-          if (passesStat.total > 0) {
+          if (passesStat.total > 5) {
+            passesStat.profiLevel = test.levels.profi;
+            passesStat.expertLevel = test.levels.expert;
 
-            const additionalStat = {
-              profiLevel: test.levels.profi,
-              expertLevel: test.levels.expert,
-              averagePercent: passesStat.averageScore / test.possibleScore
-            };
-
-            renderOptions.stat = Object.assign({}, passesStat, additionalStat);
+            renderOptions.stat = passesStat;
           }
+
           res.render(`test`, renderOptions);
         }
       } else {

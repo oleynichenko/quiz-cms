@@ -38,6 +38,16 @@ export const initFbBtns = (likeBtn, shareBtn) => {
       });
     });
 
+  }
+
+  if (shareBtn) {
+    shareBtn.addEventListener(`click`, () => {
+      window.FB.ui({
+        method: `share`,
+        href: window.location.href
+      });
+    });
+
     window.FB.api(
         `/`,
         {
@@ -50,22 +60,13 @@ export const initFbBtns = (likeBtn, shareBtn) => {
             const engagement = response.engagement;
 
             if (engagement && engagement.share_count > 0) {
-              const likesQuantity = likeBtn.querySelector(`.likes-quantity`);
+              const sharesQuantity = shareBtn.querySelector(`.likes-quantity`);
 
-              likesQuantity.innerHTML = engagement.share_count;
+              sharesQuantity.innerHTML = engagement.share_count;
             }
           }
         }
     );
-  }
-
-  if (likeBtn) {
-    shareBtn.addEventListener(`click`, () => {
-      window.FB.ui({
-        method: `share`,
-        href: window.location.href
-      });
-    });
   }
 };
 

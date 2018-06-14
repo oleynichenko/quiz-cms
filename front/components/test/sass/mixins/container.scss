@@ -1,17 +1,17 @@
 @mixin container {
-  width: $container-width;
+  box-sizing: border-box;
+  width: 100%;
   max-width: $container-max-width;
 
-  margin-right: auto;
   margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
-@mixin container-remove {
-  width: auto;
-  max-width: none;
-
-  margin-right: 0;
-  margin-left: 0;
+@mixin container--tablet {
+  padding-left: 24px;
+  padding-right: 24px;
 }
 
 

@@ -1,41 +1,25 @@
-// $tablet-width: "(min-width: 768px)";
-// $tablet-width-additional: "(min-width: 980px)";
-$desktop-width: "(min-width: 815px)";
-// $mobile-width-only: "(max-width: 767px)";
+$tablet-width: "(min-width: 480px)";
+$desktop-width: "(min-width: 840px)";
 // $retina: "(min-resolution: 144dpi), (min-resolution: 1.5dppx)";
 
-$container-width: 92%;
-$container-max-width: 750px;
-$scale: 1.125;
-
-$base-font: (
-	mobile: 15px,
-	tablet: 15px,
-	desktop: 16px
-);
-
-$type-scale: (
-	d3: $scale*$scale*$scale*$scale*$scale*$scale*$scale*$scale*$scale,
-	d2: $scale*$scale*$scale*$scale*$scale*$scale*$scale,
-	d1: $scale*$scale*$scale*$scale*$scale,
-	h1: $scale*$scale*$scale,
-	h2: $scale*$scale,
-	h3: $scale,
-	body: 1,
-	small: 1/$scale,
-);
-
-@function fsz($device-type, $scale) {
-	@return map-get($base-font, $device-type)*map-get($type-scale, $scale);
-}
-
-@function blocks-margin($device-type) {
-	@return 4*map-get($base-font, $device-type)
-}
+$container-max-width: 698px;
 
 $c-background: #fff;
 $c-main: #202020;
 $c-main-light: #606060;
 $c-grey: rgba($c-main, 0.2);
-// $c-accent: #ff0000;
-// $c-green: #009A0B;
+
+$material-color-primary-50: #ffffff;
+$material-color-primary-100: #ffffff;
+$material-color-primary-200: #e2eaea;
+$material-color-primary-300: #b9cdcd;
+$material-color-primary-400: #a7c0c0;
+$material-color-primary-500: #95b3b3;
+$material-color-primary-600: #83a6a6;
+$material-color-primary-700: #719999;
+$material-color-primary-800: #638a8a;
+$material-color-primary-900: #567878;
+
+$material-color-secondary-500: #d4a45b;
+
+$material-color-error: #B00020;

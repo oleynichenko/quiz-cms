@@ -1,3 +1,5 @@
+@import "global/variables.scss";
+
 @import "mixins/font.scss";
 @import "mixins/container.scss";
 @import "../../mixins/reset-ul.scss";
@@ -5,11 +7,14 @@
 @import "../../mixins/vh.scss";
 @import "../../mixins/reset-btn.scss";
 @import "../../mixins/inserted-list.scss";
+@import "./@material/elevation/_mixins.scss";
+@import "./@material/typography/_mixins.scss";
 
 @import "./@material/theme/_color-palette.scss";
-@import "./@material/button/mdc-button.scss";
 
-@import "global/variables.scss";
+@import "./@material/button/mdc-button.scss";
+@import "./@material/typography/mdc-typography.scss";
+
 @import "global/scaffolding.scss";
 
 @import "blocks/header.scss";
@@ -18,5 +23,7 @@
 @import "blocks/summary.scss";
 @import "blocks/test.scss";
 @import "blocks/question.scss";
-@import "blocks/comparing.scss";
 @import "blocks/accordion.scss";
+@import "blocks/fb-btns.scss";
+// размещаем здесь иначе не работает с reset-btn в fb-btn
+

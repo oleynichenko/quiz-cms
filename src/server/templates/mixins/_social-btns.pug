@@ -1,5 +1,8 @@
 mixin socialBtns(elem)
-  - const FB_SHARE_CLASSES = `${elem}__share-fb js-${elem}__share-fb`;
-  - const FB_LIKE_CLASSES = `${elem}__like-fb js-${elem}__like-fb`;
-  button(class=FB_LIKE_CLASSES type=`button`) Hравиться <span class="likes-quantity"></span>
-    button(class=FB_SHARE_CLASSES type=`button`) Поделиться
+  - const FB_SHARE_CLASSES = `fb-btn fb-btn--share js-${elem}__share-fb`;
+  - const FB_LIKE_CLASSES = `fb-btn fb-btn--like js-${elem}__like-fb`;
+  button(class=FB_LIKE_CLASSES type=`button`)
+    <svg class="fb-btn__like-icon">
+      <use xlink:href="#fb-like"></use>
+    </svg> Like
+  button(class=FB_SHARE_CLASSES type=`button`) Share <span class="fb-btn__shares-quantity">35</span>

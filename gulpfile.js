@@ -36,7 +36,7 @@ gulp.task(`style`, function () {
 gulp.task(`style-component`, function () {
   gulp.src(`./front/components/${componentFolder}/sass/style.scss`)
       .pipe(plumber())
-      .pipe(sass({includePaths: `./node_modules/`}))
+      .pipe(sass({includePaths: `./front/`}))
       .pipe(sass())
       .pipe(postcss([
         autoprefixer({browsers: [
@@ -65,7 +65,8 @@ gulp.task(`scripts-component`, function () {
       .pipe(rollup({
         plugins: [
           rollupIncludePaths({
-            paths: [`node_modules`]
+            // paths: [`node_modules`]
+            paths: [`front`]
           })
         ]
       }, `iife`))

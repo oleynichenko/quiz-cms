@@ -1,7 +1,16 @@
 .accordion__title {
   cursor: pointer;
-  border-bottom: 1px dashed $c-main-light;
+  position: relative;
   transition: color 0.2s;
+
+  &:after {
+    @include pseudo;
+    width: 100%;
+    right: 0;
+    bottom: 2px;
+
+    border-bottom: 1px dashed $c-main-light;
+  }
 
   &:hover {
    color: $c-main-light;
@@ -9,8 +18,11 @@
 }
 
 .accordion__title--active {
-  border-bottom: none;
   cursor: text;
+
+  &:after {
+    border-bottom: none;
+  }
 
   &:hover {
    color: $c-main;

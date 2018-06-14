@@ -44,6 +44,8 @@ const getConclusionPhrase = (previous, current, min, max) => {
 const QUESTION = [`вопрос`, `вопроса`, `вопросов`];
 const SCORE = [`балл`, `балла`, `баллов`];
 const PEOPLE = [`человек`, `человека`, `человек`];
+const ONCE = [`раз`, `раза`, `раз`];
+const SHOW = [`показал`, `показали`, `показал`];
 
 const init = (app) => {
   app.locals.temp = {
@@ -51,7 +53,9 @@ const init = (app) => {
     getConclusionPhrase,
     QUESTION,
     SCORE,
-    PEOPLE
+    PEOPLE,
+    ONCE,
+    SHOW
   };
 };
 

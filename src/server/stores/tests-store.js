@@ -27,9 +27,9 @@ class TestsStore {
       {$match: {"links.permalink": permalink}},
     ];
 
-    const result = (await this.collection).aggregate(aggregation).toArray();
+    const result = (await (await this.collection).aggregate(aggregation).toArray())[0];
 
-    return (await result)[0];
+    return result;
   }
 
   async getTests(ids) {

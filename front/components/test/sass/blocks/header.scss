@@ -1,22 +1,21 @@
 .header {
   @include container;
-  margin-bottom: fsz($device-type, d1);
-  margin-top: 20px;
+  max-width: none;
+
+  margin-top: 1rem;
+  margin-bottom: 2rem;
 }
 
-.header__item {
+.header__info-btn {
   display: inline-block;
   vertical-align: middle;
-  margin-right: 10px;
 }
 
-@media #{$desktop-width} {
-  $device-type: desktop;
-
+@media #{$tablet-width} {
   .header {
-    @include container-remove;
-    padding-left: 20px;
-    padding-right: 20px;
-    margin-bottom: fsz($device-type, d1)*2;
+    @include container--tablet;
+
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
   }
 }

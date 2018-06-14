@@ -13,10 +13,12 @@ const Class = Object.freeze({
   SUMMARY_SHARE_FB: `js-summary__share-fb`,
   TEST_SOCIAL_VISIBLE: `test__social--visible`,
   TEST_QUESTIONS_DONE: `test__questions--done`,
-  RETAKE_BTN: `js-test__retake-btn`,
   RESULT_BTN: `js-test__result-btn`,
-  RETAKE_BTN_VISIBLE: `test__retake-btn--visible`,
   RESULT_BTN_VISIBLE: `test__result-btn--visible`,
+  RETAKE_BLOCK: `js-test__retake-block`,
+  RETAKE_BLOCK_VISIBLE: `test__retake-block--visible`,
+  RETAKE_BTN: `js-test__retake-btn`,
+  RETAKE_MESSAGE: `js-test__retake-message`,
   QUESTION: `js-question`,
   QUESTION_OPTIONS: `js-question__options`,
   QUESTION_OPTION: `js-question__option`,
@@ -48,6 +50,8 @@ const dom = {
   questionsAndOptions: getQuestionsAndOptions(),
   resultBtn: document.querySelector(`.${Class.RESULT_BTN}`),
   retakeBtn: document.querySelector(`.${Class.RETAKE_BTN}`),
+  retakeBlock: document.querySelector(`.${Class.RETAKE_BLOCK}`),
+  retakeMessage: document.querySelector(`.${Class.RETAKE_MESSAGE}`),
   testShareFb: document.querySelector(`.${Class.TEST_SHARE_FB}`),
   testLikeFb: document.querySelector(`.${Class.TEST_LIKE_FB}`),
 };
@@ -1595,6 +1599,16 @@ const initFbBtns = (likeBtn, shareBtn) => {
       });
     });
 
+  }
+
+  if (shareBtn) {
+    shareBtn.addEventListener(`click`, () => {
+      window.FB.ui({
+        method: `share`,
+        href: window.location.href
+      });
+    });
+
     window.FB.api(
         `/`,
         {
@@ -1607,22 +1621,13 @@ const initFbBtns = (likeBtn, shareBtn) => {
             const engagement = response.engagement;
 
             if (engagement && engagement.share_count > 0) {
-              const likesQuantity = likeBtn.querySelector(`.likes-quantity`);
+              const sharesQuantity = shareBtn.querySelector(`.likes-quantity`);
 
-              likesQuantity.innerHTML = engagement.share_count;
+              sharesQuantity.innerHTML = engagement.share_count;
             }
           }
         }
     );
-  }
-
-  if (likeBtn) {
-    shareBtn.addEventListener(`click`, () => {
-      window.FB.ui({
-        method: `share`,
-        href: window.location.href
-      });
-    });
   }
 };
 
@@ -1698,19 +1703,18 @@ class TestView {
     this._markWrongAnsweredQuestion(data.wrongQuestionsIds);
   }
 
-  _showRetakeBtn(message) {
+  _showRetakeBlock(message) {
     if (message) {
-      const html = `<em>${message}</em>`;
 
+      this.dom.retakeMessage.innerHTML = message;
       toggleAbility(this.dom.retakeBtn, false);
-      this.dom.retakeBtn.insertAdjacentHTML(`afterEnd`, html);
     } else {
       this.dom.retakeBtn.addEventListener(`click`, () => {
         location.href = `?attempt=new`;
       });
     }
 
-    this.dom.retakeBtn.classList.add(Class.RETAKE_BTN_VISIBLE);
+    this.dom.retakeBlock.classList.add(Class.RETAKE_BLOCK_VISIBLE);
   }
 
   _showSocial() {
@@ -1722,7 +1726,7 @@ class TestView {
   }
 
   showFinalActions(retakeMessage) {
-    this._showRetakeBtn(retakeMessage);
+    this._showRetakeBlock(retakeMessage);
     this._showSocial();
 
     const accordion = new Accordion(this.dom.test, `accordion__title`);
@@ -1763,13 +1767,9 @@ class TestView {
     this.dom.test.classList.add(Class.TEST_IS_CHECKED);
 
     const summary = document.querySelector(`.js-summary`);
-    const comparingNumbers = summary.querySelector(`.js-comparing__numbers`);
-    const comparingPhrase = summary.querySelector(`.js-comparing__phrase`);
-    const detailedResult = summary.querySelector(`.summary__detailed-result`);
+    const summaryPercent = summary.querySelector(`.js-summary__percent`);
 
-    startFitty(comparingNumbers, {maxSize: 150});
-    startFitty(comparingPhrase, {maxSize: 70});
-    startFitty(detailedResult, {minSize: 23, multiLine: true});
+    startFitty(summaryPercent, {maxSize: 108});
 
     if (awardShareData) {
       const fbShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_FB}`);

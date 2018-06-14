@@ -1,61 +1,104 @@
 $device-type: mobile;
 .summary {
+  margin-top: 1.5rem; //40px
+}
+
+.summary__result {
+  @include mdc-typography(headline6);
+  display: block;
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 2rem;
+
+  font-family: 'Roboto Condensed', sans-serif;
+  text-align: center;
+  color: $material-color-primary-800;
+}
+
+.summary__result--award {
+  color: $material-color-secondary-500;
+}
+
+.summary__conclusion {
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 1rem
+}
+
+.summary__percent {
+  line-height: 1;
+}
+
+.summary__sign {
+  display: inline-block;
+  font-size: inherit;
+  line-height: 1;
+  padding: 0 0;
+  vertical-align: bottom;
+}
+
+.summary__share {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.summary__feedback {
+  & p {
+    @extend .mdc-typography--body1;
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.summary__subtitle {
+  @include mdc-typography(headline6);
+
+  display: inline-block;
+
+  margin-bottom: 0.75rem;
+}
+
+.summary__recommendation {
+  margin-top: 1.75rem;
 
   & p {
-    @extend .typography--h3;
+    @extend .mdc-typography--body1;
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0.5rem;
+    }
   }
 
   & ul {
     @include reset-ul;
-    @extend .typography--h3;
-    @include inserted-list(fsz($device-type, h3), 24px);
+    @extend .mdc-typography--body1;
+    @include inserted-list(1rem, 1.5rem);
   }
 }
 
-.summary__block {
-  margin-right: auto;
-  margin-left: auto;
+// .summary__btn {
+//   position: fixed;
+//   bottom: fsz($device-type, d3);
+//   right: (100% - $container-width)/2;
+// }
 
-  margin-top: 7%;
-  margin-bottom: 12%;
-}
-
-.summary__detailed-result {
-  text-align: left;
-  margin: 0;
-}
-
-.summary__link {
-  display: block;
-   @extend .typography--h3;
-   margin-bottom: fsz($device-type, d3);
-}
-
-.summary__btn {
-  position: fixed;
-  bottom: fsz($device-type, d3);
-  right: (100% - $container-width)/2;
-}
-
-.summary__subtitle {
-  display: inline-block;
-  @extend .typography--h1;
-}
-
-@media #{$desktop-width} {
-  $device-type: desktop;
+@media #{$tablet-width} {
 
   .summary {
-    & ul {
-      @include inserted-list(fsz($device-type, h3), 24px);
-    }
+    margin-top: 1.75rem; //40px
   }
 
-  .summary__question-title {
-    margin-bottom: fsz($device-type, body);
+  .summary__result {
+    @include mdc-typography(headline5);
+    font-family: 'Roboto Condensed', sans-serif;
   }
 
-  .summary__btn {
-    right: calc((100% - #{$container-max-width})/2);
+  .summary__subtitle {
+    @include mdc-typography(headline5);
   }
 }

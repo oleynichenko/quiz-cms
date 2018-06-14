@@ -48,12 +48,14 @@ class PassesStore {
       pass.previousResult = previousPass.result;
       pass.usedAttempts = previousPass.usedAttempts + 1;
 
-      await (await this.collection).deleteOne(
-          {"permalink": permalink, "sessionId": sessionId}
+      await (await this.collection).replaceOne(
+          {"_id": previousPass._id},
+          pass
       );
+    } else {
+      await (await this.collection).insertOne(pass);
     }
 
-    return (await this.collection).insertOne(pass);
   }
 
   async getLinksPassesStat(id, profiScore, expertScore) {
@@ -92,77 +94,63 @@ class PassesStore {
     return (await this.collection).aggregate(aggregation).toArray();
   }
 
-  async getPassesStat(id, number1, number2) {
-    const stub = {
-      total: 11,
-      average: 46,
-      profies: 2,
-      experts: 1,
-      best: 97.3,
-      bestQuantity: 1
-    };
-
-    const query = {
-      testId: id
-    };
-
-    const projection = {
-      result: 1,
-      _id: 0
-    };
-
-    const cursor = (await this.collection).find(query);
-    cursor.project(projection);
-
-    const passesStat = {
-      total: 0,
-      profies: 0,
-      experts: 0,
-      best: 0,
-      bestQuantity: 0
-    };
-
-    let pointsScoredTotal = 0;
-
-    await cursor.forEach(
-        (doc) => {
-          const pointsScored = doc.pointsScored;
-          passesStat.total++;
-          pointsScoredTotal = pointsScoredTotal + pointsScored;
-
-          if (pointsScored > passesStat.best) {
-            passesStat.best = pointsScored;
-            passesStat.bestQuantity = 1;
-          }
-
-          if (pointsScored === passesStat.best) {
-            passesStat.bestQuantity++;
-          }
-
-          if (pointsScored > number1) {
-            passesStat.profies++;
-
-            if (pointsScored > number2) {
-              passesStat.experts++;
+  async getPassesStat(id, num1, num2) {
+    const pipeline = [
+      {
+        $match: {
+          "testId": id,
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          total: {$sum: 1},
+          averagePercentScore: {$avg: "$result.percentScored"},
+          profies: {
+            $sum: {
+              $cond: [
+                {
+                  $and: [
+                    {$gte: ["$result.percentScored", num1]},
+                    {$lt: ["$result.percentScored", num2]}]
+                }, 1, 0]
+            }
+          },
+          experts: {
+            $sum: {
+              $cond: [{$gte: ["$result.percentScored", num2]}, 1, 0]
+            }
+          },
+          best: {$max: "$result.percentScored"},
+          bestQuantity: {
+            $sum: {
+              $cond: [{$eq: ["$result.percentScored", 100]}, 1, 0]
             }
           }
-
-
         },
-        (err) => {
-          if (err) {
-            throw new Error(`ошибка выборки статистики по тесту`);
-          }
-
-          const total = passesStat.total;
-
-          if (total > 0) {
-            passesStat.averageScore = pointsScoredTotal / total;
+      },
+      {
+        $addFields: {
+          average: {
+            $divide: [
+              {$ceil: {
+                $multiply: [{$avg: "$averagePercentScore"}, 10]
+              }},
+              10
+            ]
           }
         }
-    );
+      },
+      {
+        $project: {
+          _id: 0
+        }
+      },
+    ];
 
-    return (passesStat.total > 10) ? passesStat : stub;
+    const passesStat = (await (await this.collection).aggregate(pipeline).toArray())[0];
+
+    return passesStat;
   }
 }
 

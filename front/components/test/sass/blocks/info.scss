@@ -13,7 +13,11 @@
   }
 
   & .info__block {
+    @include container;
     height: auto;
+
+    padding-top: 3rem;
+    padding-bottom: 2rem;
   }
 }
 
@@ -34,72 +38,78 @@
 }
 
 .info__block {
-  @include container;
-  width: 90%;
+
   height: 0;
+
   overflow: hidden;
-  padding-top: 8%;
-  padding-bottom: 8%;
-
-  & b {
-    @extend .typography--body;
-
-    line-height: 1;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  & h1 {
-    @extend .typography--d3;
-  }
 
   & p {
-    @extend .typography--h3;
+    @extend .mdc-typography--body1;
+
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   & ul {
-    @extend .typography--h3;
+    @extend .mdc-typography--body1;
     @include reset-ul;
-    @include inserted-list(fsz($device-type, h3), 24px);
+    @include inserted-list(1rem, 1.5rem);
+
+    margin-bottom: 1rem;
   }
 }
-
 
 .info__btn {
   @include reset-btn;
 
   & i {
     display: block;
-    font-size: 24px;
+    font-size: 37px;
     margin-left: -2px;
   }
 }
 
-.info__start-test {
+.info__overline {
+  @include mdc-typography(overline);
   display: block;
 
-  margin-top: fsz($device-type, d3);
-  margin-bottom: fsz($device-type, d3)*2;
+  line-height: 1;
 }
 
-@media #{$desktop-width} {
-  $device-type: desktop;
+.info__title {
+  @include mdc-typography(headline5);
 
-  .info__block {
-    padding-top: fsz($device-type, d2)*4;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
 
-    & ul {
-      @include inserted-list(fsz($device-type, h3), 24px);
+.info__start-test {
+  @extend .mdc-button;
+  @extend .mdc-button--raised;
+
+  display: block;
+
+  margin-top: 4rem;
+  margin-bottom: 3rem;
+  line-height: normal;
+}
+
+@media #{$tablet-width} {
+  .info__container--on {
+
+    & .info__block {
+      @include container--tablet;
+
+      padding-top: 5rem;
+      padding-bottom: 7.5rem;
     }
   }
 
-  .info__btn {
-    & i {
-      font-size: 32px;
-    }
-  }
-  .info__start-test {
-    margin-top: fsz($device-type, d2);;
-    margin-bottom: fsz($device-type, d3)*2;
+  .info__title {
+    @include mdc-typography(headline4);
+    margin-bottom: 1.5rem;
   }
 }

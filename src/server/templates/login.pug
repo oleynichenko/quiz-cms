@@ -1,30 +1,32 @@
 doctype html
 html(lang=`ru`)
   include partials/_head-admin.pug
-  body.mdc-typography.mdc-theme--text-primary-on-background
-    section.login
-      p.login__message= error
-      <form class="login__form" action="/login" method="POST" novalidate>
-        <div class="mdc-text-field mdc-text-field--outlined login__form-field" data-mdc-auto-init="MDCTextField">
-          <input type="text" id="login" class="mdc-text-field__input" name="login">
-          <label for="login" class="mdc-floating-label">Your Login</label>
-          <div class="mdc-text-field__outline">
-            <svg>
-              <path class="mdc-text-field__outline-path"/>
-            </svg>
+  body.mdc-typography.mdc-theme--text-primary-on-background.footer-to-bottom__wrapper
+    main.footer-to-bottom__content.login__wrapper
+      section.login.login--center
+        p.login__message= error
+        <form class="login__form" action="/login" method="POST" novalidate>
+          <div class="mdc-text-field mdc-text-field--outlined login__form-field" data-mdc-auto-init="MDCTextField">
+            <input type="text" id="login" class="mdc-text-field__input" name="login">
+            <label for="login" class="mdc-floating-label">Your Login</label>
+            <div class="mdc-text-field__outline">
+              <svg>
+                <path class="mdc-text-field__outline-path"/>
+              </svg>
+            </div>
+            <div class="mdc-text-field__idle-outline"></div>
           </div>
-          <div class="mdc-text-field__idle-outline"></div>
-        </div>
-        <div class="mdc-text-field mdc-text-field--outlined login__form-field" data-mdc-auto-init="MDCTextField">
-          <input type="password" id="password" class="mdc-text-field__input" name="password">
-          <label for="password" class="mdc-floating-label">Your Password</label>
-          <div class="mdc-text-field__outline">
-            <svg>
-              <path class="mdc-text-field__outline-path"/>
-            </svg>
+          <div class="mdc-text-field mdc-text-field--outlined login__form-field" data-mdc-auto-init="MDCTextField">
+            <input type="password" id="password" class="mdc-text-field__input" name="password">
+            <label for="password" class="mdc-floating-label">Your Password</label>
+            <div class="mdc-text-field__outline">
+              <svg>
+                <path class="mdc-text-field__outline-path"/>
+              </svg>
+            </div>
+            <div class="mdc-text-field__idle-outline"></div>
           </div>
-          <div class="mdc-text-field__idle-outline"></div>
-        </div>
-        <button class="mdc-button mdc-button--raised login__button">Войти</button>
-      </form>
+          <button class="mdc-button mdc-button--raised login__button">Войти</button>
+        </form>
+    include partials/_footer-admin.pug
     include partials/_scripts-admin.pug

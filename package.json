@@ -42,6 +42,7 @@
     "dotenv": "5.0.1",
     "express": "4.16.2",
     "express-session": "1.15.6",
+    "express-useragent": "1.0.12",
     "fitty": "2.2.5",
     "mongodb": "3.0.4",
     "pug": "2.0.1",

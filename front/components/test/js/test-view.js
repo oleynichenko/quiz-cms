@@ -65,19 +65,18 @@ export default class TestView {
     this._markWrongAnsweredQuestion(data.wrongQuestionsIds);
   }
 
-  _showRetakeBtn(message) {
+  _showRetakeBlock(message) {
     if (message) {
-      const html = `<em>${message}</em>`;
 
+      this.dom.retakeMessage.innerHTML = message;
       toggleAbility(this.dom.retakeBtn, false);
-      this.dom.retakeBtn.insertAdjacentHTML(`afterEnd`, html);
     } else {
       this.dom.retakeBtn.addEventListener(`click`, () => {
         location.href = `?attempt=new`;
       });
     }
 
-    this.dom.retakeBtn.classList.add(Class.RETAKE_BTN_VISIBLE);
+    this.dom.retakeBlock.classList.add(Class.RETAKE_BLOCK_VISIBLE);
   }
 
   _showSocial() {
@@ -89,7 +88,7 @@ export default class TestView {
   }
 
   showFinalActions(retakeMessage) {
-    this._showRetakeBtn(retakeMessage);
+    this._showRetakeBlock(retakeMessage);
     this._showSocial();
 
     const accordion = new Accordion(this.dom.test, `accordion__title`);
@@ -130,13 +129,9 @@ export default class TestView {
     this.dom.test.classList.add(Class.TEST_IS_CHECKED);
 
     const summary = document.querySelector(`.js-summary`);
-    const comparingNumbers = summary.querySelector(`.js-comparing__numbers`);
-    const comparingPhrase = summary.querySelector(`.js-comparing__phrase`);
-    const detailedResult = summary.querySelector(`.summary__detailed-result`);
+    const summaryPercent = summary.querySelector(`.js-summary__percent`);
 
-    startFitty(comparingNumbers, {maxSize: 150});
-    startFitty(comparingPhrase, {maxSize: 70});
-    startFitty(detailedResult, {minSize: 23, multiLine: true});
+    startFitty(summaryPercent, {maxSize: 108});
 
     if (awardShareData) {
       const fbShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_FB}`);

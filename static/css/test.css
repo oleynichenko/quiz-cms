@@ -495,6 +495,9 @@ body {
   transition: opacity 0.5s ease-in;
   overflow-y: scroll; }
 
+code {
+  font-size: 0.94rem; }
+
 .body__unvisible {
   opacity: 0; }
 
@@ -828,9 +831,33 @@ address {
   padding: 0 0;
   vertical-align: bottom; }
 
-.summary__share {
+.summary__award {
+  position: relative;
   margin-top: 2.5rem;
   margin-bottom: 2.5rem; }
+
+.summary__social-icons {
+  position: absolute;
+  bottom: 7px;
+  right: 7px; }
+
+.summary__share-fb {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all ease-in-out 150ms; }
+
+.summary__share-fb path {
+  fill: #C4CBD9;
+  transition: fill 150ms; }
+
+.summary__share-fb:hover {
+  box-shadow: 3px 12px 10px rgba(0, 0, 0, 0.3); }
+
+.summary__share-fb:hover path {
+  fill: #4267B2; }
 
 .summary__feedback p {
   margin-bottom: 1rem; }
@@ -897,7 +924,17 @@ address {
     font-weight: 400;
     letter-spacing: normal;
     text-decoration: inherit;
-    text-transform: inherit; } }
+    text-transform: inherit; }
+  .summary__social-icons {
+    bottom: 10px;
+    right: 10px; }
+  .summary__share-fb {
+    width: 40px;
+    height: 40px;
+    box-shadow: 3px 6px 10px rgba(0, 0, 0, 0.1); }
+  .summary__share-fb:hover {
+    -webkit-transform: translate(0, -4px);
+            transform: translate(0, -4px); } }
 
 .test__title {
   font-family: Roboto, sans-serif;
@@ -926,7 +963,7 @@ address {
   margin-bottom: 0.25rem; }
 
 .test__lead-text {
-  margin-bottom: 1.75rem; }
+  margin-bottom: 2.25rem; }
 
 .test__lead-text p {
   font-family: Roboto, sans-serif;
@@ -938,6 +975,7 @@ address {
   letter-spacing: 0.00937em;
   text-decoration: inherit;
   text-transform: inherit;
+  font-size: 1.1rem;
   margin-bottom: 1rem; }
 
 .test__lead-text p:last-child {
@@ -1068,7 +1106,8 @@ address {
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
-          user-select: none; }
+          user-select: none;
+  pointer-events: auto; }
 
 .question__options {
   list-style: none;

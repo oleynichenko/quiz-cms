@@ -13,10 +13,11 @@
 }
 
 .test__lead-text {
-  margin-bottom: 1.75rem;
+  margin-bottom: 2.5rem;
 
   & p {
     @include mdc-typography(subtitle1);
+    font-size: 1.1rem;
 
     margin-bottom: 1rem;
 

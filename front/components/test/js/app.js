@@ -6,7 +6,6 @@ import {showPage} from './help-function';
 
 class App {
   constructor() {
-
   }
 
   getTestResult(userAnswers) {

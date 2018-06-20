@@ -109,7 +109,7 @@ const getTest = async (req, res, next) => {
 
           const passesStat = await passesStore.getPassesStat(test.id, test.levels.profi, test.levels.expert);
 
-          if (passesStat.total > 5) {
+          if (passesStat && passesStat.total > 5) {
             passesStat.profiLevel = test.levels.profi;
             passesStat.expertLevel = test.levels.expert;
 

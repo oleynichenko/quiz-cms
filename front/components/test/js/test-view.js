@@ -138,6 +138,7 @@ export default class TestView {
 
       fbShareBtn.addEventListener(`click`, () => {
         window.FB.ui(awardShareData);
+        console.log(awardShareData);
       });
     }
   }

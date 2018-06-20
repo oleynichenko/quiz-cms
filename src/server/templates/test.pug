@@ -1,7 +1,8 @@
 doctype html
 html(lang=`ru`)
   head
-    title= title
+    title Тест #{title}
+    meta(name=`description` content=description)
     meta(name=`viewport` content=`width=device-width, initial-scale=1 user-scalable=no`)
     link(rel=`canonical` href=canonicalUrl)
     link(rel=`stylesheet` href=`https://unpkg.com/normalize.css@8.0.0/normalize.css`)
@@ -10,8 +11,8 @@ html(lang=`ru`)
     link(rel=`stylesheet` href=`/css/test.css`)
     include partials/_og.pug
   body.body__unvisible
-    include partials/_svg-sprite.pug
     include mixins/_fb-sdk.pug
+    include partials/_svg-sprite.pug
     header.header.js-header
       if enabledInfo
         include _info.pug
@@ -21,7 +22,7 @@ html(lang=`ru`)
       <p class="test__tag js-test__tag">Тест</p>
       <h1 class="test__title js-test__title">#{title}</h1>
       .test__lead-text.js-test__lead-text
-        <p>В одном вопросе может быть несколько правильных ответов. Правильные ответы повышают, а неправильные — уменьшают оценку.  После проверки вопрос будет  выделен красным если вы указали хотя бы один лишний или не доуказали хотя бы один правильный ответ.         </p>
+        <p>В одном вопросе может быть несколько правильных ответов. Правильные ответы повышают, а неправильные — уменьшают оценку.  После проверки вопрос будет  выделен красным если вы указали хотя бы один лишний или не доуказали хотя бы один правильный ответ.</p>
       h2.test__subtitle.test__subtitle--checking.accordion__title Проверенные ответы
       ul.test__questions.js-test__questions.accordion__panel
         each question in questions
@@ -39,7 +40,8 @@ html(lang=`ru`)
       <button type="button" class="test__result-btn js-test__result-btn" disabled>Проверить</button>
       .test__retake-block.js-test__retake-block
         <button type="button" class="test__retake-btn js-test__retake-btn"><i class="material-icons test__icon">&#xE5D5;</i>Повторить</button>
-        p.test__retake-message.js-test__retake-message *После нажатия текущие результаты проверки перестанут быть доступными
+        p.test__retake-message.js-test__retake-message
+        //- *После нажатия текущие результаты проверки перестанут быть доступными
       section.test__social.js-test__social
         include mixins/_social-btns.pug
         +socialBtns(`test`)

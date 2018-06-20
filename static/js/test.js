@@ -1592,7 +1592,7 @@ const initFbBtns = (likeBtn, shareBtn) => {
     likeBtn.addEventListener(`click`, () => {
       window.FB.ui({
         method: `share_open_graph`,
-        action_type: `og.likes`,
+        action_type: `og.shares`,
         action_properties: JSON.stringify({
           object: window.location.href,
         })
@@ -1608,7 +1608,6 @@ const initFbBtns = (likeBtn, shareBtn) => {
         href: window.location.href
       });
     });
-
     window.FB.api(
         `/`,
         {
@@ -1620,9 +1619,8 @@ const initFbBtns = (likeBtn, shareBtn) => {
           if (response && !response.error) {
             const engagement = response.engagement;
 
-            if (engagement && engagement.share_count > 0) {
-              const sharesQuantity = shareBtn.querySelector(`.likes-quantity`);
-
+            if (engagement && engagement.share_count > 5) {
+              const sharesQuantity = shareBtn.querySelector(`.fb-btn__shares-quantity`);
               sharesQuantity.innerHTML = engagement.share_count;
             }
           }
@@ -1776,6 +1774,7 @@ class TestView {
 
       fbShareBtn.addEventListener(`click`, () => {
         window.FB.ui(awardShareData);
+        console.log(awardShareData);
       });
     }
   }

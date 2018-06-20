@@ -16,8 +16,8 @@ const _getAwardOgData = (test, image, percent) => {
   return {
     object: {
       'og:url': getTestLinkUrl(test.canonLink),
-      'og:title': `Тест "${test.title} — ${percent}%!`,
-      'og:description': test.description,
+      'og:title': `${percent}% по тесту «${test.title}»!`,
+      'og:description': test.benefit,
       'og:image': getImageUrl(image)
     }
   };
@@ -26,8 +26,8 @@ const _getAwardOgData = (test, image, percent) => {
 const _getAwardHashtag = (percentScored, levels, testHashtag) => {
   if (percentScored >= levels.profi) {
     const awardLevel = (percentScored >= levels.expert)
-      ? `EXPERT`
-      : `PROFI`;
+      ? `expert`
+      : `profi`;
 
     return `#${testHashtag}_${awardLevel}`;
   }

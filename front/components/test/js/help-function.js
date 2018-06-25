@@ -26,12 +26,14 @@ export const runIfEventFired = (status, event, callback, ...args) => {
   }
 };
 
-export const initFbBtns = (likeBtn, shareBtn) => {
+export const initFbBtns = (likeBtn, shareBtn, block) => {
   if (likeBtn) {
     likeBtn.addEventListener(`click`, () => {
+      ga(`send`, `event`, `social`, `click`, `${block}LikeFb`);
+
       window.FB.ui({
         method: `share_open_graph`,
-        action_type: `og.likes`,
+        action_type: `og.shares`,
         action_properties: JSON.stringify({
           object: window.location.href,
         })
@@ -42,12 +44,13 @@ export const initFbBtns = (likeBtn, shareBtn) => {
 
   if (shareBtn) {
     shareBtn.addEventListener(`click`, () => {
+      ga(`send`, `event`, `social`, `click`, `${block}ShareFb`);
+
       window.FB.ui({
         method: `share`,
         href: window.location.href
       });
     });
-
     window.FB.api(
         `/`,
         {
@@ -59,9 +62,8 @@ export const initFbBtns = (likeBtn, shareBtn) => {
           if (response && !response.error) {
             const engagement = response.engagement;
 
-            if (engagement && engagement.share_count > 0) {
-              const sharesQuantity = shareBtn.querySelector(`.likes-quantity`);
-
+            if (engagement && engagement.share_count > 5) {
+              const sharesQuantity = shareBtn.querySelector(`.fb-btn__shares-quantity`);
               sharesQuantity.innerHTML = engagement.share_count;
             }
           }
@@ -82,7 +84,9 @@ export const checkIfClassInMap = (map, className) => {
 };
 
 export const showPage = () => {
-  document.body.classList.remove(`body__unvisible`);
+  setTimeout(() => {
+    document.body.classList.add(`body__visible`);
+  }, 600);
 };
 
 export const scrollToTop = () => {

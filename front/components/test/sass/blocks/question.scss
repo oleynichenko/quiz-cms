@@ -24,17 +24,20 @@ $device-type: mobile;
   @extend .mdc-typography--body1;
 }
 
+.question__title code {
+  font-size: 1.05rem;
+}
+
 .question__code {
   padding: 28px 24px;
   margin: 20px 0;
 
   line-height: 1.25;
-  font-size: 15px;
 
   background-color: $material-color-primary-200;
-  // background-color: rgb(239, 244, 248);
   overflow: auto;
   user-select: none;
+  pointer-events: auto;
 }
 
 .question__options {
@@ -84,7 +87,4 @@ $device-type: mobile;
 
 @media #{$tablet-width} {
 
-  .question__code {
-    font-size: 16px;
-  }
 }

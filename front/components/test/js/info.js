@@ -12,7 +12,7 @@ const init = (info, secondBlock = dom.test) => {
   const fbShareBtn = info.querySelector(`.js-info__share-fb`);
   const fbLikeBtn = info.querySelector(`.js-info__like-fb`);
 
-  infoContainer.classList.add(`js-info__container`, `info__container--on`);
+  infoContainer.classList.add(`js-info__container`);
   secondBlock.classList.add(`info__second-block`);
 
   infoBtn.addEventListener(`click`, () => {
@@ -25,16 +25,16 @@ const init = (info, secondBlock = dom.test) => {
     scrollToTop();
   });
 
-  runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, fbLikeBtn, fbShareBtn);
+  runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, fbLikeBtn, fbShareBtn, `info`);
 
   MDCRipple.attachTo(infoStartTest);
 };
 
-const hide = () => {
-  infoContainer.classList.remove(`info__container--on`);
+const show = () => {
+  infoContainer.classList.add(`info__container--on`);
 };
 
 export default {
-  hide,
+  show,
   init
 };

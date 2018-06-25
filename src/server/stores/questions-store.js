@@ -18,10 +18,21 @@ class QuestionsStore {
 
     const projection = {
       "_id": 0,
-      "themes": 0
     };
 
     return (await this.collection).find(query).project(projection).sort({"id": 1}).toArray();
+  }
+
+  async getQuestionsByThemes(themes, quantity) {
+    const pipeline = [
+      {$match:
+        {"themes": {$in: themes}}
+      },
+      {$sample: {size: quantity}},
+      {$sort: {"id": 1}}
+    ];
+
+    return (await this.collection).aggregate(pipeline).toArray();
   }
 
   async saveQuestions(questions) {

@@ -21,13 +21,13 @@ class TestsStore {
   }
 
   async getTestByPermalink(permalink) {
-    const aggregation = [
+    const pipeline = [
       {$match: {"links.permalink": permalink}},
       {$unwind: `$links`},
       {$match: {"links.permalink": permalink}},
     ];
 
-    const result = (await (await this.collection).aggregate(aggregation).toArray())[0];
+    const result = (await (await this.collection).aggregate(pipeline).toArray())[0];
 
     return result;
   }

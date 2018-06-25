@@ -16,8 +16,6 @@
     "node": "9.9.0"
   },
   "devDependencies": {
-    "@material/button": "0.35.0",
-    "@material/ripple": "0.35.0",
     "autoprefixer": "8.2.0",
     "browser-sync": "2.23.6",
     "del": "3.0.0",

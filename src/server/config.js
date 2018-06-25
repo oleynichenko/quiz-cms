@@ -11,7 +11,7 @@ const getImageRef = (imgFileName) => {
 };
 
 const getImageUrl = (imgFileName) => {
-  return `http://${HOST}${getImageRef(imgFileName)}`;
+  return `https://${HOST}${getImageRef(imgFileName)}`;
 };
 
 const getTestLinkRef = (linkName) => {
@@ -19,7 +19,7 @@ const getTestLinkRef = (linkName) => {
 };
 
 const getTestLinkUrl = (linkName) => {
-  return `http://${HOST}${getTestLinkRef(linkName)}`;
+  return `https://${HOST}${getTestLinkRef(linkName)}`;
 };
 
 module.exports = {

@@ -1,0 +1,24 @@
+.smooth-elem--hidden {
+  display: none;
+}
+
+.smooth-elem--animate {
+  animation: smooth-elem-opacity;
+  animation-fill-mode: forwards;
+  animation-duration: 0.5s;
+}
+
+.smooth-elem--animate-reverse {
+  animation: smooth-elem-opacity;
+  animation-direction: reverse;
+  animation-duration: 0.5s;
+}
+
+@keyframes smooth-elem-opacity {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

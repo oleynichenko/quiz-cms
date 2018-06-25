@@ -27,11 +27,11 @@ const getNumEnding = (iNumber, aEndings) => {
 const getConclusionPhrase = (previous, current, min, max) => {
 
   if (current >= max) {
-    return `Уровень эксперта!`;
+    return `Уровень эксперта`;
   }
 
   if (current >= min) {
-    return `Профессиональный уровень!`;
+    return `Профессиональный уровень`;
   }
 
   if (previous && (current - previous >= 50)) {

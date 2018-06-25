@@ -9,7 +9,7 @@
     height: 100%;
 
     opacity: 1;
-    transition: opacity 1s;
+    transition: opacity 0.4s easy-in;
   }
 
   & .info__block {
@@ -28,13 +28,12 @@
 
   width: 0;
   height: 0;
-  z-index: 100;
+  z-index: 99;
 
   opacity: 0;
   background-color: #fff;
 
-  transition: 0.4s;
-  // overflow: hidden;
+  transition: 0.5s;
 }
 
 .info__block {
@@ -76,13 +75,13 @@
   @include mdc-typography(overline);
   display: block;
 
+  margin-bottom: 0.5rem;
   line-height: 1;
 }
 
 .info__title {
   @include mdc-typography(headline5);
 
-  margin-top: 0.5rem;
   margin-bottom: 1rem;
 }
 

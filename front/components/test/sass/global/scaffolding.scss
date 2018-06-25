@@ -6,17 +6,17 @@ body {
   @include mdc-typography-base;
   min-width: 320px;
   color: $c-main;
-  opacity: 1;
+  opacity: 0;
   transition: opacity 0.5s ease-in;
   overflow-y: scroll;
 }
 
 code {
-  font-size: 0.94rem;
+  font-size: 0.98rem;
 }
 
-.body__unvisible {
-  opacity: 0;
+.body__visible {
+  opacity: 1;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -49,81 +49,9 @@ address {
 }
 
 /*Для проекта*/
-$device-type: mobile;
 
 .no-wrap {
   white-space: nowrap;
 }
 
-.typography--body {
-  @include font(fsz($device-type, body), 1.35);
-  margin-bottom: fsz($device-type, body)/2;
-}
 
-.typography--h3 {
-  @include font(fsz($device-type, h3), 1.35);
-  margin-bottom: fsz($device-type, h3);
-}
-
-.typography--h2 {
-  @include font(fsz($device-type, h2), 1.35);
-  margin-bottom: fsz($device-type, h2);
-}
-
-.typography--h1 {
-  @include font(fsz($device-type, h1), 1.35);
-  margin-bottom: fsz($device-type, h1)/2;
-}
-
-.typography--d1 {
-  @include font(fsz($device-type, d1), 1.2);
-  margin-bottom: fsz($device-type, d1)/2;
-}
-
-.typography--d2 {
-  @include font(fsz($device-type, d2), 1.2);
-  margin-bottom: fsz($device-type, d2)/2;
-}
-
-.typography--d3 {
-  @include font(fsz($device-type, d3), 1.2);
-  margin-bottom: fsz($device-type, d3)/2;
-}
-
-@media #{$desktop-width} {
-  $device-type: desktop;
-
-  .typography--body {
-    @include font(fsz($device-type, body), 1.3);
-    margin-bottom: fsz($device-type, body)/2;
-  }
-
-  .typography--h3 {
-    @include font(fsz($device-type, h3), 1.3);
-    margin-bottom: fsz($device-type, h3);
-  }
-
-  .typography--h2 {
-    @include font(fsz($device-type, h2), 1.3);
-  }
-
-  .typography--h1 {
-    @include font(fsz($device-type, h1), 1.3);
-    margin-bottom: fsz($device-type, h1)/2;
-  }
-
-  .typography--d1 {
-    @include font(fsz($device-type, d1), 1.2);
-    margin-bottom: fsz($device-type, d1)/2;
-  }
-
-  .typography--d2 {
-    @include font(fsz($device-type, d2), 1.2);
-    margin-bottom: fsz($device-type, d2)/2;
-  }
-
-  .typography--d3 {
-    @include font(fsz($device-type, d3), 1.2);
-    margin-bottom: fsz($device-type, d3)/2;
-  }
-}

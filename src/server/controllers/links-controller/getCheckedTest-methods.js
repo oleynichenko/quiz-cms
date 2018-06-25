@@ -12,16 +12,18 @@ const getAwardImageName = (score, levels, images) => {
   return null;
 };
 
-const _getAwardOgData = (test, image, percent) => {
-  return {
-    object: {
-      'og:url': getTestLinkUrl(test.canonLink),
-      'og:title': `${percent}% по тесту «${test.title}»!`,
-      'og:description': test.benefit,
-      'og:image': getImageUrl(image)
-    }
-  };
-};
+// const _getAwardOgData = (test, image, percent) => {
+//   return {
+//     object: {
+//       'og:url': getTestLinkUrl(test.canonLink),
+//       'og:title': `${percent}% по тесту «${test.title}»!`,
+//       'og:description': test.benefit,
+//       'og:image': getImageUrl(image),
+//       'og:image:width': `1200`,
+//       'og:image:height': `630`
+//     }
+//   };
+// };
 
 const _getAwardHashtag = (percentScored, levels, testHashtag) => {
   if (percentScored >= levels.profi) {
@@ -35,12 +37,16 @@ const _getAwardHashtag = (percentScored, levels, testHashtag) => {
   return null;
 };
 
-const getAwardShareData = (test, image, percentScored) => {
+const getAwardShareData = (test, percentScored, permalink, id) => {
+  // const awardOgData = _getAwardOgData(test, image, percentScored);
+
   return {
     method: `share_open_graph`,
     hashtag: _getAwardHashtag(percentScored, test.levels, test.hashtag),
     action_type: `og.shares`,
-    action_properties: JSON.stringify(_getAwardOgData(test, image, percentScored))
+    action_properties: JSON.stringify({
+      object: `${getTestLinkUrl(permalink)}/${id}`
+    })
   };
 };
 

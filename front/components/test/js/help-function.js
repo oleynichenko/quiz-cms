@@ -26,9 +26,11 @@ export const runIfEventFired = (status, event, callback, ...args) => {
   }
 };
 
-export const initFbBtns = (likeBtn, shareBtn) => {
+export const initFbBtns = (likeBtn, shareBtn, block) => {
   if (likeBtn) {
     likeBtn.addEventListener(`click`, () => {
+      ga(`send`, `event`, `social`, `click`, `${block}LikeFb`);
+
       window.FB.ui({
         method: `share_open_graph`,
         action_type: `og.shares`,
@@ -42,6 +44,8 @@ export const initFbBtns = (likeBtn, shareBtn) => {
 
   if (shareBtn) {
     shareBtn.addEventListener(`click`, () => {
+      ga(`send`, `event`, `social`, `click`, `${block}ShareFb`);
+
       window.FB.ui({
         method: `share`,
         href: window.location.href
@@ -80,7 +84,9 @@ export const checkIfClassInMap = (map, className) => {
 };
 
 export const showPage = () => {
-  document.body.classList.remove(`body__unvisible`);
+  setTimeout(() => {
+    document.body.classList.add(`body__visible`);
+  }, 600);
 };
 
 export const scrollToTop = () => {

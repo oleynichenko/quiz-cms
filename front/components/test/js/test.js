@@ -1,5 +1,8 @@
 import TestView from './test-view.js';
 import app from './app.js';
+import {
+  scrollToTop,
+} from './help-function';
 
 export default class Test {
   constructor() {
@@ -7,13 +10,10 @@ export default class Test {
   }
 
   showTestResult(data) {
-    this._view.checkPass(data.pass.result);
+    this._view.changePage(data.pass);
     this._view.showSummary(data.summaryTemplate, data.awardShareData);
-    this._view.showFinalActions(data.retakeMessage);
-
-    if (data.pass.answers) {
-      this._view.markChosenOptions(data.pass.answers);
-    }
+    this._view.initAccordion();
+    scrollToTop();
   }
 
   init() {
@@ -22,5 +22,6 @@ export default class Test {
     };
 
     this._view.bind();
+
   }
 }

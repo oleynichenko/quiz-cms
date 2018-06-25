@@ -13,8 +13,8 @@ class SessionsStore {
     this.collection = collection;
   }
 
-  async addUseragentToSession(sessionId, useragent) {
-    let shortUseragent = {};
+  async addUseragentToSession(sessionId, useragent, ip) {
+    let shortUseragent = {ip};
 
     for (let key in useragent) {
       if (useragent[key] !== false) {

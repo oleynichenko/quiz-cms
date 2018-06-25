@@ -5,8 +5,12 @@
   right:0;
   bottom:0;
 
-  background: red;
+  background: #fff;
   z-index: 100;
+}
+
+.preloader--hidden {
+  display: none;
 }
 
 .preloader__block {
@@ -28,21 +32,21 @@
 }
 
 .preloader__phrase {
-  color: #000;
-  margin: 5px 0;
-  text-transform: uppercase;
-  text-align: center;
+  margin-top: 8px;
   font-family: 'Roboto', sans-serif;
   font-size: 10px;
   letter-spacing: 2px;
+
+  text-transform: uppercase;
 }
 
 .preloader__line {
+  display: inline-block;
   width: 1px;
   height: 15px;
   margin: 0 1px;
-  background: #000;
-  display: inline-block;
+
+  background-color: #000;
   animation: preloader__opacity-lines 1200ms infinite ease-in-out;
 }
 
@@ -67,30 +71,5 @@
   100% {
     opacity: 1;
     height: 15px;
-  }
-}
-
-.smooth-elem--hidden {
-  display: none;
-}
-
-.smooth-elem--animate {
-  animation: smooth-elem-opacity;
-  animation-fill-mode: forwards;
-  animation-duration: 1s;
-}
-
-.smooth-elem--animate-reverse {
-  animation: smooth-elem-opacity;
-  animation-direction: reverse;
-  animation-duration: 1s;
-}
-
-@keyframes smooth-elem-opacity {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
   }
 }

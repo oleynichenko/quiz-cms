@@ -404,58 +404,55 @@ var startFitty = (elem, options) => {
 
 class Accordion {
   constructor(parent, accordionClass) {
-    this.accordionClass = accordionClass;
-    this.accordionClassActive = `${this.accordionClass}--active`;
-    this.elems = parent.querySelectorAll(`.${accordionClass}`);
+    this.titleClass = accordionClass;
+    this.titleClassActive = `${this.titleClass}--active`;
+    this.titles = parent.querySelectorAll(`.${accordionClass}`);
+    // this.activeTitle = parent.querySelector(`.${this.titleClassActive}`);
+    // this.activePanel = this.activeTitle.nextElementSibling;
   }
 
-  // находит первый активный элемент и убирает в у него класс
-  _switchOffActiveElem(elems) {
-    for (let i = 0; i < elems.length; i++) {
-      const elem = elems[i];
-
-      if (this._isElemActive(elem)) {
-        elem.classList.remove(this.accordionClassActive);
-        elem.nextElementSibling.style.maxHeight = `0px`;
-        return;
-      }
-    }
+  _setActiveElem(title) {
+    this.activeTitle = title;
+    this.activePanel = title.nextElementSibling;
   }
 
-  _isElemActive(elem) {
-    return elem.classList.contains(this.accordionClassActive);
+  _switchOffActiveElem() {
+    this.activeTitle.classList.remove(this.titleClassActive);
+    this.activePanel.style.maxHeight = `0px`;
   }
 
-  _turnOnActiveElem(elem) {
-    elem.classList.add(this.accordionClassActive);
-
-    const panel = elem.nextElementSibling;
-    panel.style.maxHeight = `${panel.scrollHeight}px`;
+  _isTitleActive(title) {
+    return title.classList.contains(this.titleClassActive);
   }
 
-  _setElemsHeight() {
-    for (let i = 0; i < this.elems.length; i++) {
-      const elem = this.elems[i];
-      const panel = elem.nextElementSibling;
+  _turnOnActiveElem() {
+    this.activeTitle.classList.add(this.titleClassActive);
+    this.activePanel.style.maxHeight = `${this.activePanel.scrollHeight}px`;
+  }
 
-      panel.style.maxHeight = this._isElemActive(elem)
-        ? `${panel.scrollHeight}px`
-        : `0px`;
+  _setPrimaryHeight(title) {
+    const panel = title.nextElementSibling;
+
+    if (this._isTitleActive(title)) {
+      panel.style.maxHeight = `${panel.scrollHeight}px`;
+
+      this._setActiveElem(title);
+    } else {
+      panel.style.maxHeight = `0px`;
     }
   }
 
   init() {
-    // const _setElemsHeight = this._setElemsHeight.bind(this);
-    // setTimeout(_setElemsHeight, 500);
-    this._setElemsHeight();
+    for (let i = 0; i < this.titles.length; i++) {
+      const title = this.titles[i];
 
-    for (let i = 0; i < this.elems.length; i++) {
-      const elem = this.elems[i];
+      this._setPrimaryHeight(title);
 
-      elem.addEventListener(`click`, () => {
-        if (!this._isElemActive(elem)) {
-          this._switchOffActiveElem(this.elems);
-          this._turnOnActiveElem(elem);
+      title.addEventListener(`click`, () => {
+        if (!this._isTitleActive(title)) {
+          this._switchOffActiveElem();
+          this._setActiveElem(title);
+          this._turnOnActiveElem();
         }
       });
     }
@@ -1587,9 +1584,11 @@ const runIfEventFired = (status, event, callback, ...args) => {
   }
 };
 
-const initFbBtns = (likeBtn, shareBtn) => {
+const initFbBtns = (likeBtn, shareBtn, block) => {
   if (likeBtn) {
     likeBtn.addEventListener(`click`, () => {
+      ga(`send`, `event`, `social`, `click`, `${block}LikeFb`);
+
       window.FB.ui({
         method: `share_open_graph`,
         action_type: `og.shares`,
@@ -1603,6 +1602,8 @@ const initFbBtns = (likeBtn, shareBtn) => {
 
   if (shareBtn) {
     shareBtn.addEventListener(`click`, () => {
+      ga(`send`, `event`, `social`, `click`, `${block}ShareFb`);
+
       window.FB.ui({
         method: `share`,
         href: window.location.href
@@ -1641,7 +1642,9 @@ const checkIfClassInMap = (map, className) => {
 };
 
 const showPage = () => {
-  document.body.classList.remove(`body__unvisible`);
+  setTimeout(() => {
+    document.body.classList.add(`body__visible`);
+  }, 600);
 };
 
 const scrollToTop = () => {
@@ -1691,14 +1694,20 @@ class TestView {
     return chosenOptions;
   }
 
-  disableSelection(elem) {
+  _disableSelection(elem) {
     elem.classList.add(Class.TEST_QUESTIONS_DONE);
   }
 
-  checkPass(data) {
+  changePage(pass, retakeMessage) {
+    this._disableSelection(this.dom.testQuestions);
     toggleVisibility(this.dom.resultBtn, false);
-    this.disableSelection(this.dom.testQuestions);
-    this._markWrongAnsweredQuestion(data.wrongQuestionsIds);
+    this._showSocial();
+    this._showRetakeBlock(retakeMessage);
+    this._markWrongAnsweredQuestion(pass.result.wrongQuestionsIds);
+
+    if (pass.answers) {
+      this._markChosenOptions(pass.answers);
+    }
   }
 
   _showRetakeBlock(message) {
@@ -1708,6 +1717,7 @@ class TestView {
       toggleAbility(this.dom.retakeBtn, false);
     } else {
       this.dom.retakeBtn.addEventListener(`click`, () => {
+        ga(`send`, `event`, `test`, `retakeTest`);
         location.href = `?attempt=new`;
       });
     }
@@ -1718,28 +1728,18 @@ class TestView {
   _showSocial() {
     // ставим обработчики на соц кнопки в блоке test
     // обработчики повесятся асинхронно
-    runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, this.dom.testLikeFb, this.dom.testShareFb);
+    runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, this.dom.testLikeFb, this.dom.testShareFb, `test`);
 
     this.dom.testSocial.classList.add(Class.TEST_SOCIAL_VISIBLE);
   }
 
-  showFinalActions(retakeMessage) {
-    this._showRetakeBlock(retakeMessage);
-    this._showSocial();
-
+  initAccordion() {
     const accordion = new Accordion(this.dom.test, `accordion__title`);
     accordion.start();
-
-    //   // почему то не срабатывает при перезагрузке страницы
-    //   scrollToTop();
-    // });
-
-
-    // тут будет конец заглушки закгрузки результатов
   }
 
   // data = {"1": ["a", "b"], ...}
-  markChosenOptions(answers) {
+  _markChosenOptions(answers) {
     this.dom.questionsAndOptions.forEach((options, question) => {
       const chosenOptions = answers[question.id];
 
@@ -1774,7 +1774,6 @@ class TestView {
 
       fbShareBtn.addEventListener(`click`, () => {
         window.FB.ui(awardShareData);
-        console.log(awardShareData);
       });
     }
   }
@@ -1796,7 +1795,7 @@ class TestView {
 
     this.dom.resultBtn.addEventListener(`click`, () => {
       toggleAbility(this.dom.resultBtn, false);
-      this.disableSelection(this.dom.testQuestions);
+      ga(`send`, `event`, `test`, `click`, `sendTestToCheck`);
 
       const userAnswers = this.getUserAnswers(this.dom.questionsAndOptions);
 
@@ -1814,13 +1813,10 @@ class Test {
   }
 
   showTestResult(data) {
-    this._view.checkPass(data.pass.result);
+    this._view.changePage(data.pass);
     this._view.showSummary(data.summaryTemplate, data.awardShareData);
-    this._view.showFinalActions(data.retakeMessage);
-
-    if (data.pass.answers) {
-      this._view.markChosenOptions(data.pass.answers);
-    }
+    this._view.initAccordion();
+    scrollToTop();
   }
 
   init() {
@@ -1829,6 +1825,7 @@ class Test {
     };
 
     this._view.bind();
+
   }
 }
 
@@ -1868,7 +1865,7 @@ const init = (info, secondBlock = dom.test) => {
   const fbShareBtn = info.querySelector(`.js-info__share-fb`);
   const fbLikeBtn = info.querySelector(`.js-info__like-fb`);
 
-  infoContainer.classList.add(`js-info__container`, `info__container--on`);
+  infoContainer.classList.add(`js-info__container`);
   secondBlock.classList.add(`info__second-block`);
 
   infoBtn.addEventListener(`click`, () => {
@@ -1881,48 +1878,102 @@ const init = (info, secondBlock = dom.test) => {
     scrollToTop();
   });
 
-  runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, fbLikeBtn, fbShareBtn);
+  runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, fbLikeBtn, fbShareBtn, `info`);
 
   MDCRipple.attachTo(infoStartTest);
 };
 
-const hide = () => {
-  infoContainer.classList.remove(`info__container--on`);
+const show = () => {
+  infoContainer.classList.add(`info__container--on`);
 };
 
-var info = {
-  hide,
+var infoModule = {
+  show,
   init
+};
+
+const addSmoothOpacity = (elem, hideClass) => {
+  const REVERSE = `smooth-elem--animate-reverse`;
+  const ANIMATE = `smooth-elem--animate`;
+
+  elem.smoothOpacityOn = () => {
+    if (elem.classList.contains(hideClass)) {
+      elem.classList.remove(hideClass);
+      elem.classList.add(ANIMATE);
+    }
+  };
+
+  elem.smoothOpacityOff = () => {
+    if (!elem.classList.contains(hideClass)) {
+      elem.classList.add(REVERSE);
+    }
+  };
+
+  elem.addEventListener(`animationend`, () => {
+    elem.classList.remove(ANIMATE);
+
+    if (elem.classList.contains(REVERSE)) {
+      elem.classList.add(hideClass);
+      elem.classList.remove(REVERSE);
+    }
+  });
 };
 
 class App {
   constructor() {
-
   }
 
   getTestResult(userAnswers) {
+    const sendResultTime = Date.now();
+    this.preloader.smoothOpacityOn();
+
     loader.sendPass(userAnswers)
-        .then((data) => this.handleData(data));
+        .then((data) => {
+          //чтобы не появлялись результаты раньше чем прелоадер раскроется
+          setTimeout(this.handleData.bind(this), 1000, data);
+          const leftTime = sendResultTime + 4000 - Date.now();
+
+          if (leftTime < 0) {
+            this.preloader.smoothOpacityOff();
+          } else {
+            setTimeout(this.preloader.smoothOpacityOff.bind(this), leftTime);
+          }
+        });
   }
 
   handleData(data) {
     this.test.showTestResult(data);
   }
 
+  get preloader() {
+    if (!this._preloader) {
+      this._preloader = document.querySelector(`.preloader`);
+      addSmoothOpacity(this._preloader, `preloader--hidden`);
+    }
+
+    return this._preloader;
+  }
+
   init(param) {
     this.test = new Test();
+    const info = document.querySelector(`.js-info`);
+
+    if (info) {
+      infoModule.init(info);
+    }
 
     if (param === `attempt=new`) {
       this.test.init();
+      infoModule.show();
       showPage();
     } else {
       loader.sendPass({})
           .then((data) => {
             if (Object.keys(data).length === 0) {
+              infoModule.show();
               this.test.init();
             } else {
               this.handleData(data);
-              info.hide();
             }
 
             showPage();
@@ -1934,11 +1985,6 @@ class App {
 var app = new App();
 
 const param = location.search.replace(`?`, ``);
-const info$1 = document.querySelector(`.js-info`);
-
-if (info$1) {
-  info.init(info$1);
-}
 
 app.init(param);
 

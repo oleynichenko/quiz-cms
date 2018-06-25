@@ -7,7 +7,6 @@ import {
   toggleAbility,
   toggleVisibility,
   checkIfClassInMap,
-  scrollToTop,
   initFbBtns,
   runIfEventFired
 } from './help-function';
@@ -55,14 +54,20 @@ export default class TestView {
     return chosenOptions;
   }
 
-  disableSelection(elem) {
+  _disableSelection(elem) {
     elem.classList.add(Class.TEST_QUESTIONS_DONE);
   }
 
-  checkPass(data) {
+  changePage(pass, retakeMessage) {
+    this._disableSelection(this.dom.testQuestions);
     toggleVisibility(this.dom.resultBtn, false);
-    this.disableSelection(this.dom.testQuestions);
-    this._markWrongAnsweredQuestion(data.wrongQuestionsIds);
+    this._showSocial();
+    this._showRetakeBlock(retakeMessage);
+    this._markWrongAnsweredQuestion(pass.result.wrongQuestionsIds);
+
+    if (pass.answers) {
+      this._markChosenOptions(pass.answers);
+    }
   }
 
   _showRetakeBlock(message) {
@@ -72,6 +77,7 @@ export default class TestView {
       toggleAbility(this.dom.retakeBtn, false);
     } else {
       this.dom.retakeBtn.addEventListener(`click`, () => {
+        ga(`send`, `event`, `test`, `retakeTest`);
         location.href = `?attempt=new`;
       });
     }
@@ -82,28 +88,18 @@ export default class TestView {
   _showSocial() {
     // ставим обработчики на соц кнопки в блоке test
     // обработчики повесятся асинхронно
-    runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, this.dom.testLikeFb, this.dom.testShareFb);
+    runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, this.dom.testLikeFb, this.dom.testShareFb, `test`);
 
     this.dom.testSocial.classList.add(Class.TEST_SOCIAL_VISIBLE);
   }
 
-  showFinalActions(retakeMessage) {
-    this._showRetakeBlock(retakeMessage);
-    this._showSocial();
-
+  initAccordion() {
     const accordion = new Accordion(this.dom.test, `accordion__title`);
     accordion.start();
-
-    //   // почему то не срабатывает при перезагрузке страницы
-    //   scrollToTop();
-    // });
-
-
-    // тут будет конец заглушки закгрузки результатов
   }
 
   // data = {"1": ["a", "b"], ...}
-  markChosenOptions(answers) {
+  _markChosenOptions(answers) {
     this.dom.questionsAndOptions.forEach((options, question) => {
       const chosenOptions = answers[question.id];
 
@@ -138,7 +134,6 @@ export default class TestView {
 
       fbShareBtn.addEventListener(`click`, () => {
         window.FB.ui(awardShareData);
-        console.log(awardShareData);
       });
     }
   }
@@ -160,7 +155,7 @@ export default class TestView {
 
     this.dom.resultBtn.addEventListener(`click`, () => {
       toggleAbility(this.dom.resultBtn, false);
-      this.disableSelection(this.dom.testQuestions);
+      ga(`send`, `event`, `test`, `click`, `sendTestToCheck`);
 
       const userAnswers = this.getUserAnswers(this.dom.questionsAndOptions);
 

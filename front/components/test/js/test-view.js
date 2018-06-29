@@ -77,14 +77,10 @@ export default class TestView {
       toggleAbility(this.dom.retakeBtn, false);
     } else {
       this.dom.retakeBtn.addEventListener(`click`, () => {
-<<<<<<< HEAD
-        ga(`send`, `event`, `test`, `retakeTest`);
-=======
         window.gtag(`event`, `retake`, {
           'event_category': `test`
         });
 
->>>>>>> bag-fixes
         location.href = `?attempt=new`;
       });
     }
@@ -181,10 +177,6 @@ export default class TestView {
 
     this.dom.resultBtn.addEventListener(`click`, () => {
       toggleAbility(this.dom.resultBtn, false);
-<<<<<<< HEAD
-      ga(`send`, `event`, `test`, `click`, `sendTestToCheck`);
-=======
->>>>>>> bag-fixes
 
       const userAnswers = this.getUserAnswers(this.dom.questionsAndOptions);
 

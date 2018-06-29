@@ -1,5 +1,3 @@
-$device-type: mobile;
-
 .question {
   display: block;
   border-top: 1px solid transparent;
@@ -22,17 +20,20 @@ $device-type: mobile;
 
 .question__title {
   @extend .mdc-typography--body1;
-}
 
-.question__title code {
-  font-size: 1.05rem;
+  & code {
+    font-family: monospace;
+    font-size: 1.05rem;
+  }
 }
 
 .question__code {
+  font-family: monospace;
+  font-size: 0.98rem;
+  line-height: 1.25;
+
   padding: 28px 24px;
   margin: 20px 0;
-
-  line-height: 1.25;
 
   background-color: $material-color-primary-200;
   overflow: auto;
@@ -53,6 +54,11 @@ $device-type: mobile;
 	padding-top: 0.9rem;
 	padding-bottom: 0.4rem;
   margin-bottom: 0;
+
+  & code {
+    font-family: monospace;
+    font-size: 0.98rem;
+  }
 
 	&:after {
 		@include pseudo();

@@ -486,20 +486,22 @@ html {
   font-size: 16px; }
 
 body {
+  visibility: hidden;
+  min-width: 320px;
   font-family: Roboto, sans-serif;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  min-width: 320px;
-  color: #202020;
   opacity: 0;
+  color: #202020;
   transition: opacity 0.5s ease-in;
   overflow-y: scroll; }
 
-code {
-  font-size: 0.98rem; }
-
 .body__visible {
+  visibility: visible;
   opacity: 1; }
+
+.body__modal-open {
+  overflow: hidden; }
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0; }
@@ -575,7 +577,7 @@ address {
   width: 100%;
   height: 100%;
   opacity: 1;
-  transition: opacity 0.4s easy-in; }
+  transition: opacity 0.4s ease-in; }
 
 .info__container--on .info__block {
   box-sizing: border-box;
@@ -1008,12 +1010,15 @@ address {
   color: #B00020; }
 
 .question__title code {
+  font-family: monospace;
   font-size: 1.05rem; }
 
 .question__code {
+  font-family: monospace;
+  font-size: 0.98rem;
+  line-height: 1.25;
   padding: 28px 24px;
   margin: 20px 0;
-  line-height: 1.25;
   background-color: #e2eaea;
   overflow: auto;
   -webkit-user-select: none;
@@ -1033,6 +1038,10 @@ address {
   padding-top: 0.9rem;
   padding-bottom: 0.4rem;
   margin-bottom: 0; }
+
+.question__option code {
+  font-family: monospace;
+  font-size: 0.98rem; }
 
 .question__option:after {
   content: "";

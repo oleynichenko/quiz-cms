@@ -18,10 +18,10 @@ const _checkIfClassInArr = (arr, className) => {
 
 export const runIfEventFired = (status, event, callback, ...args) => {
   if (status) {
-    callback(args[0], args[1]);
+    callback(args[0], args[1], args[2]);
   } else {
     document.addEventListener(event, () => {
-      callback(args[0], args[1]);
+      callback(args[0], args[1], args[2]);
     });
   }
 };
@@ -29,26 +29,46 @@ export const runIfEventFired = (status, event, callback, ...args) => {
 export const initFbBtns = (likeBtn, shareBtn, block) => {
   if (likeBtn) {
     likeBtn.addEventListener(`click`, () => {
-      ga(`send`, `event`, `social`, `click`, `${block}LikeFb`);
+
+      window.gtag(`event`, `clickToPostFb`, {
+        'event_category': `social`,
+        'event_label' : `like${block}`
+      });
 
       window.FB.ui({
         method: `share_open_graph`,
         action_type: `og.shares`,
         action_properties: JSON.stringify({
-          object: window.location.href,
+          object: window.location.href
         })
+      }, function (response) {
+        if (response) {
+          window.gtag(`event`, `post`, {
+            'event_category': `social`,
+            'event_label' : `FbLike${block}`
+          });
+        }
       });
     });
-
   }
 
   if (shareBtn) {
     shareBtn.addEventListener(`click`, () => {
-      ga(`send`, `event`, `social`, `click`, `${block}ShareFb`);
-
       window.FB.ui({
         method: `share`,
         href: window.location.href
+      }, function (response) {
+        if (response) {
+          window.gtag(`event`, `post`, {
+            'event_category': `social`,
+            'event_label' : `FbShare${block}`
+          });
+        }
+      });
+
+      window.gtag(`event`, `clickToPostFb`, {
+        'event_category': `social`,
+        'event_label' : `share${block}`
       });
     });
     window.FB.api(

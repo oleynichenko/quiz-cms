@@ -1,8 +1,9 @@
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-112484329-1"></script>
+- const trackingId = (process.env.NODE_ENV === `development`) ? `UA-112484329-1` : `UA-112484329-3`;
+- const gtagSrc =  `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
+script(async src=gtagSrc)
 script.
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'UA-112484329-1');
-
+  gtag(`js`, new Date());
+  gtag(`config`, `#{trackingId}`);

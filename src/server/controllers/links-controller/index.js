@@ -24,6 +24,7 @@ const getCheckedTest = async (req, res) => {
   const userData = req.body;
   const permalink = req.params.permalink;
   const sessionId = req.sessionID;
+  let isPassCurrent = false;
 
   if (!(Object.keys(userData).length === 0)) {
     const questionsIds = Object.keys(userData).map((item) => Number(item));
@@ -31,7 +32,7 @@ const getCheckedTest = async (req, res) => {
     const test = await testsStore.getTestByPermalink(permalink);
     const testResult = getTestResult(userData, rightData);
     const testId = test.id;
-
+    isPassCurrent = true;
     await passesStore.savePass(testId, permalink, sessionId, testResult, userData);
   }
 
@@ -53,6 +54,7 @@ const getCheckedTest = async (req, res) => {
 
     if (awardImageName) {
       data.awardShareData = getAwardShareData(test, pass.result.percentScored, pass.permalink, pass._id);
+      data.isPassCurrent = isPassCurrent;
     }
     // должно быть в link "retakes": {attempts: 2, interval: time, message: "Возможно по решению преподавателя"}
     if (link.attempts) {

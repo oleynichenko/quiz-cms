@@ -11,7 +11,7 @@ export default class Test {
 
   showTestResult(data) {
     this._view.changePage(data.pass);
-    this._view.showSummary(data.summaryTemplate, data.awardShareData);
+    this._view.showSummary(data.summaryTemplate, data.awardShareData, data.isPassCurrent);
     this._view.initAccordion();
     scrollToTop();
   }

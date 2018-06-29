@@ -3,20 +3,24 @@ html {
 }
 
 body {
-  @include mdc-typography-base;
+  visibility: hidden;
   min-width: 320px;
-  color: $c-main;
+  @include mdc-typography-base;
   opacity: 0;
+
+  color: $c-main;
   transition: opacity 0.5s ease-in;
   overflow-y: scroll;
 }
 
-code {
-  font-size: 0.98rem;
+// для запрета прокрутки body при прелоадере
+.body__visible {
+  visibility: visible;
+  opacity: 1;
 }
 
-.body__visible {
-  opacity: 1;
+.body__modal-open {
+  overflow: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {

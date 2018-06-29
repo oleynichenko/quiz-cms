@@ -3,20 +3,37 @@ html {
 }
 
 body {
-  @include mdc-typography-base;
+  visibility: hidden;
   min-width: 320px;
-  color: $c-main;
+  @include mdc-typography-base;
   opacity: 0;
+
+  color: $c-main;
+<<<<<<< HEAD
+  opacity: 0;
+=======
+>>>>>>> bag-fixes
   transition: opacity 0.5s ease-in;
   overflow-y: scroll;
 }
 
+<<<<<<< HEAD
 code {
   font-size: 0.98rem;
 }
 
 .body__visible {
   opacity: 1;
+=======
+// для запрета прокрутки body при прелоадере
+.body__visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.body__modal-open {
+  overflow: hidden;
+>>>>>>> bag-fixes
 }
 
 h1, h2, h3, h4, h5, h6 {

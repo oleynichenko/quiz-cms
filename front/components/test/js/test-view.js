@@ -77,7 +77,14 @@ export default class TestView {
       toggleAbility(this.dom.retakeBtn, false);
     } else {
       this.dom.retakeBtn.addEventListener(`click`, () => {
+<<<<<<< HEAD
         ga(`send`, `event`, `test`, `retakeTest`);
+=======
+        window.gtag(`event`, `retake`, {
+          'event_category': `test`
+        });
+
+>>>>>>> bag-fixes
         location.href = `?attempt=new`;
       });
     }
@@ -118,7 +125,7 @@ export default class TestView {
     });
   }
 
-  showSummary(html, awardShareData) {
+  showSummary(html, awardShareData, isPassCurrent) {
     this.dom.testTag.innerHTML = `Результаты теста`;
     this.dom.testTitle.insertAdjacentHTML(`afterEnd`, html);
 
@@ -133,8 +140,27 @@ export default class TestView {
       const fbShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_FB}`);
 
       fbShareBtn.addEventListener(`click`, () => {
-        window.FB.ui(awardShareData);
+        window.FB.ui(awardShareData, function (response) {
+          if (response) {
+            window.gtag(`event`, `post`, {
+              'event_category': `award`,
+              'event_label' : `FB`
+            });
+          }
+        });
+
+        window.gtag(`event`, `clickToShare`, {
+          'event_category': `award`,
+          'event_label' : `FB`
+        });
+
       });
+
+      if (isPassCurrent) {
+        window.gtag(`event`, `receive`, {
+          'event_category': `award`,
+        });
+      }
     }
   }
 
@@ -155,11 +181,19 @@ export default class TestView {
 
     this.dom.resultBtn.addEventListener(`click`, () => {
       toggleAbility(this.dom.resultBtn, false);
+<<<<<<< HEAD
       ga(`send`, `event`, `test`, `click`, `sendTestToCheck`);
+=======
+>>>>>>> bag-fixes
 
       const userAnswers = this.getUserAnswers(this.dom.questionsAndOptions);
 
+      window.gtag(`event`, `pass`, {
+        'event_category': `test`
+      });
+
       this.handleUserAnswers(userAnswers);
+
     });
 
     MDCRipple.attachTo(this.dom.resultBtn);

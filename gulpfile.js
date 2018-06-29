@@ -162,10 +162,14 @@ gulp.task(`start`, [`watch`, `style`, `scripts`, `nodemon-sync`]);
 gulp.task(`start-component`, [`watch-component`, `style-component`, `scripts-component`, `pug-component`, `browser-sync`]);
 
 gulp.task(`clean`, function () {
-  return del([`../quiz-production/**`, `!../quiz-production`], {force: true});
+  const folder = process.argv[3].slice(2);
+
+  return del([`../tests-${folder}/**`, `!../tests-${folder}`], {force: true});
 });
 
 gulp.task(`copy`, function () {
+  const folder = process.argv[3].slice(2);
+
   gulp.src([
     `./src/**/*`,
     `./static/**/*`,
@@ -174,9 +178,11 @@ gulp.task(`copy`, function () {
     `./package.json`,
 
   ], {base: `./`})
-      .pipe(gulp.dest(`../quiz-production`));
+      .pipe(gulp.dest(`../tests-${folder}`));
 });
 
 gulp.task(`build`, function (fn) {
+  const folder = process.argv[3].slice(2);
+  console.log(`Собираю в папку tests-${folder}`);
   run(`clean`, `copy`, fn);
 });

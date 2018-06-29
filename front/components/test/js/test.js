@@ -11,7 +11,11 @@ export default class Test {
 
   showTestResult(data) {
     this._view.changePage(data.pass);
+<<<<<<< HEAD
     this._view.showSummary(data.summaryTemplate, data.awardShareData);
+=======
+    this._view.showSummary(data.summaryTemplate, data.awardShareData, data.isPassCurrent);
+>>>>>>> bag-fixes
     this._view.initAccordion();
     scrollToTop();
   }

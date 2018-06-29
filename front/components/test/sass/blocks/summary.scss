@@ -1,0 +1,156 @@
+$device-type: mobile;
+.summary {
+  margin-top: 1.5rem; //40px
+}
+
+.summary__result {
+  @include mdc-typography(headline6);
+  display: block;
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 2rem;
+
+  font-family: 'Roboto Condensed', sans-serif;
+  text-align: center;
+  color: $material-color-primary-800;
+}
+
+.summary__result--award {
+  color: $material-color-secondary-500;
+}
+
+.summary__conclusion {
+  margin-top: 0.25rem;
+  margin-bottom: 0.75rem;
+
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.summary__percent {
+  line-height: 1;
+}
+
+.summary__sign {
+  display: inline-block;
+  font-size: inherit;
+  line-height: 1;
+  padding: 0 0;
+  vertical-align: bottom;
+}
+
+.summary__award {
+  position: relative;
+
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.summary__social-icons {
+  position: absolute;
+
+  bottom: 7px;
+  right: 7px;
+}
+
+.summary__share-fb {
+  width: 24px;
+  height: 24px;
+
+  border-radius: 6px;
+    background-color: #fff;
+  cursor: pointer;
+  transition: all ease-in-out 150ms;
+
+  & path {
+    fill: #C4CBD9;
+    transition: fill 150ms;
+  }
+
+  &:hover {
+    box-shadow: 3px 12px 10px rgba(0, 0, 0, 0.3);
+
+    & path {
+      fill: #4267B2;
+    }
+  }
+}
+
+.summary__feedback {
+  & p {
+    @extend .mdc-typography--body1;
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.summary__subtitle {
+  @include mdc-typography(headline6);
+
+  display: inline-block;
+
+  margin-bottom: 0.75rem;
+}
+
+.summary__recommendation {
+  margin-top: 1.75rem;
+
+  & p {
+    @extend .mdc-typography--body1;
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  & ul {
+    @include reset-ul;
+    @extend .mdc-typography--body1;
+    @include inserted-list(1rem, 1.5rem);
+  }
+}
+
+// .summary__btn {
+//   position: fixed;
+//   bottom: fsz($device-type, d3);
+//   right: (100% - $container-width)/2;
+// }
+
+@media #{$tablet-width} {
+
+  .summary {
+    margin-top: 1.75rem; //40px
+  }
+
+  .summary__result {
+    @include mdc-typography(headline5);
+    font-family: 'Roboto Condensed', sans-serif;
+  }
+
+  .summary__subtitle {
+    @include mdc-typography(headline5);
+  }
+
+  .summary__social-icons {
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .summary__share-fb {
+    width: 40px;
+    height: 40px;
+
+    box-shadow: 3px 6px 10px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      transform: translate(0, -4px);
+    }
+  }
+}

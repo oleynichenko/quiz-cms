@@ -11,43 +11,101 @@
   <link rel="stylesheet" href="test/style.css">
 </head>
 <body class="body__unvisible">
+  <header class="header js-header">
+    <button type="button" class="header__item info__btn js-info__btn"><i class="material-icons">info_outline</i></button>
+    <div class="info__block-wrapper">
+      <article class="info__block">
+        <b>Тест</b>
+        <h1>Основы Material Design</h1>
+        <p>Далеко-далеко за словесными горами в стране, гласных и согласных живут рыбные тексты. Злых пояс последний над, коварных свое но своих. О заглавных, лучше дорогу даже страна то рукопись родного буквоград точках свой рот снова рукописи все пунктуация пояс до одна ipsum наш взгляд запятых. Инициал океана свой текстов ее несколько! Вопроса, необходимыми безорфографичный вопрос путь, сих текстами пунктуация подзаголовок ему последний языком заголовок большого. О точках пояс, продолжил имеет ipsum решила.</p>
+        <p>Далеко-далеко за словесными горами в стране, гласных и согласных живут рыбные тексты. До маленький даль прямо пояс наш за возвращайся щеке рыбными оксмокс переписали по всей то путь не дал своих рот деревни власти</p>
+        <p>Далеко-далеко за словесными горами в стране, гласных и согласных живут рыбные тексты. Встретил коварных пустился прямо семантика, рекламных то маленький запятых, переписывается знаках алфавит, но себя агенство текста от всех журчит послушавшись домах скатился текстами эта щеке ведущими. Маленький до семантика ее скатился продолжил родного, рот то снова ведущими ты текстами журчит несколько.</p>
+        <p>Далеко-далеко за словесными горами в стране, гласных и согласных живут рыбные тексты. Встретил коварных пустился прямо семантика, рекламных то маленький запятых, переписывается знаках алфавит, но себя агенство текста от всех журчит послушавшись домах скатился текстами эта щеке ведущими.</p>
+        <button class="mdc-button mdc-button--raised info__start-test js-info__start-test">Перейти к тесту</button>
+      </article>
+    </div>
+    <section class="header__item timer">Таймер</section>
+  </header>
 	<main class="main test js-test">
-		<p class="test__tag">Тест</p>
-		<h1 class="test__title">Основы Material Design</h1>
+		<p class="test__tag js-test__tag typography--body">Тест</p>
+		<h1 class="test__title js-test__title typography--d3">Основы Material Design</h1>
+    <section class="summary">
+      <em><span>34</span>   =>  <span>5%</span> Отличный рост!</em>
+      <p>Вы правильно ответили на 3 вопроса из 12 и набрали 4.32 балла из 12.65, что составляет 34.2%.</p>
+      <p>Лучший результат в 98% вы показали по теме Типографика.</p>
+      <p>Статистика по разделам:</p>
+      <ul>
+        <li>типографика - 98%,</li>
+        <li>дизайн других методологий - 35%,</li>
+        <li>фреймворки - 23%,</li>
+        <li>кнопки - 15%.</li>
+      </ul>
+      <p>Профессиональным уровнем владения темой, по мнению автора теста, стоит считать показатель от 93%.</p>
+      <p>Восполнить обнаруженные пробелы в знаниях можно как проработкой рекомендованной литературы так и посещением мастер-класса автора 25 апреля в Киеве. Сочетание обоих вариантов безусловно будет лучшим решением.</p>
+
+      if retakesOpportunity
+        <a href="/links/#{permalink}?attempt=new" onclick="location.reload();" class="mdc-button mdc-button--raised summary__btn test__btn" disabled>Пройти еще раз</a>
+      else
+        <p>Повторно сдать тест возможно после 18 апреля.</p>
+      <p>Источники с ответами на вопросы:
+        <ul class="test__typography--h3">
+          <li>Далеко-далеко за словесными.</li>
+          <li>Безопасную, живет точках.</li>
+          <li>Запятой, строчка, свою.</li>
+          <li>Это, правилами, текста?</li>
+        </ul>
+      </p>
+      <a class="summary__link" href="#">Мастер-класс Основы Material Design</a>
+      <b class="test__tag typography--body">Проверенные ответы</b>
+    </section>
+
 		<input id ="drawer__switcher" type="checkbox">
 		<div class="test__lead-text drawer__box">
 		  <label for="drawer__switcher" class ="drawer__btn">
 	  		<i class="material-icons drawer__img-more">expand_more</i>
 		  	<i class="material-icons drawer__img-less">expand_less</i>
 		  </label>
-			<p>В одном вопросе может быть несколько правильных ответов. Если нужно дать только один ответ из нескольких, об этом прямо сказано в тесте: «выберите наилучший вариант», «выберите наихудший» или как то ещё. Ваша задача — отметить все правильные ответы.</p>
-			<p>Правильные ответы повышают, а неправильные — уменьшают оценку. Вопрос отображается как неправильный (после проверки выделен красным), даже если вы указали хотя бы один лишний или не доуказали хотя бы один правильный ответ.</p>
-			<p>Правильные ответы мы не раскрываем, но после прохождения теста вы увидите ссылки на пункты предисловия в которых их можно найти. Полный текст предисловия доступен в любой момент по ссылке в названии теста.</p>
+			<p class="typography--h3">В одном вопросе может быть несколько правильных ответов. Если нужно дать только один ответ из нескольких, об этом прямо сказано в тесте: «выберите наилучший вариант», «выберите наихудший» или как то ещё. Ваша задача — отметить все правильные ответы.</p>
+			<p class="typography--h3">Правильные ответы повышают, а неправильные — уменьшают оценку. Вопрос отображается как неправильный (после проверки выделен красным), даже если вы указали хотя бы один лишний или не доуказали хотя бы один правильный ответ.</p>
 		</div>
     <ul class="test__questions js-test__questions">
       <li class="question js-question"  id="1">
-        <h3 class="question__title"><a>В чем отличие скевоморфизма от Material Design?</a></h3>
+        <h3 class="question__title typography--h3"><a>В чем отличие скевоморфизма от Material Design?</a></h3>
         <ul class="question__options js-question__options">
-          <li class="question__option js-question__option" id="1_a">Ни в чем, это синонимы</li>
-          <li class="question__option js-question__option" id="1_b">Скевоморфизм это основа Material Design</li>
-          <li class="question__option js-question__option" id="1_c">Material Design ничего общего с скеоморфизмом вообще не имеет</li>
+          <li class="question__option js-question__option typography--body" id="1_a">Ни в чем, это синонимы</li>
+          <li class="question__option js-question__option typography--body" id="1_b">Скевоморфизм это основа Material Design</li>
+          <li class="question__option js-question__option typography--body" id="1_c">Material Design ничего общего с скеоморфизмом вообще не имеет</li>
         </ul>
       </li>
       <li class="question js-question"  id="2">
-        <h3 class="question__title"><a>В чем отличие скевоморфизма от Material Design?</a></h3>
+        <h3 class="question__title typography--h3"><a>В чем отличие скевоморфизма от Material Design?</a></h3>
         <ul class="question__options js-question__options">
-          <li class="question__option js-question__option" id="2_a">Ни в чем, это синонимы</li>
-          <li class="question__option js-question__option" id="2_b">Скевоморфизм это основа Material Design</li>
-          <li class="question__option js-question__option" id="2_c">Material Design ничего общего с скеоморфизмом вообще не имеет</li>
-          <li class="question__option js-question__option" id="2_d">Material Design ничего общего с скеоморфизмом вообще не имеет</li>
+          <li class="question__option js-question__option typography--body" id="2_a">Ни в чем, это синонимы</li>
+          <li class="question__option js-question__option typography--body" id="2_b">Скевоморфизм это основа Material Design</li>
+          <li class="question__option js-question__option typography--body" id="2_c">Material Design ничего общего с скеоморфизмом вообще не имеет</li>
+          <li class="question__option js-question__option typography--body" id="2_d">Material Design ничего общего с скеоморфизмом вообще не имеет</li>
         </ul>
       </li>
       <li class="question js-question"  id="3">
-        <h3 class="question__title"><a>В чем отличие скевоморфизма от Material Design?</a></h3>
+        <h3 class="question__title typography--h3"><a>В чем отличие скевоморфизма от Material Design?</a></h3>
         <ul class="question__options js-question__options">
-          <li class="question__option js-question__option" id="3_a">Ни в чем, это синонимы</li>
-          <li class="question__option js-question__option" id="3_b">Скевоморфизм это основа Material Design</li>
-          <li class="question__option js-question__option" id="3_c">Material Design ничего общего с скеоморфизмом вообще не имеет</li>
+          <li class="question__option js-question__option typography--body" id="3_a">Ни в чем, это синонимы</li>
+          <li class="question__option js-question__option typography--body" id="3_b">Скевоморфизм это основа Material Design</li>
+          <li class="question__option js-question__option typography--body" id="3_c">Material Design ничего общего с скеоморфизмом вообще не имеет</li>
+        </ul>
+      </li>      <li class="question js-question"  id="3">
+        <h3 class="question__title typography--h3"><a>В чем отличие скевоморфизма от Material Design?</a></h3>
+        <ul class="question__options js-question__options">
+          <li class="question__option js-question__option typography--body" id="3_a">Ни в чем, это синонимы</li>
+          <li class="question__option js-question__option typography--body" id="3_b">Скевоморфизм это основа Material Design</li>
+          <li class="question__option js-question__option typography--body" id="3_c">Material Design ничего общего с скеоморфизмом вообще не имеет</li>
+        </ul>
+      </li>      <li class="question js-question"  id="3">
+        <h3 class="question__title typography--h3"><a>В чем отличие скевоморфизма от Material Design?</a></h3>
+        <ul class="question__options js-question__options">
+          <li class="question__option js-question__option typography--body" id="3_a">Ни в чем, это синонимы</li>
+          <li class="question__option js-question__option typography--body" id="3_b">Скевоморфизм это основа Material Design</li>
+          <li class="question__option js-question__option typography--body" id="3_c">Material Design ничего общего с скеоморфизмом вообще не имеет</li>
         </ul>
       </li>
     </ul>

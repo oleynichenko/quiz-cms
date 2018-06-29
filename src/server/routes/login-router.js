@@ -5,7 +5,7 @@ const {async} = require(`../../libs/util`);
 const loginRouter = new express.Router();
 loginRouter.use(express.urlencoded({extended: false}));
 
-loginRouter.get(`/`, async(controller.showForm));
+loginRouter.get(`/`, controller.showForm);
 loginRouter.post(`/`, async(controller.handleForm));
 
 module.exports = loginRouter;

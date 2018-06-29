@@ -1,5 +1,9 @@
 const showHomePage = (req, res) => {
-  res.render(`index`, {title: `Tests for everyone!`, message: `Hello! There are a lot od tests!`});
+  res.render(`login`, {title: `Tests for everyone!`});
+};
+
+const privacy = (req, res) => {
+  res.render(`privacy`);
 };
 
 const logOut = (req, res) => {
@@ -9,6 +13,7 @@ const logOut = (req, res) => {
 
 module.exports = {
   showHomePage,
-  logOut
+  logOut,
+  privacy
 };
 

@@ -1,0 +1,11 @@
+- const isNotProfi = (percentScored < profiLevel);
+.summary__feedback
+  if isNotProfi
+    <p class="summary__text">#{levelExplanation.profi} и поэтому профессиональный уровень владения темой, по мнению автора, это минимум #{profiLevel}%.</p>
+
+  else if (percentScored > profiLevel) && (percentScored < expertLevel)
+    <p>Отличный результат! Вы безусловно профессионал и до уровня EXPERT остается совсем немного!</p>
+    <p class="summary__text">#{levelExplanation.expert} и поэтому экспертным уровнем владения темой, по мнению автора, стоит считать минимум #{expertLevel}%.</p>
+  else
+    <p>Блестящий результат! Вы безусловно мастер в этой теме.</p>
+

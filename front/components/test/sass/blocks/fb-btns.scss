@@ -1,0 +1,30 @@
+.fb-btn {
+  @include reset-btn;
+  @include mdc-typography(caption);
+  @include mdc-elevation(2);
+
+  padding-left: 8px;
+  padding-right: 8px;
+
+  color: #fff;
+  background-color: #4267B2;
+  border-radius: 3px;
+}
+
+.fb-btn--like {
+  position: relative;
+
+  margin-right: 8px;
+  padding-left: 24px;
+}
+
+.fb-btn__like-icon {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+
+  width: 12px;
+  height: 11px;
+
+  fill: #fff;
+}

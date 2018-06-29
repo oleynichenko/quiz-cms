@@ -1,0 +1,8 @@
+body {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 5s ease-in; }
+
+.body__visible {
+  opacity: 1;
+  visibility: visible; }

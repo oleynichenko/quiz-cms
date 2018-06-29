@@ -1,0 +1,118 @@
+.info__container--on {
+
+  & ~ .info__second-block {
+    display: none;
+  }
+
+  & .info {
+    width: 100%;
+    height: 100%;
+
+    opacity: 1;
+<<<<<<< HEAD
+    transition: opacity 0.4s easy-in;
+=======
+    transition: opacity 0.4s ease-in;
+>>>>>>> bag-fixes
+  }
+
+  & .info__block {
+    @include container;
+    height: auto;
+
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+  }
+}
+
+.info {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 0;
+  height: 0;
+  z-index: 99;
+
+  opacity: 0;
+  background-color: #fff;
+
+  transition: 0.5s;
+}
+
+.info__block {
+
+  height: 0;
+
+  overflow: hidden;
+
+  & p {
+    @extend .mdc-typography--body1;
+
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  & ul {
+    @extend .mdc-typography--body1;
+    @include reset-ul;
+    @include inserted-list(1rem, 1.5rem);
+
+    margin-bottom: 1rem;
+  }
+}
+
+.info__btn {
+  @include reset-btn;
+
+  & i {
+    display: block;
+    font-size: 37px;
+    margin-left: -2px;
+  }
+}
+
+.info__overline {
+  @include mdc-typography(overline);
+  display: block;
+
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.info__title {
+  @include mdc-typography(headline5);
+
+  margin-bottom: 1rem;
+}
+
+.info__start-test {
+  @extend .mdc-button;
+  @extend .mdc-button--raised;
+
+  display: block;
+
+  margin-top: 4rem;
+  margin-bottom: 3rem;
+  line-height: normal;
+}
+
+@media #{$tablet-width} {
+  .info__container--on {
+
+    & .info__block {
+      @include container--tablet;
+
+      padding-top: 5rem;
+      padding-bottom: 7.5rem;
+    }
+  }
+
+  .info__title {
+    @include mdc-typography(headline4);
+    margin-bottom: 1.5rem;
+  }
+}

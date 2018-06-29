@@ -18,10 +18,11 @@ const handleForm = async (req, res) => {
 
   const user = await usersStore.getUserByLogin(userLogin);
 
-  if (user) {
+  if (user && user.enable) {
     if (user.password === userPassword) {
-      req.session.user = user._id;
-      req.session.tests = user.tests;
+      req.session.userId = user._id;
+      req.session.availableTests = user.tests;
+      req.session.isAdmin = (user.rights === `admin`);
 
       res.redirect(`/admin`);
     } else {

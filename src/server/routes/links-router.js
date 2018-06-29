@@ -12,7 +12,8 @@ linksRouter.use((req, res, next) => {
   next();
 });
 
-linksRouter.get(`/:linkName`, async(controller.showTest));
-linksRouter.post(`/:linkName`, async(controller.getTestPass));
+linksRouter.get(`/:permalink`, async(controller.getTest));
+linksRouter.get(`/:permalink/:passId`, async(controller.getPassData));
+linksRouter.post(`/:permalink`, async(controller.getCheckedTest));
 
 module.exports = linksRouter;

@@ -1,9 +1,8 @@
 const server = require(`../../server`);
-const config = require(`../../server/config`);
 
 module.exports = {
   name: `--server`,
-  description: `запускает сервер на ${config.HOSTNAME}:${config.PORT}`,
+  description: `запускает сервер`,
   execute() {
     server.run();
   }

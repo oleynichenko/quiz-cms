@@ -1,0 +1,19 @@
+extends _layout.pug
+
+block content
+  <section class="tests">
+    <h1 class="mdc-typography--title tests__title">Тесты</h1>
+    if tests.length > 0
+      <ul class="tests__items mdc-elevation--z1">
+        each test in tests
+          <li class="tests__item mdc-elevation-transition">
+            - let link = `/admin/tests/${test.id}`;
+            a.tests__link(href=link)
+              <h2 class="tests__item-title mdc-typography--subheading2">#{test.title}</h2>
+              <p class="tests__item-decription mdc-typography--body1">#{test.description}</p>
+              <i class="test__arrow-right material-icons">keyboard_arrow_right</i>
+          </li>
+    else
+      <p class="tests__item-decription mdc-typography--body1">У вас пока нет тестов</p>
+    </ul>
+  </section>

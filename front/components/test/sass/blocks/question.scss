@@ -1,8 +1,7 @@
-$device-type: mobile;
-
 .question {
   display: block;
-	margin-bottom: fsz($device-type, p)*3;
+  border-top: 1px solid transparent;
+	margin-bottom: 2.5rem;
 
 	&:last-child {
 		margin-bottom: 0;
@@ -10,30 +9,65 @@ $device-type: mobile;
 }
 
 .question--wrong {
-	color: $c-accent;
+  & .question__title {
+    color: $material-color-error;
+  }
+
+  & .question__options {
+    color: $material-color-error;
+  }
 }
 
 .question__title {
-	@include font(fsz($device-type, h3), 1.4);
+  @extend .mdc-typography--body1;
+
+  & code {
+    font-family: monospace;
+    font-size: 1.05rem;
+  }
+}
+
+.question__title code {
+  font-size: 1.05rem;
+}
+
+.question__code {
+  font-family: monospace;
+  font-size: 0.98rem;
+  line-height: 1.25;
+
+  padding: 28px 24px;
+  margin: 20px 0;
+
+<<<<<<< HEAD
+  line-height: 1.25;
+
+=======
+>>>>>>> bag-fixes
+  background-color: $material-color-primary-200;
+  overflow: auto;
+  user-select: none;
+  pointer-events: auto;
 }
 
 .question__options {
 	@include reset-ul;
 
-	margin-left: 17px;
+	margin-left: 22px;
 }
 
 .question__option {
+  @extend .mdc-typography--body2;
 	position: relative;
 
-	padding-top: fsz($device-type, p);
-	padding-bottom: fsz($device-type, p)/3;
+	padding-top: 0.9rem;
+	padding-bottom: 0.4rem;
+  margin-bottom: 0;
 
-	@include font(fsz($device-type, p), 1.3);
-
-	&:last-child {
-		margin-bottom: 0;
-	}
+  & code {
+    font-family: monospace;
+    font-size: 0.98rem;
+  }
 
 	&:after {
 		@include pseudo();
@@ -47,11 +81,11 @@ $device-type: mobile;
 	}
 
 	&:hover {
-		color: $c-green;
+		color: $material-color-primary-900;
 		cursor: pointer;
 
 		&:after {
-			background-color: $c-green;
+			background-color: $material-color-primary-900;
 		}
 	}
 }
@@ -61,32 +95,11 @@ $device-type: mobile;
 		@include pseudo(block, absolute, '✓');
     font-weight: bold;
 
-		left: -17px;
-		top: 16px;
+		left: -18px;
+		top: 15px;
 	}
 }
 
 @media #{$tablet-width} {
-	$device-type: tablet;
 
-}
-
-@media #{$desktop-width} {
-	$device-type: desktop;
-
-	.question {
-		margin-bottom: fsz($device-type, p)*3;
-	}
-
-	.question__title {
-		@include font(fsz($device-type, h3), 1.4);
-	}
-
-	.question__option {
-
-		padding-top: fsz($device-type, p);
-		padding-bottom: fsz($device-type, p)/3;
-
-		@include font(fsz($device-type, p), 1.3);
-	}
 }

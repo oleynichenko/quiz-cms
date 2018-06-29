@@ -1,0 +1,17 @@
+@mixin container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: $container-max-width;
+
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+@mixin container--tablet {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+

@@ -1,0 +1,11 @@
+doctype html
+html(lang=`ru`)
+  include ../partials/_head-admin.pug
+  body.mdc-typography.mdc-theme--text-primary-on-background
+    include ../partials/_header.pug
+    main.page__main
+      include ../partials/_drawer.pug
+      +drawer(pathname)
+      include ../partials/_grid.pug
+    include ../partials/_scripts-admin.pug
+

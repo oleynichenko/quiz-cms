@@ -1,0 +1,10 @@
+body {
+  min-width: 320px;
+  font-family: 'PT Sans', 'Arial Narrow', Arial, sans-serif;
+  margin: 0;
+  overflow-y: scroll;
+}
+
+.container {
+  @include container;
+}

@@ -1,22 +1,15 @@
 .main {
-	width: 94%;
-  max-width: 768px;
+  @include container;
 
-  margin-top: 8%;
-  margin-right: auto;
-  margin-bottom: 12%;
-  margin-left: auto;
+  padding-bottom: 2rem;
+
+  overflow: hidden;
 }
 
 @media #{$tablet-width} {
-	$device-type: tablet;
-}
-
-@media #{$desktop-width} {
-	$device-type: desktop;
-
 	.main {
-		margin-top: fsz($device-type, d1)*2;
-		margin-bottom: fsz($device-type, d1)*3;
+    @include container--tablet;
+
+		padding-bottom: 6rem;
 	}
 }

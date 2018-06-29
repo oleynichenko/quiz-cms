@@ -1,5 +1,3 @@
-import {SERVER_URL_POST} from './const.js';
-
 const sendPass = (data) => {
   const dataJSON = JSON.stringify(data);
 
@@ -12,8 +10,14 @@ const sendPass = (data) => {
     credentials: `include`
   };
 
-  return fetch(`${SERVER_URL_POST}`, requestSettings)
-      .then((res) => res.json());
+  return fetch(location.href, requestSettings)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return {};
+        }
+      });
 };
 
 export default {

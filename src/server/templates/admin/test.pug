@@ -1,0 +1,45 @@
+extends _layout.pug
+
+block content
+  .container
+    <section class="mdc-card container__item container__item--60">
+      header.card__primary-title
+        h3.card__title.card__title--table.mdc-typography--headline Статистика по ссылкам на тест
+      table.data-table.data-table--col-5
+        thead.data-table__section.mdc-theme--text-secondary-on-light.mdc-typography--caption
+          tr.data-table__row.data-table__row--wide
+            th.data-table__col.data-table__col--left Имя ссылки
+            th.data-table__col Сдачи, к-во
+            th.data-table__col Рез-т, %
+            th.data-table__col Profi, к-во
+            th.data-table__col Expert, к-во
+        tbody.data-table__section.mdc-typography--body1
+          each link in linksReportData
+            tr.data-table__row
+              td.data-table__col.data-table__col--left= link.permalink
+              td.data-table__col= link.total
+              td.data-table__col= link.average
+              td.data-table__col= link.profies
+              td.data-table__col= link.experts
+        tfoot.data-table__section.mdc-typography--body2
+          tr.data-table__row.data-table__row--wide
+            td.data-table__col.data-table__col--left Итого по тесту
+            td.data-table__col= sumLinksReportData.total
+            td.data-table__col= sumLinksReportData.average
+            td.data-table__col= sumLinksReportData.profies
+            td.data-table__col= sumLinksReportData.experts
+    </section>
+    <section class="mdc-card container__item container__item--40">
+      header.card__primary-title
+        h3.card__title.card__title--table.mdc-typography--headline Что то будет здесь
+      <div class="mdc-card__actions">
+        <div class="mdc-card__action-buttons">
+          <button class="mdc-button mdc-card__action mdc-card__action--button">Action 1</button>
+          <button class="mdc-button mdc-card__action mdc-card__action--button">Action 2</button>
+        </div>
+        <div class="mdc-card__action-icons">
+          <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="Share">share</i>
+          <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="More options">more_vert</i>
+        </div>
+      </div>
+    </section>

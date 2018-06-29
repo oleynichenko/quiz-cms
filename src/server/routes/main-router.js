@@ -5,5 +5,6 @@ const mainRouter = new Router();
 
 mainRouter.get(`/`, controller.showHomePage);
 mainRouter.post(`/logout`, controller.logOut);
+mainRouter.get(`/privacy`, controller.privacy);
 
 module.exports = mainRouter;

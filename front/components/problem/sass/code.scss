@@ -1,0 +1,29 @@
+$c-background: #fff;
+$c-main: #202020;
+$c-main-light: #606060;
+$c-grey: rgba($c-main, 0.2);
+$material-color-primary-50: #ffffff;
+$material-color-primary-100: #ffffff;
+$material-color-primary-200: #e2eaea;
+$material-color-primary-300: #b9cdcd;
+$material-color-primary-400: #a7c0c0;
+$material-color-primary-500: #95b3b3;
+$material-color-primary-600: #83a6a6;
+$material-color-primary-700: #719999;
+$material-color-primary-800: #638a8a;
+$material-color-primary-900: #567878;
+
+$material-color-secondary-500: #d4a45b;
+
+$material-color-error: #B00020;
+
+body {
+  opacity: 0;
+  visibility:hidden;
+  transition: opacity 5s ease-in;
+}
+
+.body__visible {
+  opacity: 1;
+  visibility:visible;
+}

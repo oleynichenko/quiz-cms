@@ -1,0 +1,16 @@
+.container__item {
+  margin-bottom: 12px;
+}
+
+@media #{$desktop-width} {
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -12px;
+  }
+  .container__item {
+    flex-grow: 1;
+    margin-right: 12px;
+  }
+}
+

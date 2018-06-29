@@ -27,10 +27,6 @@
   }
 }
 
-.question__title code {
-  font-size: 1.05rem;
-}
-
 .question__code {
   font-family: monospace;
   font-size: 0.98rem;
@@ -39,11 +35,6 @@
   padding: 28px 24px;
   margin: 20px 0;
 
-<<<<<<< HEAD
-  line-height: 1.25;
-
-=======
->>>>>>> bag-fixes
   background-color: $material-color-primary-200;
   overflow: auto;
   user-select: none;

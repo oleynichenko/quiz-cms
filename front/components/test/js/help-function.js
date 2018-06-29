@@ -29,15 +29,11 @@ export const runIfEventFired = (status, event, callback, ...args) => {
 export const initFbBtns = (likeBtn, shareBtn, block) => {
   if (likeBtn) {
     likeBtn.addEventListener(`click`, () => {
-<<<<<<< HEAD
-      ga(`send`, `event`, `social`, `click`, `${block}LikeFb`);
-=======
 
       window.gtag(`event`, `clickToPostFb`, {
         'event_category': `social`,
         'event_label' : `like${block}`
       });
->>>>>>> bag-fixes
 
       window.FB.ui({
         method: `share_open_graph`,
@@ -71,14 +67,11 @@ export const initFbBtns = (likeBtn, shareBtn, block) => {
           });
         }
       });
-<<<<<<< HEAD
-=======
 
       window.gtag(`event`, `clickToPostFb`, {
         'event_category': `social`,
         'event_label' : `share${block}`
       });
->>>>>>> bag-fixes
     });
     window.FB.api(
         `/`,

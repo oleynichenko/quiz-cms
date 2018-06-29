@@ -3,11 +3,6 @@ export default class Accordion {
     this.titleClass = accordionClass;
     this.titleClassActive = `${this.titleClass}--active`;
     this.titles = parent.querySelectorAll(`.${accordionClass}`);
-<<<<<<< HEAD
-    // this.activeTitle = parent.querySelector(`.${this.titleClassActive}`);
-    // this.activePanel = this.activeTitle.nextElementSibling;
-=======
->>>>>>> bag-fixes
   }
 
   _setActiveElem(title) {

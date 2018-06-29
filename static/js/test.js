@@ -407,11 +407,6 @@ class Accordion {
     this.titleClass = accordionClass;
     this.titleClassActive = `${this.titleClass}--active`;
     this.titles = parent.querySelectorAll(`.${accordionClass}`);
-<<<<<<< HEAD
-    // this.activeTitle = parent.querySelector(`.${this.titleClassActive}`);
-    // this.activePanel = this.activeTitle.nextElementSibling;
-=======
->>>>>>> bag-fixes
   }
 
   _setActiveElem(title) {
@@ -1590,15 +1585,11 @@ const runIfEventFired = (status, event, callback, ...args) => {
 const initFbBtns = (likeBtn, shareBtn, block) => {
   if (likeBtn) {
     likeBtn.addEventListener(`click`, () => {
-<<<<<<< HEAD
-      ga(`send`, `event`, `social`, `click`, `${block}LikeFb`);
-=======
 
       window.gtag(`event`, `clickToPostFb`, {
         'event_category': `social`,
         'event_label' : `like${block}`
       });
->>>>>>> bag-fixes
 
       window.FB.ui({
         method: `share_open_graph`,
@@ -1632,14 +1623,11 @@ const initFbBtns = (likeBtn, shareBtn, block) => {
           });
         }
       });
-<<<<<<< HEAD
-=======
 
       window.gtag(`event`, `clickToPostFb`, {
         'event_category': `social`,
         'event_label' : `share${block}`
       });
->>>>>>> bag-fixes
     });
     window.FB.api(
         `/`,
@@ -1749,14 +1737,10 @@ class TestView {
       toggleAbility(this.dom.retakeBtn, false);
     } else {
       this.dom.retakeBtn.addEventListener(`click`, () => {
-<<<<<<< HEAD
-        ga(`send`, `event`, `test`, `retakeTest`);
-=======
         window.gtag(`event`, `retake`, {
           'event_category': `test`
         });
 
->>>>>>> bag-fixes
         location.href = `?attempt=new`;
       });
     }
@@ -1853,10 +1837,6 @@ class TestView {
 
     this.dom.resultBtn.addEventListener(`click`, () => {
       toggleAbility(this.dom.resultBtn, false);
-<<<<<<< HEAD
-      ga(`send`, `event`, `test`, `click`, `sendTestToCheck`);
-=======
->>>>>>> bag-fixes
 
       const userAnswers = this.getUserAnswers(this.dom.questionsAndOptions);
 
@@ -1880,11 +1860,7 @@ class Test {
 
   showTestResult(data) {
     this._view.changePage(data.pass);
-<<<<<<< HEAD
-    this._view.showSummary(data.summaryTemplate, data.awardShareData);
-=======
     this._view.showSummary(data.summaryTemplate, data.awardShareData, data.isPassCurrent);
->>>>>>> bag-fixes
     this._view.initAccordion();
     scrollToTop();
   }

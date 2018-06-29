@@ -54,10 +54,7 @@ const getCheckedTest = async (req, res) => {
 
     if (awardImageName) {
       data.awardShareData = getAwardShareData(test, pass.result.percentScored, pass.permalink, pass._id);
-<<<<<<< HEAD
-=======
       data.isPassCurrent = isPassCurrent;
->>>>>>> bag-fixes
     }
     // должно быть в link "retakes": {attempts: 2, interval: time, message: "Возможно по решению преподавателя"}
     if (link.attempts) {

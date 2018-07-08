@@ -103,21 +103,6 @@ const getRetakeMessage = (retakeMessage, retakeDate) => {
   }
 };
 
-const _calcOptionCost = (pointsAvailable, optionsQuantity, correctOptionsQuantity) => {
-  const wrongOptionsQuantity = optionsQuantity - correctOptionsQuantity;
-
-  const wrongOptionsCost = (wrongOptionsQuantity === 0)
-    ? 0
-    : pointsAvailable / wrongOptionsQuantity;
-
-  const correctOptionsCost = pointsAvailable / correctOptionsQuantity;
-
-  return {
-    wrong: ceilUp(wrongOptionsCost, 4),
-    right: ceilUp(correctOptionsCost, 4)
-  };
-};
-
 const _countAnswerScore = (rightAnswer, userAnswer, optionCost, pointsAvailable) => {
   let score = 0;
 
@@ -151,11 +136,7 @@ const getTestResult = (userData, rightData) => {
 
   rightData.forEach((item) => {
     const pointsAvailable = item.pointsAvailable;
-    const optionsQuantity = Object.keys(item.options).length;
-    const correctOptionsQuantity = item.correctOptions.length;
-
-    const optionCost = _calcOptionCost(pointsAvailable, optionsQuantity, correctOptionsQuantity);
-
+    const optionCost = item.optionCost;
     const correctOptions = item.correctOptions;
     const chosenOptions = userData[item.id];
 

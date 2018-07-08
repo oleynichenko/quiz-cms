@@ -25,11 +25,12 @@ const getCheckedTest = async (req, res) => {
   const permalink = req.params.permalink;
   const sessionId = req.sessionID;
   let isPassCurrent = false;
+  let test;
 
   if (!(Object.keys(userData).length === 0)) {
     const questionsIds = Object.keys(userData).map((item) => Number(item));
     const rightData = await questionsStore.getQuestionsByIds(questionsIds);
-    const test = await testsStore.getTestByPermalink(permalink);
+    test = await testsStore.getTestByPermalink(permalink);
     const testResult = getTestResult(userData, rightData);
     const testId = test.id;
     isPassCurrent = true;
@@ -39,7 +40,10 @@ const getCheckedTest = async (req, res) => {
   const pass = await passesStore.getPassBySessionId(permalink, sessionId);
 
   if (pass) {
-    const test = await testsStore.getTestByPermalink(permalink);
+    if (!test) {
+      test = await testsStore.getTestByPermalink(permalink);
+    }
+
     const link = test.links;
 
     // const retakesDate = (pass.usedAttempts < link.attempts) ? link.interval + pass.date : 0;

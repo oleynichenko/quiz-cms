@@ -24,13 +24,18 @@ class QuestionsStore {
   }
 
   async getQuestionsByThemes(themes, quantity) {
-    const pipeline = [
-      {$match:
-        {"themes": {$in: themes}}
+    const pipeline = (quantity) ? [
+      {
+        $match:
+          {"themes": {$in: themes}}
       },
-      {$sample: {size: quantity}},
-      {$sort: {"id": 1}}
-    ];
+      {
+        $sample: {size: quantity}
+      },
+      {
+        $sort: {"id": 1}
+      }
+    ] : [{$match: {"themes": {$in: themes}}}, {$sort: {"id": 1}}];
 
     return (await this.collection).aggregate(pipeline).toArray();
   }

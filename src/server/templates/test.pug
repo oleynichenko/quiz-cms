@@ -32,7 +32,7 @@ html(lang=`ru`)
             if question.code
               pre.question__code
                 code
-                  = question.code
+                  != question.code
             h3.question__title
               != question.wording
             ul.question__options.js-question__options

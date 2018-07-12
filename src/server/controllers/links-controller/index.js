@@ -14,7 +14,9 @@ const {
 const {
   canPass,
   getQuestionsFromPass,
-  getQuestionsFromTest
+  getQuestionsFromTest,
+  getPermalinks,
+  formatDate
 } = require(`./getTest-methods`);
 
 const passesStore = require(`../../stores/passes-store`);
@@ -25,11 +27,12 @@ const getCheckedTest = async (req, res) => {
   const permalink = req.params.permalink;
   const sessionId = req.sessionID;
   let isPassCurrent = false;
+  let test;
 
   if (!(Object.keys(userData).length === 0)) {
     const questionsIds = Object.keys(userData).map((item) => Number(item));
     const rightData = await questionsStore.getQuestionsByIds(questionsIds);
-    const test = await testsStore.getTestByPermalink(permalink);
+    test = await testsStore.getTestByPermalink(permalink);
     const testResult = getTestResult(userData, rightData);
     const testId = test.id;
     isPassCurrent = true;
@@ -39,7 +42,10 @@ const getCheckedTest = async (req, res) => {
   const pass = await passesStore.getPassBySessionId(permalink, sessionId);
 
   if (pass) {
-    const test = await testsStore.getTestByPermalink(permalink);
+    if (!test) {
+      test = await testsStore.getTestByPermalink(permalink);
+    }
+
     const link = test.links;
 
     // const retakesDate = (pass.usedAttempts < link.attempts) ? link.interval + pass.date : 0;
@@ -79,7 +85,7 @@ const getTest = async (req, res, next) => {
 
   if (test) {
     if (test.enable) {
-      const link = test.links;
+      const link = test.links.find((elem) => elem.permalink === permalink);
 
       if (link.enable || link.permalink === test.canonLink) {
         const sessionId = req.sessionID;
@@ -97,7 +103,7 @@ const getTest = async (req, res, next) => {
           if (!isAttemptNew && pass.answers) {
             questions = await getQuestionsFromPass(pass.answers);
           } else {
-            questions = await getQuestionsFromTest(test.questions);
+            questions = await getQuestionsFromTest(test.questions, link.questionsQuantity);
           }
 
           const canonicalUrl = getTestLinkUrl(test.canonLink);
@@ -107,6 +113,7 @@ const getTest = async (req, res, next) => {
             header: test.title,
             imageURL: getImageUrl(test.images.main),
             description: test.description,
+            updateDate: formatDate(test.updateDate),
             benefit: test.benefit,
             canonicalUrl,
             authorInfo: test.introText,
@@ -117,7 +124,9 @@ const getTest = async (req, res, next) => {
             fbAppId: FB_APP_ID
           };
 
-          const passesStat = await passesStore.getPassesStat(test.id, test.levels.profi, test.levels.expert);
+
+          const permalinks = getPermalinks(test.links);
+          const passesStat = await passesStore.getPassesStat(permalinks, test.levels.profi, test.levels.expert);
 
           if (passesStat && passesStat.total > 5) {
             passesStat.profiLevel = test.levels.profi;
@@ -152,13 +161,11 @@ const getPassData = async (req, res, next) => {
 
       const result = passData.result;
       const percentScored = result.percentScored;
-      const redirectLink = getTestLinkUrl(permalink);
-      // const canonicalUrl = getTestLinkUrl(test.canonLink);
+      const redirectLink = getTestLinkUrl(test.canonLink);
       const title = `${percentScored}% по тесту «${test.title}»!`;
       const imageFileName = getAwardImageName(percentScored, test.levels, test.images);
 
       const renderOptions = {
-        // canonicalUrl,
         title,
         description: test.benefit,
         imageURL: getImageUrl(imageFileName),

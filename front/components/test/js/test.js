@@ -1,8 +1,6 @@
 import TestView from './test-view.js';
 import app from './app.js';
-import {
-  scrollToTop,
-} from './help-function';
+import {scrollToTop} from './help-function';
 
 export default class Test {
   constructor() {
@@ -22,6 +20,5 @@ export default class Test {
     };
 
     this._view.bind();
-
   }
 }

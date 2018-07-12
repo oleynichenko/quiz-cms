@@ -16,7 +16,7 @@ class PassesStore {
 
   async getPassBySessionId(permalink, sessionId) {
     return (await this.collection).findOne(
-        {"permalink": permalink, "sessionId": sessionId}
+        {permalink, sessionId}
     );
   }
 
@@ -26,22 +26,24 @@ class PassesStore {
 
   async deletePass(permalink, sessionId) {
     return (await this.collection).deleteOne(
-        {"permalink": permalink, "sessionId": sessionId});
+        {permalink, sessionId}
+    );
   }
 
   async savePass(testId, permalink, sessionId, result, answers) {
+
     const pass = {
       testId,
       permalink,
       sessionId,
-      date: Date.now(),
+      date: new Date(),
       result,
       answers,
       usedAttempts: 1
     };
 
     const previousPass = (await (await this.collection).findOne(
-        {"permalink": permalink, "sessionId": sessionId},
+        {permalink, sessionId}
     ));
 
     if (previousPass) {
@@ -55,7 +57,6 @@ class PassesStore {
     } else {
       await (await this.collection).insertOne(pass);
     }
-
   }
 
   async getLinksPassesStat(id, profiScore, expertScore) {
@@ -94,37 +95,37 @@ class PassesStore {
     return (await this.collection).aggregate(aggregation).toArray();
   }
 
-  async getPassesStat(id, num1, num2) {
+  async getPassesStat(permalinks, num1, num2) {
     const pipeline = [
       {
         $match: {
-          "testId": id,
+          "permalink": {$in: permalinks},
         }
       },
       {
         $group: {
           _id: null,
           total: {$sum: 1},
-          averagePercentScore: {$avg: "$result.percentScored"},
+          averagePercentScore: {$avg: `$result.percentScored`},
           profies: {
             $sum: {
               $cond: [
                 {
                   $and: [
-                    {$gte: ["$result.percentScored", num1]},
-                    {$lt: ["$result.percentScored", num2]}]
+                    {$gte: [`$result.percentScored`, num1]},
+                    {$lt: [`$result.percentScored`, num2]}]
                 }, 1, 0]
             }
           },
           experts: {
             $sum: {
-              $cond: [{$gte: ["$result.percentScored", num2]}, 1, 0]
+              $cond: [{$gte: [`$result.percentScored`, num2]}, 1, 0]
             }
           },
-          best: {$max: "$result.percentScored"},
+          best: {$max: `$result.percentScored`},
           bestQuantity: {
             $sum: {
-              $cond: [{$eq: ["$result.percentScored", 100]}, 1, 0]
+              $cond: [{$eq: [`$result.percentScored`, 100]}, 1, 0]
             }
           }
         },
@@ -134,7 +135,7 @@ class PassesStore {
           average: {
             $divide: [
               {$ceil: {
-                $multiply: [{$avg: "$averagePercentScore"}, 10]
+                $multiply: [{$avg: `$averagePercentScore`}, 10]
               }},
               10
             ]
@@ -155,4 +156,4 @@ class PassesStore {
 }
 
 module.exports = new PassesStore(setupCollection()
-    .catch((error) => logger.error(`Failed to set up "passes"-collection`, error)));
+    .catch((error) => logger.error(`Failed to set up passes-collection`, error)));

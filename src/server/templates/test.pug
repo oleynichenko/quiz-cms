@@ -8,7 +8,7 @@ html(lang=`ru`)
     link(rel=`canonical` href=canonicalUrl)
     link(rel=`shortcut icon` href=`/img/favicon.png` type=`image/png`)
     link(rel=`stylesheet` href=`https://unpkg.com/normalize.css@8.0.0/normalize.css`)
-    link(rel=`stylesheet` href=`https://fonts.googleapis.com/css?family=Roboto+Condensed|Roboto:400,500&amp;subset=cyrillic`)
+    link(rel=`stylesheet` href=`https://fonts.googleapis.com/css?family=Roboto+Condensed|Roboto:400,500|Source+Code+Pro&amp;subset=cyrillic,cyrillic-ext,latin-ext`)
     link(rel=`stylesheet` href=`https://fonts.googleapis.com/icon?family=Material+Icons`)
     link(rel=`stylesheet` href=`/css/test.css`)
     include partials/_og.pug
@@ -31,8 +31,7 @@ html(lang=`ru`)
           li(class="question js-question", id= question.id)
             if question.code
               pre.question__code
-                code
-                  = question.code
+                != question.code
             h3.question__title
               != question.wording
             ul.question__options.js-question__options
@@ -46,6 +45,7 @@ html(lang=`ru`)
         //- *После нажатия текущие результаты проверки перестанут быть доступными
       section.test__social.js-test__social
         include mixins/_social-btns.pug
-        +socialBtns(`test`)
+        //- +socialBtns(`test`)
+        +socialBtns()
     include preloader.pug
     <script src="/js/test.js"></script>

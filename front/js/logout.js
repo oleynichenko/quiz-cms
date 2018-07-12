@@ -7,9 +7,9 @@ const logout = (elem) => {
     };
 
     fetch(`/logout`, options);
-        // .then((res) => {
-        //   window.location.href = res.url;
-        // });
+    // .then((res) => {
+    //   window.location.href = res.url;
+    // });
   });
 };
 

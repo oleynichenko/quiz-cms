@@ -3,7 +3,11 @@
   article.info__block.js-info__block
     b.info__overline Описание теста
     h1.info__title= header
-    p= description
+    p
+     | #{description}
+     if updateDate
+      |  Последние обновления #{updateDate}
+
     p= authorInfo
     if stat
       include info/_stat.pug

@@ -56,7 +56,6 @@ class PassesStore {
     } else {
       await (await this.collection).insertOne(pass);
     }
-
   }
 
   async getLinksPassesStat(id, profiScore, expertScore) {
@@ -95,11 +94,11 @@ class PassesStore {
     return (await this.collection).aggregate(aggregation).toArray();
   }
 
-  async getPassesStat(id, num1, num2) {
+  async getPassesStat(permalinks, num1, num2) {
     const pipeline = [
       {
         $match: {
-          "testId": id,
+          "permalink": {$in: permalinks},
         }
       },
       {

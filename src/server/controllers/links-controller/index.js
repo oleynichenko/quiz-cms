@@ -14,7 +14,9 @@ const {
 const {
   canPass,
   getQuestionsFromPass,
-  getQuestionsFromTest
+  getQuestionsFromTest,
+  getPermalinks,
+  formatDate
 } = require(`./getTest-methods`);
 
 const passesStore = require(`../../stores/passes-store`);
@@ -83,7 +85,7 @@ const getTest = async (req, res, next) => {
 
   if (test) {
     if (test.enable) {
-      const link = test.links;
+      const link = test.links.find((elem) => elem.permalink === permalink);
 
       if (link.enable || link.permalink === test.canonLink) {
         const sessionId = req.sessionID;
@@ -101,7 +103,7 @@ const getTest = async (req, res, next) => {
           if (!isAttemptNew && pass.answers) {
             questions = await getQuestionsFromPass(pass.answers);
           } else {
-            questions = await getQuestionsFromTest(test.questions);
+            questions = await getQuestionsFromTest(test.questions, link.questionsQuantity);
           }
 
           const canonicalUrl = getTestLinkUrl(test.canonLink);
@@ -111,6 +113,7 @@ const getTest = async (req, res, next) => {
             header: test.title,
             imageURL: getImageUrl(test.images.main),
             description: test.description,
+            updateDate: formatDate(test.updateDate),
             benefit: test.benefit,
             canonicalUrl,
             authorInfo: test.introText,
@@ -121,7 +124,9 @@ const getTest = async (req, res, next) => {
             fbAppId: FB_APP_ID
           };
 
-          const passesStat = await passesStore.getPassesStat(test.id, test.levels.profi, test.levels.expert);
+
+          const permalinks = getPermalinks(test.links);
+          const passesStat = await passesStore.getPassesStat(permalinks, test.levels.profi, test.levels.expert);
 
           if (passesStat && passesStat.total > 5) {
             passesStat.profiLevel = test.levels.profi;

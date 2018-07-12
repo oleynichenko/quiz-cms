@@ -13,14 +13,22 @@ class QuestionsStore {
     this.collection = collection;
   }
 
-  async getQuestionsByIds(ids) {
+  async getQuestionsByIds(ids, quantity) {
     const query = {"id": {$in: ids}};
 
-    const projection = {
-      "_id": 0,
-    };
+    const pipeline = (quantity) ? [
+      {
+        $match: query
+      },
+      {
+        $sample: {size: quantity}
+      },
+      {
+        $sort: {"id": 1}
+      }
+    ] : [{$match: query}, {$sort: {"id": 1}}];
 
-    return (await this.collection).find(query).project(projection).sort({"id": 1}).toArray();
+    return (await this.collection).aggregate(pipeline).toArray();
   }
 
   async getQuestionsByThemes(themes, quantity) {

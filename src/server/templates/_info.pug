@@ -13,5 +13,6 @@
     p Разработчики уровней PROFI и EXPERT смогут поделиться своими результатами в соцсетях.
     p После проверки неверные ответы будут выделены красным. Правильные ответы не раскрываются, но даются ссылки на материалы где их можно быстро найти. Страница с результатами привязывается к текущему браузеру и остается доступной в любое время по ссылке на тест.
     <button class="info__start-test js-info__start-test">Перейти к тесту</button>
-    include mixins/_social-btns.pug
-    +socialBtns(`info`)
+    section.info__social
+      include mixins/_social-btns.pug
+      +socialBtns(`info`)

@@ -22,14 +22,14 @@
   @extend .mdc-typography--body1;
 
   & code {
-    font-family: monospace;
+    font-family: 'Source Code Pro', monospace;
     font-size: 1.05rem;
   }
 }
 
 .question__code {
-  font-family: monospace;
-  font-size: 0.98rem;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.9rem;
   line-height: 1.25;
 
   padding: 28px 24px;
@@ -56,8 +56,8 @@
   margin-bottom: 0;
 
   & code {
-    font-family: monospace;
-    font-size: 0.98rem;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 0.94rem;
   }
 
 	&:after {
@@ -92,5 +92,7 @@
 }
 
 @media #{$tablet-width} {
-
+  .question__code {
+    font-size: 1.05rem;
+  }
 }

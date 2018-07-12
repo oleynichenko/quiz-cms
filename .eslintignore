@@ -1,2 +1,9 @@
 # Created by .ignore support plugin (hsz.mobi)
 static
+node_modules
+front/@material
+front/components/vendor
+front/components/test/index.js
+!front/components
+front/components/*
+!front/components/test

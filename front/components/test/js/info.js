@@ -1,5 +1,5 @@
 import dom from './dom.js';
-import {initFbBtns, runIfEventFired, scrollToTop} from './help-function';
+import {scrollToTop} from './help-function';
 import {MDCRipple} from '@material/ripple';
 
 let infoContainer;
@@ -9,8 +9,8 @@ const init = (info, secondBlock = dom.test) => {
 
   const infoBtn = infoContainer.querySelector(`.js-info__btn`);
   const infoStartTest = info.querySelector(`.js-info__start-test`);
-  const fbShareBtn = info.querySelector(`.js-info__share-fb`);
-  const fbLikeBtn = info.querySelector(`.js-info__like-fb`);
+  // const fbShareBtn = info.querySelector(`.js-info__share-fb`);
+  // const fbLikeBtn = info.querySelector(`.js-info__like-fb`);
 
   infoContainer.classList.add(`js-info__container`);
   secondBlock.classList.add(`info__second-block`);
@@ -25,7 +25,7 @@ const init = (info, secondBlock = dom.test) => {
     scrollToTop();
   });
 
-  runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, fbLikeBtn, fbShareBtn, `info`);
+  // runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, fbLikeBtn, fbShareBtn, `info`);
 
   MDCRipple.attachTo(infoStartTest);
 };

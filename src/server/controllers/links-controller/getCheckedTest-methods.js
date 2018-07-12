@@ -1,6 +1,6 @@
 const pug = require(`pug`);
-const {getPercent, getDate, roundUp, ceilUp} = require(`../../../libs/util`);
-const {getImageRef, getImageUrl, getTestLinkUrl} = require(`../../config`);
+const {getPercent, getDate, roundUp} = require(`../../../libs/util`);
+const {getImageRef, getTestLinkUrl} = require(`../../config`);
 
 const getAwardImageName = (score, levels, images) => {
   if (score >= levels.profi) {

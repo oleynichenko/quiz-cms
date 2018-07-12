@@ -7,8 +7,6 @@ import {
   toggleAbility,
   toggleVisibility,
   checkIfClassInMap,
-  initFbBtns,
-  runIfEventFired
 } from './help-function';
 
 export default class TestView {
@@ -91,8 +89,7 @@ export default class TestView {
   _showSocial() {
     // ставим обработчики на соц кнопки в блоке test
     // обработчики повесятся асинхронно
-    runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, this.dom.testLikeFb, this.dom.testShareFb, `test`);
-
+    // runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, this.dom.testLikeFb, this.dom.testShareFb, `test`);
     this.dom.testSocial.classList.add(Class.TEST_SOCIAL_VISIBLE);
   }
 
@@ -140,14 +137,14 @@ export default class TestView {
           if (response) {
             window.gtag(`event`, `post`, {
               'event_category': `award`,
-              'event_label' : `FB`
+              'event_label': `FB`
             });
           }
         });
 
         window.gtag(`event`, `clickToShare`, {
           'event_category': `award`,
-          'event_label' : `FB`
+          'event_label': `FB`
         });
 
       });

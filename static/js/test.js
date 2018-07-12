@@ -1572,83 +1572,81 @@ const _checkIfClassInArr = (arr, className) => {
   return false;
 };
 
-const runIfEventFired = (status, event, callback, ...args) => {
-  if (status) {
-    callback(args[0], args[1], args[2]);
-  } else {
-    document.addEventListener(event, () => {
-      callback(args[0], args[1], args[2]);
-    });
-  }
-};
+// export const runIfEventFired = (status, event, callback, ...args) => {
+//   if (status) {
+//     callback(args[0], args[1], args[2]);
+//   } else {
+//     document.addEventListener(event, () => {
+//       callback(args[0], args[1], args[2]);
+//     });
+//   }
+// };
 
-const initFbBtns = (likeBtn, shareBtn, block) => {
-  if (likeBtn) {
-    likeBtn.addEventListener(`click`, () => {
+// export const initFbBtns = (likeBtn, shareBtn, block) => {
+//   if (likeBtn) {
+//     likeBtn.addEventListener(`click`, () => {
 
-      window.gtag(`event`, `clickToPostFb`, {
-        'event_category': `social`,
-        'event_label' : `like${block}`
-      });
+//       window.gtag(`event`, `clickToPostFb`, {
+//         'event_category': `social`,
+//         'event_label': `like${block}`
+//       });
 
-      window.FB.ui({
-        method: `share_open_graph`,
-        action_type: `og.shares`,
-        action_properties: JSON.stringify({
-          object: window.location.href
-        })
-      }, function (response) {
-        if (response) {
-          window.gtag(`event`, `post`, {
-            'event_category': `social`,
-            'event_label' : `FbLike${block}`
-          });
-        }
-      });
-    });
-  }
+//       window.FB.ui({
+//         method: `share_open_graph`,
+//         action_type: `og.shares`,
+//         action_properties: JSON.stringify({
+//           object: window.location.href
+//         })
+//       }, function (response) {
+//         if (response) {
+//           window.gtag(`event`, `post`, {
+//             'event_category': `social`,
+//             'event_label': `FbLike${block}`
+//           });
+//         }
+//       });
+//     });
+//   }
 
-  if (shareBtn) {
-    shareBtn.addEventListener(`click`, () => {
-      ga(`send`, `event`, `social`, `click`, `${block}ShareFb`);
+//   if (shareBtn) {
+//     shareBtn.addEventListener(`click`, () => {
+//       window.FB.ui({
+//         method: `share`,
+//         href: window.location.href
+//       }, function (response) {
+//         if (response) {
+//           window.gtag(`event`, `post`, {
+//             'event_category': `social`,
+//             'event_label': `FbShare${block}`
+//           });
+//         }
+//       });
 
-      window.FB.ui({
-        method: `share`,
-        href: window.location.href
-      }, function (response) {
-        if (response) {
-          window.gtag(`event`, `post`, {
-            'event_category': `social`,
-            'event_label' : `FbShare${block}`
-          });
-        }
-      });
+//       window.gtag(`event`, `clickToPostFb`, {
+//         'event_category': `social`,
+//         'event_label': `share${block}`
+//       });
+//     });
+//     window.FB.api(
+//         `/`,
+//         {
+//           "id": window.location.href,
+//           "fields": `engagement`,
+//           "access_token": `1749739928442230|6c993bd89f7f20c463971b1582ad7cc0`
+//         },
+//         function (response) {
+//           if (response && !response.error) {
+//             const engagement = response.engagement;
 
-      window.gtag(`event`, `clickToPostFb`, {
-        'event_category': `social`,
-        'event_label' : `share${block}`
-      });
-    });
-    window.FB.api(
-        `/`,
-        {
-          "id": window.location.href,
-          "fields": `engagement`,
-          "access_token": `1749739928442230|6c993bd89f7f20c463971b1582ad7cc0`
-        },
-        function (response) {
-          if (response && !response.error) {
-            const engagement = response.engagement;
-
-            if (engagement && engagement.share_count > 5) {
-              const sharesQuantity = shareBtn.querySelector(`.fb-btn__shares-quantity`);
-              sharesQuantity.innerHTML = engagement.share_count;
-            }
-          }
-        }
-    );
-  }
-};
+//             if (engagement && engagement.share_count > 5) {
+//               const sharesQuantity = shareBtn.querySelector(`.fb-btn__shares-quantity`);
+//               sharesQuantity.innerHTML = engagement.share_count;
+//             }
+//           }
+//         }
+//     );
+//   }
+// };
 
 const checkIfClassInMap = (map, className) => {
 
@@ -1751,8 +1749,7 @@ class TestView {
   _showSocial() {
     // ставим обработчики на соц кнопки в блоке test
     // обработчики повесятся асинхронно
-    runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, this.dom.testLikeFb, this.dom.testShareFb, `test`);
-
+    // runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, this.dom.testLikeFb, this.dom.testShareFb, `test`);
     this.dom.testSocial.classList.add(Class.TEST_SOCIAL_VISIBLE);
   }
 
@@ -1800,14 +1797,14 @@ class TestView {
           if (response) {
             window.gtag(`event`, `post`, {
               'event_category': `award`,
-              'event_label' : `FB`
+              'event_label': `FB`
             });
           }
         });
 
         window.gtag(`event`, `clickToShare`, {
           'event_category': `award`,
-          'event_label' : `FB`
+          'event_label': `FB`
         });
 
       });
@@ -1871,7 +1868,6 @@ class Test {
     };
 
     this._view.bind();
-
   }
 }
 
@@ -1908,8 +1904,8 @@ const init = (info, secondBlock = dom.test) => {
 
   const infoBtn = infoContainer.querySelector(`.js-info__btn`);
   const infoStartTest = info.querySelector(`.js-info__start-test`);
-  const fbShareBtn = info.querySelector(`.js-info__share-fb`);
-  const fbLikeBtn = info.querySelector(`.js-info__like-fb`);
+  // const fbShareBtn = info.querySelector(`.js-info__share-fb`);
+  // const fbLikeBtn = info.querySelector(`.js-info__like-fb`);
 
   infoContainer.classList.add(`js-info__container`);
   secondBlock.classList.add(`info__second-block`);
@@ -1924,7 +1920,7 @@ const init = (info, secondBlock = dom.test) => {
     scrollToTop();
   });
 
-  runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, fbLikeBtn, fbShareBtn, `info`);
+  // runIfEventFired(window.isfbApiInited, `fbApiInit`, initFbBtns, fbLikeBtn, fbShareBtn, `info`);
 
   MDCRipple.attachTo(infoStartTest);
 };
@@ -1975,7 +1971,7 @@ class App {
 
     loader.sendPass(userAnswers)
         .then((data) => {
-          //чтобы не появлялись результаты раньше чем прелоадер раскроется
+          // чтобы не появлялись результаты раньше чем прелоадер раскроется
           setTimeout(this.handleData.bind(this), 1000, data);
           const leftTime = sendResultTime + 4000 - Date.now();
 

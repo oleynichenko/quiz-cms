@@ -1010,12 +1010,12 @@ address {
   color: #B00020; }
 
 .question__title code {
-  font-family: monospace;
+  font-family: 'Source Code Pro', monospace;
   font-size: 1.05rem; }
 
 .question__code {
-  font-family: monospace;
-  font-size: 0.98rem;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.9rem;
   line-height: 1.25;
   padding: 28px 24px;
   margin: 20px 0;
@@ -1040,8 +1040,8 @@ address {
   margin-bottom: 0; }
 
 .question__option code {
-  font-family: monospace;
-  font-size: 0.98rem; }
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.94rem; }
 
 .question__option:after {
   content: "";
@@ -1067,6 +1067,10 @@ address {
   font-weight: bold;
   left: -18px;
   top: 15px; }
+
+@media (min-width: 480px) {
+  .question__code {
+    font-size: 1.05rem; } }
 
 .accordion__title {
   cursor: pointer;

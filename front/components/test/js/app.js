@@ -15,7 +15,7 @@ class App {
 
     loader.sendPass(userAnswers)
         .then((data) => {
-          //чтобы не появлялись результаты раньше чем прелоадер раскроется
+          // чтобы не появлялись результаты раньше чем прелоадер раскроется
           setTimeout(this.handleData.bind(this), 1000, data);
           const leftTime = sendResultTime + 4000 - Date.now();
 

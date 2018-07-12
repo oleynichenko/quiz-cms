@@ -3,12 +3,12 @@ script.
     FB.init({
       appId           : #{fbAppId},
       autoLogAppEvents: true,
-      xfbml           : false,
+      xfbml           : true,
       version         : 'v3.0'
     });
-    const event = new Event(`fbApiInit`);
-    document.dispatchEvent(event);
-    window.isfbApiInited = true;
+    //- const event = new Event(`fbApiInit`);
+    //- document.dispatchEvent(event);
+    //- window.isfbApiInited = true;
 
     FB.AppEvents.logPageView();
   };
@@ -16,6 +16,6 @@ script.
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) {return};
     js = d.createElement(s); js.id = id;
-    js.src = `https://connect.facebook.net/ru_RU/sdk.js`;
+    js.src = `https://connect.facebook.net/en_US/sdk.js`;
     fjs.parentNode.insertBefore(js, fjs);
   }(document, `script`, `facebook-jssdk`));

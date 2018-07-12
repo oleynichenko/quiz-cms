@@ -23,8 +23,8 @@ class TestsStore {
   async getTestByPermalink(permalink) {
     const pipeline = [
       {$match: {"links.permalink": permalink}},
-      {$unwind: `$links`},
-      {$match: {"links.permalink": permalink}},
+      // {$unwind: `$links`},
+      // {$match: {"links.permalink": permalink}},
     ];
 
     const result = (await (await this.collection).aggregate(pipeline).toArray())[0];

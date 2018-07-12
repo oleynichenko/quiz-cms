@@ -161,13 +161,11 @@ const getPassData = async (req, res, next) => {
 
       const result = passData.result;
       const percentScored = result.percentScored;
-      const redirectLink = getTestLinkUrl(permalink);
-      // const canonicalUrl = getTestLinkUrl(test.canonLink);
+      const redirectLink = getTestLinkUrl(test.canonLink);
       const title = `${percentScored}% по тесту «${test.title}»!`;
       const imageFileName = getAwardImageName(percentScored, test.levels, test.images);
 
       const renderOptions = {
-        // canonicalUrl,
         title,
         description: test.benefit,
         imageURL: getImageUrl(imageFileName),

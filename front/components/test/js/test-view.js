@@ -7,6 +7,7 @@ import {
   toggleAbility,
   toggleVisibility,
   checkIfClassInMap,
+  formatDate
 } from './help-function';
 
 export default class TestView {
@@ -59,6 +60,7 @@ export default class TestView {
   changePage(pass, retakeMessage) {
     this._disableSelection(this.dom.testQuestions);
     toggleVisibility(this.dom.resultBtn, false);
+    this.dom.testTag.innerHTML = `Результаты теста от ${formatDate(pass.date)}`;
     this._showSocial();
     this._showRetakeBlock(retakeMessage);
     this._markWrongAnsweredQuestion(pass.result.wrongQuestionsIds);
@@ -119,7 +121,6 @@ export default class TestView {
   }
 
   showSummary(html, awardShareData, isPassCurrent) {
-    this.dom.testTag.innerHTML = `Результаты теста`;
     this.dom.testTitle.insertAdjacentHTML(`afterEnd`, html);
 
     this.dom.test.classList.add(Class.TEST_IS_CHECKED);

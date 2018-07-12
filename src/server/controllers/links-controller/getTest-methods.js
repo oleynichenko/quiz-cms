@@ -27,7 +27,6 @@ const getPermalinks = (links) => {
     return permalinks;
   }, []);
 
-  console.log(result);
   return result;
 };
 

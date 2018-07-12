@@ -1572,6 +1572,29 @@ const _checkIfClassInArr = (arr, className) => {
   return false;
 };
 
+const formatDate = (dateInString) => {
+  let date = new Date(dateInString);
+
+  let dd = date.getDate();
+
+  if (dd < 10) {
+    dd = `0${dd}`;
+  }
+
+  let mm = date.getMonth() + 1;
+
+  if (mm < 10) {
+    mm = `0${mm}`;
+  }
+
+  let yy = date.getFullYear() % 100;
+
+  if (yy < 10) {
+    yy = `0${yy}`;
+  }
+
+  return `${dd}.${mm}.${yy}`;
+};
 // export const runIfEventFired = (status, event, callback, ...args) => {
 //   if (status) {
 //     callback(args[0], args[1], args[2]);
@@ -1719,6 +1742,7 @@ class TestView {
   changePage(pass, retakeMessage) {
     this._disableSelection(this.dom.testQuestions);
     toggleVisibility(this.dom.resultBtn, false);
+    this.dom.testTag.innerHTML = `Результаты теста от ${formatDate(pass.date)}`;
     this._showSocial();
     this._showRetakeBlock(retakeMessage);
     this._markWrongAnsweredQuestion(pass.result.wrongQuestionsIds);
@@ -1779,7 +1803,6 @@ class TestView {
   }
 
   showSummary(html, awardShareData, isPassCurrent) {
-    this.dom.testTag.innerHTML = `Результаты теста`;
     this.dom.testTitle.insertAdjacentHTML(`afterEnd`, html);
 
     this.dom.test.classList.add(Class.TEST_IS_CHECKED);

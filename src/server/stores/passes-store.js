@@ -31,11 +31,12 @@ class PassesStore {
   }
 
   async savePass(testId, permalink, sessionId, result, answers) {
+
     const pass = {
       testId,
       permalink,
       sessionId,
-      date: Date.now(),
+      date: new Date(),
       result,
       answers,
       usedAttempts: 1

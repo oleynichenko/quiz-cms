@@ -8,14 +8,14 @@ const {
   getRetakeMessage,
   getAwardImageName,
   getTestResult,
-  getAwardShareData
+  getAwardShareData,
+  recountTestStat
 } = require(`./getCheckedTest-methods`);
 
 const {
   canPass,
   getQuestionsFromPass,
   getQuestionsFromTest,
-  getPermalinks,
   formatDate
 } = require(`./getTest-methods`);
 
@@ -26,17 +26,24 @@ const getCheckedTest = async (req, res) => {
   const userData = req.body;
   const permalink = req.params.permalink;
   const sessionId = req.sessionID;
+  const averagePassesLevel = req.session.averageLevel;
   let isPassCurrent = false;
   let test;
 
   if (!(Object.keys(userData).length === 0)) {
     const questionsIds = Object.keys(userData).map((item) => Number(item));
     const rightData = await questionsStore.getQuestionsByIds(questionsIds);
+
     test = await testsStore.getTestByPermalink(permalink);
+
     const testResult = getTestResult(userData, rightData);
     const testId = test.id;
+
     isPassCurrent = true;
+
     await passesStore.savePass(testId, permalink, sessionId, testResult, userData);
+
+    recountTestStat(testId, permalink, test.links, test.levels);
   }
 
   const pass = await passesStore.getPassBySessionId(permalink, sessionId);
@@ -49,9 +56,9 @@ const getCheckedTest = async (req, res) => {
     const link = test.links;
 
     // const retakesDate = (pass.usedAttempts < link.attempts) ? link.interval + pass.date : 0;
-    const awardImageName = getAwardImageName(pass.result.percentScored, test.levels, test.images);
+    const awardImageName = getAwardImageName(pass.result.percentScored, test.levels, averagePassesLevel, test.images);
 
-    const summaryTemplate = getSummaryTemplate(pass, test, awardImageName, req.app.locals.temp);
+    const summaryTemplate = getSummaryTemplate(pass, test, awardImageName, averagePassesLevel, req.app.locals.temp);
 
     const data = {
       summaryTemplate,
@@ -124,15 +131,13 @@ const getTest = async (req, res, next) => {
             fbAppId: FB_APP_ID
           };
 
+          if (test.stat && test.stat.total > 5) {
+            renderOptions.stat = test.stat;
 
-          const permalinks = getPermalinks(test.links);
-          const passesStat = await passesStore.getPassesStat(permalinks, test.levels.profi, test.levels.expert);
+            renderOptions.stat.profiLevel = test.levels.profi;
+            renderOptions.stat.expertLevel = test.levels.expert;
 
-          if (passesStat && passesStat.total > 5) {
-            passesStat.profiLevel = test.levels.profi;
-            passesStat.expertLevel = test.levels.expert;
-
-            renderOptions.stat = passesStat;
+            req.session.averageLevel = test.stat.average;
           }
 
           res.render(`test`, renderOptions);

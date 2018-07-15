@@ -1,12 +1,16 @@
 const pug = require(`pug`);
 const {getPercent, getDate, roundUp} = require(`../../../libs/util`);
 const {getImageRef, getTestLinkUrl} = require(`../../config`);
+const testsStore = require(`../../stores/tests-store`);
+const passesStore = require(`../../stores/passes-store`);
 
-const getAwardImageName = (score, levels, images) => {
+const getAwardImageName = (score, levels, averageLevel, images) => {
   if (score >= levels.profi) {
     return (score >= levels.expert)
       ? images.expert
       : images.profi;
+  } else if (score > averageLevel) {
+    return images.main;
   }
 
   return null;
@@ -50,7 +54,7 @@ const getAwardShareData = (test, percentScored, permalink, id) => {
   };
 };
 
-const getSummaryTemplate = (pass, test, image, temp) => {
+const getSummaryTemplate = (pass, test, image, averageLevel, temp) => {
   const percentScored = pass.result.percentScored;
   const levels = test.levels;
   const passId = pass._id.str;
@@ -68,6 +72,7 @@ const getSummaryTemplate = (pass, test, image, temp) => {
     infoSources: test.infoSources,
     event: test.event,
     passId,
+    averageLevel,
     temp
   };
 
@@ -163,11 +168,35 @@ const getTestResult = (userData, rightData) => {
   };
 };
 
+// получаем ссылки для отбора статистики
+const _getPermalinks = (links) => {
+  const result = links.reduce(function (permalinks, link) {
+    if (link.goInStat) {
+      permalinks.push(link.permalink);
+    }
+
+    return permalinks;
+  }, []);
+
+  return result;
+};
+
+const recountTestStat = async (id, permalink, links, levels) => {
+  const permalinks = _getPermalinks(links);
+
+  if (permalinks.indexOf(permalink) !== -1) {
+    const passesStat = await passesStore.getPassesStat(permalinks, levels.profi, levels.expert);
+
+    testsStore.saveTestStat(id, passesStat);
+  }
+};
+
 module.exports = {
   getSummaryTemplate,
   checkPassAvailability,
   getRetakeMessage,
   getAwardImageName,
   getTestResult,
-  getAwardShareData
+  getAwardShareData,
+  recountTestStat
 };

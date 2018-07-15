@@ -1,6 +1,12 @@
 - const isNotProfi = (percentScored < profiLevel);
+
 .summary__feedback
   if isNotProfi
+    if averageLevel
+      if (percentScored < averageLevel)
+        <p>Cредний результат тесту #{averageLevel}%. Ваш похоже ниже... </p>
+      else
+        <p>Ваш результат лучше чем средний по тесту (#{averageLevel}%), и поэтому код который вы способны написать наверняка не сделает мир хуже.</p>
     <p class="summary__text">#{levelExplanation.profi} и поэтому профессиональный уровень владения темой, по мнению автора, это минимум #{profiLevel}%.</p>
 
   else if (percentScored > profiLevel) && (percentScored < expertLevel)
@@ -8,4 +14,3 @@
     <p class="summary__text">#{levelExplanation.expert} и поэтому экспертным уровнем владения темой, по мнению автора теста, стоит считать минимум #{expertLevel}%.</p>
   else
     <p>Блестяще! Вы безусловно мастер в этой теме.</p>
-

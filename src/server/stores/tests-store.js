@@ -49,6 +49,10 @@ class TestsStore {
 
     return (await result).links;
   }
+
+  async saveTestStat(id, stat) {
+    (await this.collection).updateOne({id}, {$set: {stat}});
+  }
 }
 
 module.exports = new TestsStore(setupCollection()

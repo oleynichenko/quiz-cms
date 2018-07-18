@@ -135,3 +135,21 @@ export const showPage = () => {
 export const scrollToTop = () => {
   window.scrollTo(0, 0);
 };
+
+export const Share = {
+  vkontakte(purl) {
+    const url = `http://vkontakte.ru/share.php?url=${encodeURIComponent(purl)}`;
+    Share.popup(url);
+  },
+  twitter(purl) {
+    const url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(purl)}`;
+    Share.popup(url);
+  },
+  fb(purl) {
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(purl)}`;
+    Share.popup(url);
+  },
+  popup(url) {
+    window.open(url, ``, `toolbar=0,status=0,width=626,height=436`);
+  }
+};

@@ -12,9 +12,11 @@ html(lang=`ru`)
     link(rel=`stylesheet` href=`https://fonts.googleapis.com/icon?family=Material+Icons`)
     link(rel=`stylesheet` href=`/css/test.css`)
     include partials/_og.pug
+    script(type=`text/javascript` src=`https://vk.com/js/api/openapi.js?157`)
   body
     include mixins/_fb-sdk.pug
-    include partials/_svg-sprite.pug
+    include mixins/_vk-api.pug
+    //- include partials/_svg-sprite.pug
     header.header.js-header
       if enabledInfo
         include _info.pug
@@ -45,7 +47,6 @@ html(lang=`ru`)
         //- *После нажатия текущие результаты проверки перестанут быть доступными
       section.test__social.js-test__social
         include mixins/_social-btns.pug
-        //- +socialBtns(`test`)
-        +socialBtns()
+        +socialBtns(`test`, canonLink)
     include preloader.pug
     <script src="/js/test.js"></script>

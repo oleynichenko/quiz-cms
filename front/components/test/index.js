@@ -10,7 +10,10 @@ const Class = Object.freeze({
   TEST_IS_CHECKED: `test--is-checked`,
   TEST_QUESTIONS: `js-test__questions`,
   TEST_SOCIAL: `js-test__social`,
-  SUMMARY_SHARE_FB: `js-summary__share-fb`,
+  SUMMARY_SHARE_FB: `js-summary__share-btn--fb`,
+  SUMMARY_SHARE_FB2: `js-summary__share-btn--fb2`,
+  SUMMARY_SHARE_VK: `js-summary__share-btn--vk`,
+  SUMMARY_SHARE_TW: `js-summary__share-btn--tw`,
   TEST_SOCIAL_VISIBLE: `test__social--visible`,
   TEST_QUESTIONS_DONE: `test__questions--done`,
   RESULT_BTN: `js-test__result-btn`,
@@ -1692,6 +1695,24 @@ const scrollToTop = () => {
   window.scrollTo(0, 0);
 };
 
+const Share = {
+  vkontakte(purl) {
+    const url = `http://vkontakte.ru/share.php?url=${encodeURIComponent(purl)}`;
+    Share.popup(url);
+  },
+  twitter(purl) {
+    const url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(purl)}`;
+    Share.popup(url);
+  },
+  fb(purl) {
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(purl)}`;
+    Share.popup(url);
+  },
+  popup(url) {
+    window.open(url, ``, `toolbar=0,status=0,width=626,height=436`);
+  }
+};
+
 class TestView {
   constructor() {
     this.dom = dom;
@@ -1802,7 +1823,7 @@ class TestView {
     });
   }
 
-  showSummary(html, awardShareData, isPassCurrent) {
+  showSummary(html, awardShareData, isPassCurrent, passUrl) {
     this.dom.testTitle.insertAdjacentHTML(`afterEnd`, html);
 
     this.dom.test.classList.add(Class.TEST_IS_CHECKED);
@@ -1814,6 +1835,9 @@ class TestView {
 
     if (awardShareData) {
       const fbShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_FB}`);
+      const fbShareBtn2 = summary.querySelector(`.${Class.SUMMARY_SHARE_FB2}`);
+      const vkShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_VK}`);
+      const twShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_TW}`);
 
       fbShareBtn.addEventListener(`click`, () => {
         window.FB.ui(awardShareData, function (response) {
@@ -1829,7 +1853,31 @@ class TestView {
           'event_category': `award`,
           'event_label': `FB`
         });
+      });
 
+      fbShareBtn2.addEventListener(`click`, (event) => {
+        event.preventDefault();
+        Share.fb(passUrl);
+      });
+
+      vkShareBtn.addEventListener(`click`, (event) => {
+        event.preventDefault();
+        Share.vkontakte(passUrl);
+
+        window.gtag(`event`, `clickToShare`, {
+          'event_category': `award`,
+          'event_label': `VK`
+        });
+      });
+
+      twShareBtn.addEventListener(`click`, (event) => {
+        event.preventDefault();
+        Share.twitter(passUrl);
+
+        window.gtag(`event`, `clickToShare`, {
+          'event_category': `award`,
+          'event_label': `TW`
+        });
       });
 
       if (isPassCurrent) {
@@ -1880,7 +1928,7 @@ class Test {
 
   showTestResult(data) {
     this._view.changePage(data.pass);
-    this._view.showSummary(data.summaryTemplate, data.awardShareData, data.isPassCurrent);
+    this._view.showSummary(data.summaryTemplate, data.awardShareData, data.isPassCurrent, data.passUrl);
     this._view.initAccordion();
     scrollToTop();
   }

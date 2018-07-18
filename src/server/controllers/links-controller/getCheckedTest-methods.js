@@ -1,19 +1,31 @@
 const pug = require(`pug`);
 const {getPercent, getDate, roundUp} = require(`../../../libs/util`);
-const {getImageRef, getTestLinkUrl} = require(`../../config`);
+const {getImageRef, getPassUrl} = require(`../../config`);
 const testsStore = require(`../../stores/tests-store`);
 const passesStore = require(`../../stores/passes-store`);
+
+const checkAward = (score, awardScore) => {
+  return score >= awardScore;
+};
+
+const getAwardImageTwName = (score, levels, averageLevel, images) => {
+  if (score >= levels.profi) {
+    return (score >= levels.expert)
+      ? images.expertTw
+      : images.profiTw;
+  } else {
+    return images.mainTw;
+  }
+};
 
 const getAwardImageName = (score, levels, averageLevel, images) => {
   if (score >= levels.profi) {
     return (score >= levels.expert)
       ? images.expert
       : images.profi;
-  } else if (score > averageLevel) {
+  } else {
     return images.main;
   }
-
-  return null;
 };
 
 // const _getAwardOgData = (test, image, percent) => {
@@ -49,12 +61,13 @@ const getAwardShareData = (test, percentScored, permalink, id) => {
     hashtag: _getAwardHashtag(percentScored, test.levels, test.hashtag),
     action_type: `og.shares`,
     action_properties: JSON.stringify({
-      object: `${getTestLinkUrl(permalink)}/${id}`
+      // object: `${getTestLinkUrl(permalink)}/${id}`
+      object: `${getPassUrl(permalink, id)}`
     })
   };
 };
 
-const getSummaryTemplate = (pass, test, image, averageLevel, temp) => {
+const getSummaryTemplate = (pass, test, isAward, averageLevel, temp) => {
   const percentScored = pass.result.percentScored;
   const levels = test.levels;
   const passId = pass._id.str;
@@ -73,6 +86,7 @@ const getSummaryTemplate = (pass, test, image, averageLevel, temp) => {
     event: test.event,
     passId,
     averageLevel,
+    isAward,
     temp
   };
 
@@ -82,8 +96,9 @@ const getSummaryTemplate = (pass, test, image, averageLevel, temp) => {
     summaryOptions.previousPercentScored = previousResult.percentScored;
   }
 
-  if (image) {
-    summaryOptions.awardImageRef = getImageRef(image);
+  if (isAward) {
+    const awardImageName = getAwardImageName(percentScored, levels, averageLevel, test.images);
+    summaryOptions.awardImageRef = getImageRef(awardImageName);
   }
 
   return pug.renderFile(`./src/server/templates/summary.pug`, summaryOptions);
@@ -198,5 +213,7 @@ module.exports = {
   getAwardImageName,
   getTestResult,
   getAwardShareData,
-  recountTestStat
+  recountTestStat,
+  checkAward,
+  getAwardImageTwName
 };

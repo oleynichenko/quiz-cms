@@ -1,5 +1,5 @@
 const questionsStore = require(`../../stores/questions-store`);
-const {getTestLinkUrl, getImageUrl, getTestLinkRef, FB_APP_ID} = require(`../../config`);
+const {getTestLinkUrl, getImageUrl, getTestLinkRef, FB_APP_ID, VK_APP_ID, getPassUrl} = require(`../../config`);
 const objectId = require(`mongodb`).ObjectId;
 
 const {
@@ -9,7 +9,9 @@ const {
   getAwardImageName,
   getTestResult,
   getAwardShareData,
-  recountTestStat
+  recountTestStat,
+  checkAward,
+  getAwardImageTwName
 } = require(`./getCheckedTest-methods`);
 
 const {
@@ -56,18 +58,19 @@ const getCheckedTest = async (req, res) => {
     const link = test.links;
 
     // const retakesDate = (pass.usedAttempts < link.attempts) ? link.interval + pass.date : 0;
-    const awardImageName = getAwardImageName(pass.result.percentScored, test.levels, averagePassesLevel, test.images);
+    const isAward = checkAward(pass.result.percentScored, averagePassesLevel);
 
-    const summaryTemplate = getSummaryTemplate(pass, test, awardImageName, averagePassesLevel, req.app.locals.temp);
+    const summaryTemplate = getSummaryTemplate(pass, test, isAward, averagePassesLevel, req.app.locals.temp);
 
     const data = {
       summaryTemplate,
       pass
     };
 
-    if (awardImageName) {
+    if (isAward) {
       data.awardShareData = getAwardShareData(test, pass.result.percentScored, pass.permalink, pass._id);
       data.isPassCurrent = isPassCurrent;
+      data.passUrl = getPassUrl(pass.permalink, pass._id);
     }
     // должно быть в link "retakes": {attempts: 2, interval: time, message: "Возможно по решению преподавателя"}
     if (link.attempts) {
@@ -119,6 +122,7 @@ const getTest = async (req, res, next) => {
             title: `Тест «${test.title}»`,
             header: test.title,
             imageURL: getImageUrl(test.images.main),
+            twitterImageUrl: getImageUrl(test.images.mainTw),
             description: test.description,
             updateDate: formatDate(test.updateDate),
             benefit: test.benefit,
@@ -128,7 +132,9 @@ const getTest = async (req, res, next) => {
             enabledInfo: link.enabledInfo,
             interval: link.interval,
             questions,
-            fbAppId: FB_APP_ID
+            fbAppId: FB_APP_ID,
+            vkAppId: VK_APP_ID,
+            canonLink: test.canonLink
           };
 
           if (test.stat && test.stat.total > 5) {
@@ -168,12 +174,14 @@ const getPassData = async (req, res, next) => {
       const percentScored = result.percentScored;
       const redirectLink = getTestLinkUrl(test.canonLink);
       const title = `${percentScored}% по тесту «${test.title}»!`;
-      const imageFileName = getAwardImageName(percentScored, test.levels, test.images);
+      const imageFileName = getAwardImageName(percentScored, test.levels, test.stat.average, test.images);
+      const imageTwFileName = getAwardImageTwName(percentScored, test.levels, test.stat.average, test.images);
 
       const renderOptions = {
         title,
         description: test.benefit,
         imageURL: getImageUrl(imageFileName),
+        twitterImageUrl: getImageUrl(imageTwFileName),
         fbAppId: FB_APP_ID,
         redirectLink
       };

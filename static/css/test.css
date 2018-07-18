@@ -683,6 +683,12 @@ address {
   margin-bottom: 3rem;
   line-height: normal; }
 
+.info__social {
+  display: flex; }
+
+.info__like-vk {
+  margin-left: 10px; }
+
 @media (min-width: 480px) {
   .info__container--on .info__block {
     padding-left: 24px;
@@ -751,26 +757,40 @@ address {
 
 .summary__social-icons {
   position: absolute;
+  display: flex;
   bottom: 7px;
   right: 7px; }
 
-.summary__share-fb {
+.summary__share-btn {
+  box-sizing: border-box;
   width: 24px;
   height: 24px;
-  border-radius: 6px;
-  background-color: #fff;
+  margin-left: 8px;
+  border-radius: 4px;
+  background-color: #C4CBD9;
   cursor: pointer;
   transition: all ease-in-out 150ms; }
 
-.summary__share-fb path {
-  fill: #C4CBD9;
-  transition: fill 150ms; }
-
-.summary__share-fb:hover {
+.summary__share-btn:hover {
   box-shadow: 3px 12px 10px rgba(0, 0, 0, 0.3); }
 
-.summary__share-fb:hover path {
-  fill: #4267B2; }
+.summary__share-btn--fb {
+  padding: 3px; }
+
+.summary__share-btn--fb:hover {
+  background-color: #4267B2; }
+
+.summary__share-btn--vk {
+  padding: 2px; }
+
+.summary__share-btn--vk:hover {
+  background-color: #4a76a8; }
+
+.summary__share-btn--tw {
+  padding: 4px; }
+
+.summary__share-btn--tw:hover {
+  background-color: #4AB3F4; }
 
 .summary__feedback p {
   margin-bottom: 1rem; }
@@ -841,13 +861,18 @@ address {
   .summary__social-icons {
     bottom: 10px;
     right: 10px; }
-  .summary__share-fb {
-    width: 40px;
-    height: 40px;
+  .summary__share-btn {
+    width: 44px;
+    height: 44px;
+    margin-left: 12px;
     box-shadow: 3px 6px 10px rgba(0, 0, 0, 0.1); }
-  .summary__share-fb:hover {
+  .summary__share-btn:hover {
     -webkit-transform: translate(0, -4px);
-            transform: translate(0, -4px); } }
+            transform: translate(0, -4px); }
+  .summary__share-btn--fb {
+    padding: 4px; }
+  .summary__share-btn--tw {
+    padding: 6px; } }
 
 .test__title {
   font-family: Roboto, sans-serif;
@@ -953,13 +978,16 @@ address {
   padding: 3px; }
 
 .test__social--visible {
-  display: block; }
+  display: flex; }
 
 .test--is-checked .test__lead-text {
   display: none; }
 
 .test--is-checked .test__subtitle--checking {
   display: inline-block; }
+
+.test__like-vk {
+  margin-left: 10px; }
 
 @media (min-width: 480px) {
   .test__title {

@@ -7,7 +7,8 @@ import {
   toggleAbility,
   toggleVisibility,
   checkIfClassInMap,
-  formatDate
+  formatDate,
+  Share
 } from './help-function';
 
 export default class TestView {
@@ -120,7 +121,7 @@ export default class TestView {
     });
   }
 
-  showSummary(html, awardShareData, isPassCurrent) {
+  showSummary(html, awardShareData, isPassCurrent, passUrl) {
     this.dom.testTitle.insertAdjacentHTML(`afterEnd`, html);
 
     this.dom.test.classList.add(Class.TEST_IS_CHECKED);
@@ -132,6 +133,9 @@ export default class TestView {
 
     if (awardShareData) {
       const fbShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_FB}`);
+      // const fbShareBtn2 = summary.querySelector(`.${Class.SUMMARY_SHARE_FB2}`);
+      const vkShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_VK}`);
+      const twShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_TW}`);
 
       fbShareBtn.addEventListener(`click`, () => {
         window.FB.ui(awardShareData, function (response) {
@@ -147,7 +151,31 @@ export default class TestView {
           'event_category': `award`,
           'event_label': `FB`
         });
+      });
 
+      // fbShareBtn2.addEventListener(`click`, (event) => {
+      //   event.preventDefault();
+      //   Share.fb(passUrl);
+      // });
+
+      vkShareBtn.addEventListener(`click`, (event) => {
+        event.preventDefault();
+        Share.vkontakte(passUrl);
+
+        window.gtag(`event`, `clickToShare`, {
+          'event_category': `award`,
+          'event_label': `VK`
+        });
+      });
+
+      twShareBtn.addEventListener(`click`, (event) => {
+        event.preventDefault();
+        Share.twitter(passUrl);
+
+        window.gtag(`event`, `clickToShare`, {
+          'event_category': `award`,
+          'event_label': `TW`
+        });
       });
 
       if (isPassCurrent) {

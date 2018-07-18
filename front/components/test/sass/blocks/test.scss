@@ -104,7 +104,7 @@
 }
 
 .test__social--visible {
-  display: block;
+  display: flex;
 }
 
 .test--is-checked {
@@ -115,6 +115,10 @@
   & .test__subtitle--checking {
     display: inline-block;
   }
+}
+
+.test__like-vk {
+  margin-left: 10px;
 }
 
 @media #{$tablet-width} {

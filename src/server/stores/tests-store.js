@@ -15,21 +15,30 @@ class TestsStore {
     this.collection = collection;
   }
 
-  async getTestById(id) {
-    const query = {id};
-    return (await this.collection).findOne(query);
-  }
+  // async getTestById(id) {
+  //   const query = {id};
+  //   return (await this.collection).findOne(query);
+  // }
 
-  async getTestData(permalink) {
-    const query = {"links.permalink": permalink};
-    const projection = {
-      _id: 0,
-      id: 1,
-      links: 1,
-      stat: 1
-    };
+  async getTestForChecking(permalink) {
 
-    return (await this.collection).findOne(query, projection);
+    const pipeline = [
+      {
+        $match: {
+          "links.permalink": permalink
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          id: 1,
+          links: 1,
+          stat: 1
+        }
+      }
+    ];
+
+    return (await (await this.collection).aggregate(pipeline).toArray())[0];
   }
 
   async getTestForShowing(permalink) {
@@ -40,7 +49,36 @@ class TestsStore {
       {
         $project: {
           _id: 0,
-          levels: 0
+          levels: 0,
+          recommendation: 0
+        }
+      }
+    ];
+
+    const result = (await (await this.collection).aggregate(pipeline).toArray())[0];
+
+    return result;
+  }
+
+  async getTestForPassLink(permalink, percentScored) {
+    const pipeline = [
+      {$match: {"links.permalink": permalink}},
+      {$unwind: `$levels`},
+      {
+        $match: {
+          "links.permalink": permalink,
+          "levels.score.min": {$lte: percentScored},
+          "levels.score.max": {$gt: percentScored}
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          levels: 1,
+          stat: 1,
+          title: 1,
+          benefit: 1,
+          canonLink: 1,
         }
       }
     ];
@@ -69,7 +107,7 @@ class TestsStore {
           "levels.score.min": {$lte: percentScored},
           "levels.score.max": {$gt: percentScored}
         }
-      }
+      },
     ];
 
     return (await (await this.collection).aggregate(pipeline).toArray())[0];
@@ -94,7 +132,7 @@ class TestsStore {
   }
 
   async saveTestStat(id, statReport) {
-    (await this.collection).updateOne({id}, {$set: {"stat.report": statReport}});
+    return (await this.collection).updateOne({id}, {$set: {"stat.report": statReport}});
   }
 }
 

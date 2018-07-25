@@ -89,13 +89,12 @@ const getSummaryTemplate = (pass, test, imageName, temp) => {
     summaryOptions.awardImageRef = getImageRef(imageName);
   }
 
-  const feedback = level.feedback;
-  if (feedback) {
-    const feedbackData = getDataIfFunction(pass, test.stat.report, feedback);
+  const feedback = (level.feedback)
+    ? getDataIfFunction(pass, test.stat, level.feedback)
+    : {};
 
-    if (!isEmpty(feedbackData)) {
-      summaryOptions.feedback = feedbackData;
-    }
+  if (!isEmpty(feedback)) {
+    summaryOptions.feedback = feedback;
   }
 
   return pug.renderFile(`./src/server/templates/summary/index.pug`, summaryOptions);
@@ -194,14 +193,12 @@ const _getPermalinks = (links) => {
 };
 
 const recountTestStat = async (id, permalink, links, levels) => {
-  console.log(`Сработала recountTestStat`);
   const permalinks = _getPermalinks(links);
-  console.log(permalinks);
 
-  // не понятно что за условие
+  // если в ссылке отключено goInStat то test/stat.report не обновляется
   if (permalinks.indexOf(permalink) !== -1) {
     const passesStat = await passesStore.getPassesStat(permalinks, levels.profi, levels.expert);
-    console.log(passesStat);
+
     await testsStore.saveTestStat(id, passesStat);
   }
 };

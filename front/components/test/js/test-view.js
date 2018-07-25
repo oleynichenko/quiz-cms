@@ -61,13 +61,34 @@ export default class TestView {
   changePage(pass, retakeMessage) {
     this._disableSelection(this.dom.testQuestions);
     toggleVisibility(this.dom.resultBtn, false);
-    this.dom.testTag.innerHTML = `Результаты теста от ${formatDate(pass.date)}`;
+    this._changeTestTag(pass.date);
     this._showSocial();
     this._showRetakeBlock(retakeMessage);
     this._markWrongAnsweredQuestion(pass.result.wrongQuestionsIds);
 
     if (pass.answers) {
       this._markChosenOptions(pass.answers);
+    }
+
+    this._handleDisqus();
+  }
+
+  _changeTestTag(date) {
+    this.dom.testTag.innerHTML = `Результаты теста от ${formatDate(date)}`;
+  }
+
+  _handleDisqus() {
+    let disqusLoaded = window.disqusLoaded;
+
+    if (disqusLoaded === false) {
+      window.addEventListener(`scroll`, () => {
+        if (!disqusLoaded && (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+          this.dom.testDisqus.classList.add(Class.TEST_DISQUS_VISIBLE);
+
+          window.startDisqus();
+          disqusLoaded = true;
+        }
+      });
     }
   }
 
@@ -121,7 +142,7 @@ export default class TestView {
     });
   }
 
-  showSummary(html, awardShareData, isPassCurrent, passUrl) {
+  showSummary(html, shareData) {
     this.dom.testTitle.insertAdjacentHTML(`afterEnd`, html);
 
     this.dom.test.classList.add(Class.TEST_IS_CHECKED);
@@ -131,14 +152,23 @@ export default class TestView {
 
     startFitty(summaryPercent, {maxSize: 108});
 
-    if (awardShareData) {
+    if (shareData) {
       const fbShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_FB}`);
       // const fbShareBtn2 = summary.querySelector(`.${Class.SUMMARY_SHARE_FB2}`);
       const vkShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_VK}`);
       const twShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_TW}`);
 
       fbShareBtn.addEventListener(`click`, () => {
-        window.FB.ui(awardShareData, function (response) {
+        const fbShareData = {
+          method: `share_open_graph`,
+          hashtag: shareData.hashtag,
+          action_type: `og.shares`,
+          action_properties: JSON.stringify({
+            object: shareData.passUrl
+          })
+        };
+
+        window.FB.ui(fbShareData, function (response) {
           if (response) {
             window.gtag(`event`, `post`, {
               'event_category': `award`,
@@ -160,7 +190,7 @@ export default class TestView {
 
       vkShareBtn.addEventListener(`click`, (event) => {
         event.preventDefault();
-        Share.vkontakte(passUrl);
+        Share.vkontakte(shareData.passUrl);
 
         window.gtag(`event`, `clickToShare`, {
           'event_category': `award`,
@@ -170,7 +200,7 @@ export default class TestView {
 
       twShareBtn.addEventListener(`click`, (event) => {
         event.preventDefault();
-        Share.twitter(passUrl);
+        Share.twitter(shareData.passUrl);
 
         window.gtag(`event`, `clickToShare`, {
           'event_category': `award`,
@@ -178,7 +208,7 @@ export default class TestView {
         });
       });
 
-      if (isPassCurrent) {
+      if (shareData.isPassCurrent) {
         window.gtag(`event`, `receive`, {
           'event_category': `award`,
         });

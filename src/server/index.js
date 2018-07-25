@@ -29,10 +29,12 @@ app.use(session({
     dbPromise: db,
   })
 }));
+
+app.use(express.static(`static`));
+
 app.use(useragent.express());
 app.use(useragentF);
 
-app.use(express.static(`static`));
 app.use(loadUser);
 routes.init(app);
 

@@ -26,6 +26,7 @@ const dom = {
   retakeMessage: document.querySelector(`.${Class.RETAKE_MESSAGE}`),
   testShareFb: document.querySelector(`.${Class.TEST_SHARE_FB}`),
   testLikeFb: document.querySelector(`.${Class.TEST_LIKE_FB}`),
+  testDisqus: document.querySelector(`.${Class.TEST_DISQUS}`),
 };
 
 

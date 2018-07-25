@@ -750,7 +750,7 @@ address {
   padding: 0 0;
   vertical-align: bottom; }
 
-.summary__award {
+.summary__image {
   position: relative;
   margin-top: 2.5rem;
   margin-bottom: 2.5rem; }
@@ -988,6 +988,13 @@ address {
 
 .test__like-vk {
   margin-left: 10px; }
+
+.test__disqus {
+  display: none;
+  margin-top: 5rem; }
+
+.test__disqus--visible {
+  display: block; }
 
 @media (min-width: 480px) {
   .test__title {

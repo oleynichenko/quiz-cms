@@ -1,8 +1,12 @@
 const pug = require(`pug`);
-const {getPercent, getDate, roundUp, getDataIfFunction, isEmpty} = require(`../../../libs/util`);
-const {getImageRef} = require(`../../config`);
+const {getPercent, getDate, roundUp} = require(`../../../libs/util`);
+const {getImageRef, getPassUrl} = require(`../../config`);
 const testsStore = require(`../../stores/tests-store`);
 const passesStore = require(`../../stores/passes-store`);
+
+const checkAward = (score, awardScore) => {
+  return score >= awardScore;
+};
 
 const getAwardImageTwName = (score, levels, averageLevel, images) => {
   if (score >= levels.profi) {
@@ -37,68 +41,67 @@ const getAwardImageName = (score, levels, averageLevel, images) => {
 //   };
 // };
 
-// const _getAwardHashtag = (percentScored, levels, testHashtag) => {
-//   if (percentScored >= levels.profi) {
-//     const awardLevel = (percentScored >= levels.expert)
-//       ? `expert`
-//       : `profi`;
+const _getAwardHashtag = (percentScored, levels, testHashtag) => {
+  if (percentScored >= levels.profi) {
+    const awardLevel = (percentScored >= levels.expert)
+      ? `expert`
+      : `profi`;
 
-//     return `#${testHashtag}_${awardLevel}`;
-//   }
+    return `#${testHashtag}_${awardLevel}`;
+  }
 
-//   return null;
-// };
+  return null;
+};
 
-// const getAwardShareData = (test, percentScored, permalink, id) => {
-//   // const awardOgData = _getAwardOgData(test, image, percentScored);
+const getAwardShareData = (test, percentScored, permalink, id) => {
+  // const awardOgData = _getAwardOgData(test, image, percentScored);
 
-//   return {
-//     method: `share_open_graph`,
-//     hashtag: _getAwardHashtag(percentScored, test.levels, test.hashtag),
-//     action_type: `og.shares`,
-//     action_properties: JSON.stringify({
-//       // object: `${getTestLinkUrl(permalink)}/${id}`
-//       object: `${getPassUrl(permalink, id)}`
-//     })
-//   };
-// };
+  return {
+    method: `share_open_graph`,
+    hashtag: _getAwardHashtag(percentScored, test.levels, test.hashtag),
+    action_type: `og.shares`,
+    action_properties: JSON.stringify({
+      // object: `${getTestLinkUrl(permalink)}/${id}`
+      object: `${getPassUrl(permalink, id)}`
+    })
+  };
+};
 
-const getSummaryTemplate = (pass, test, imageName, temp) => {
-  const passResult = pass.result;
-  const level = test.levels;
-  // const passId = pass._id.str;
+const getSummaryTemplate = (pass, test, isAward, averageLevel, temp) => {
+  const percentScored = pass.result.percentScored;
+  const levels = test.levels;
+  const passId = pass._id.str;
 
   const summaryOptions = {
-    isMarked: level.marked,
-    conclusionPhrase: level.conclusionPhrase,
-    rightAnswersQuantity: passResult.rightAnswersQuantity,
-    percentScored: passResult.percentScored,
+    pointsScored: pass.result.pointsScored,
+    possibleScore: pass.result.possibleScore,
+    rightAnswersQuantity: pass.result.rightAnswersQuantity,
     questionsQuantity: Object.keys(pass.answers).length,
-    pointsScored: passResult.pointsScored,
-    possibleScore: passResult.possibleScore,
-    recommendText: level.recommendation || test.recommendation,
-    temp,
+    percentScored,
+    profiLevel: levels.profi,
+    expertLevel: levels.expert,
+    levelExplanation: test.levelExplanation,
+    recommendText: test.recommendText,
+    infoSources: test.infoSources,
+    event: test.event,
+    passId,
+    averageLevel,
+    isAward,
+    temp
   };
 
   const previousResult = pass.previousResult;
+
   if (previousResult) {
     summaryOptions.previousPercentScored = previousResult.percentScored;
   }
 
-  if (imageName) {
-    summaryOptions.awardImageRef = getImageRef(imageName);
+  if (isAward) {
+    const awardImageName = getAwardImageName(percentScored, levels, averageLevel, test.images);
+    summaryOptions.awardImageRef = getImageRef(awardImageName);
   }
 
-  const feedback = level.feedback;
-  if (feedback) {
-    const feedbackData = getDataIfFunction(pass, test.stat.report, feedback);
-
-    if (!isEmpty(feedbackData)) {
-      summaryOptions.feedback = feedbackData;
-    }
-  }
-
-  return pug.renderFile(`./src/server/templates/summary/index.pug`, summaryOptions);
+  return pug.renderFile(`./src/server/templates/summary.pug`, summaryOptions);
 };
 
 // пересдать можно если есть неиспользованные попытки или 7 дней с момента последней сдачи уже прошло
@@ -194,15 +197,12 @@ const _getPermalinks = (links) => {
 };
 
 const recountTestStat = async (id, permalink, links, levels) => {
-  console.log(`Сработала recountTestStat`);
   const permalinks = _getPermalinks(links);
-  console.log(permalinks);
 
-  // не понятно что за условие
   if (permalinks.indexOf(permalink) !== -1) {
     const passesStat = await passesStore.getPassesStat(permalinks, levels.profi, levels.expert);
-    console.log(passesStat);
-    await testsStore.saveTestStat(id, passesStat);
+
+    testsStore.saveTestStat(id, passesStat);
   }
 };
 
@@ -212,6 +212,8 @@ module.exports = {
   getRetakeMessage,
   getAwardImageName,
   getTestResult,
+  getAwardShareData,
   recountTestStat,
+  checkAward,
   getAwardImageTwName
 };

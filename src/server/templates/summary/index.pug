@@ -4,6 +4,7 @@ section.summary.js-summary
   if (awardImageRef)
     include summary/_sharing.pug
 
-  include summary/_feedback.pug
+  if (feedback)
+    include summary/_feedback.pug
 
   include summary/_recommendation.pug

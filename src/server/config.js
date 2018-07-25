@@ -8,7 +8,7 @@ const FB_APP_ID = process.env.FB_APP_ID || `1749739928442230`;
 const VK_APP_ID = process.env.VK_APP_ID || `6633717`;
 
 const getImageRef = (imgFileName) => {
-  return `/img/${imgFileName}`;
+  return (imgFileName) ? `/img/${imgFileName}` : null;
 };
 
 const getPassUrl = (permalink, id) => {
@@ -20,7 +20,7 @@ const getImageUrl = (imgFileName) => {
 };
 
 const getTestLinkRef = (linkName) => {
-  return `/links/${linkName}`;
+  return (linkName) ? `/links/${linkName}` : null;
 };
 
 const getTestLinkUrl = (linkName) => {

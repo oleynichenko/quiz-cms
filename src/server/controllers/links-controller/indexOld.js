@@ -1,7 +1,6 @@
 const questionsStore = require(`../../stores/questions-store`);
 const {getTestLinkUrl, getImageUrl, getTestLinkRef, FB_APP_ID, VK_APP_ID, getPassUrl} = require(`../../config`);
 const objectId = require(`mongodb`).ObjectId;
-const {getDataIfFunction, isEmpty} = require(`../../../libs/util`);
 
 const {
   getSummaryTemplate,
@@ -9,7 +8,9 @@ const {
   getRetakeMessage,
   getAwardImageName,
   getTestResult,
+  getAwardShareData,
   recountTestStat,
+  checkAward,
   getAwardImageTwName
 } = require(`./getCheckedTest-methods`);
 
@@ -27,8 +28,9 @@ const getCheckedTest = async (req, res) => {
   const userData = req.body;
   const permalink = req.params.permalink;
   const sessionId = req.sessionID;
-  // const averagePassesLevel = req.session.averageLevel;
+  const averagePassesLevel = req.session.averageLevel;
   let isPassCurrent = false;
+  let test;
 
   if (!(Object.keys(userData).length === 0)) {
     const questionsIds = Object.keys(userData).map((item) => Number(item));
@@ -36,42 +38,42 @@ const getCheckedTest = async (req, res) => {
 
     const testResult = getTestResult(userData, rightData);
 
-    const testData = await testsStore.getTestData(permalink);
-    const testId = testData.id;
-    console.log(testData);
-    // testId вообщето не нужно сохранять. достаточно permalink
-    await passesStore.savePass(testId, permalink, sessionId, testResult, userData);
-    console.log("Saved");
-    await recountTestStat(testId, permalink, testData.links, testData.stat.levels);
+    const percentScored = testResult.percentScored;
+    test = await testsStore.getTestData(permalink, percentScored);
+
+    const testId = test.id;
 
     isPassCurrent = true;
+    // testId вообщето не нужно сохранять. достаточно permalink
+    await passesStore.savePass(testId, permalink, sessionId, testResult, userData);
+
+    recountTestStat(testId, permalink, test.links, test.levels);
   }
 
   const pass = await passesStore.getPassBySessionId(permalink, sessionId);
 
   if (pass) {
-    const test = await testsStore.getTestForSummary(permalink, pass.result.percentScored);
+    if (!test) {
+      test = await testsStore.getTestData(permalink, pass.percentScored);
+    }
 
-    // const link = test.links.find((elem) => elem.permalink === permalink);
     const link = test.links;
     const level = test.levels;
 
     // const retakesDate = (pass.usedAttempts < link.attempts) ? link.interval + pass.date : 0;
-    const shareData = (level.sharing)
-      ? getDataIfFunction(pass, test.stat, level.sharing)
-      : {};
+    const isAward = checkAward(pass.result.percentScored, averagePassesLevel);
 
-    const summaryTemplate = getSummaryTemplate(pass, test, shareData.imageName, req.app.locals.temp);
+    const summaryTemplate = getSummaryTemplate(pass, test, isAward, averagePassesLevel, req.app.locals.temp);
 
     const data = {
       summaryTemplate,
       pass
     };
 
-    if (!isEmpty(shareData)) {
-      shareData.isPassCurrent = isPassCurrent;
-      shareData.passUrl = getPassUrl(pass.permalink, pass._id);
-      data.shareData = shareData;
+    if (isAward) {
+      data.awardShareData = getAwardShareData(test, pass.result.percentScored, pass.permalink, pass._id);
+      data.isPassCurrent = isPassCurrent;
+      data.passUrl = getPassUrl(pass.permalink, pass._id);
     }
     // должно быть в link "retakes": {attempts: 2, interval: time, message: "Возможно по решению преподавателя"}
     if (link.attempts) {
@@ -92,11 +94,11 @@ const getCheckedTest = async (req, res) => {
 
 const getTest = async (req, res, next) => {
   const permalink = req.params.permalink;
-  const test = await testsStore.getTestForShowing(permalink);
+  const test = await testsStore.getTestByPermalink(permalink);
 
   if (test) {
     if (test.enable) {
-      const link = test.links;
+      const link = test.links.find((elem) => elem.permalink === permalink);
 
       if (link.enable || link.permalink === test.canonLink) {
         const sessionId = req.sessionID;
@@ -117,6 +119,8 @@ const getTest = async (req, res, next) => {
             questions = await getQuestionsFromTest(test.questions, link.questionsQuantity);
           }
 
+          const canonicalUrl = getTestLinkUrl(test.canonLink);
+
           const renderOptions = {
             title: `Тест «${test.title}»`,
             header: test.title,
@@ -125,7 +129,7 @@ const getTest = async (req, res, next) => {
             description: test.description,
             updateDate: formatDate(test.updateDate),
             benefit: test.benefit,
-            canonicalUrl: getTestLinkUrl(test.canonLink),
+            canonicalUrl,
             authorInfo: test.introText,
             time: link.time,
             enabledInfo: link.enabledInfo,
@@ -137,14 +141,16 @@ const getTest = async (req, res, next) => {
             isDisqus: link.isDisqus
           };
 
-          const stat = test.stat;
-          if (stat && stat.report.total > 5) {
-            renderOptions.stat = stat;
+          if (test.stat && test.stat.total > 5) {
+            renderOptions.stat = test.stat;
 
-            req.session.averageLevel = stat.report.average;
+            renderOptions.stat.profiLevel = test.levels.profi;
+            renderOptions.stat.expertLevel = test.levels.expert;
+
+            req.session.averageLevel = test.stat.average;
           }
 
-          res.render(`test/index.pug`, renderOptions);
+          res.render(`test`, renderOptions);
         }
       } else {
         res.redirect(`/links/${test.canonLink}`);

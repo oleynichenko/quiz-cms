@@ -9,4 +9,10 @@ env:
   browser: true
   mocha: true
 
+rules:
+  no-eval:
+    - error
+    - allowIndirect: true
+
 extends: 'htmlacademy/node'
+

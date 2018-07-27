@@ -15,9 +15,11 @@ class SessionsStore {
     session.useragent = shortUseragent;
   }
 
-  saveIp(ips = [], ip) {
-    if (ips.indexOf(ip) === -1) {
-      ips.push(ip);
+  saveIp(session, ip) {
+    if (session.ips === void 0) {
+      session.ips = [ip];
+    } else if (session.ips.indexOf(ip) === -1) {
+      session.ips.push(ip);
     }
   }
 }

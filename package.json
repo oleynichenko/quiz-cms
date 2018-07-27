@@ -1,7 +1,7 @@
 {
   "name": "QuizCMS",
-  "version": "1.0.1",
-  "description": "Admin panel for Quiz Project",
+  "version": "1.1.0",
+  "description": "Test project",
   "main": "index.js",
   "scripts": {
     "start": "node index.js --server",

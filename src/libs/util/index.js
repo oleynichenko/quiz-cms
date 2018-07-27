@@ -36,10 +36,30 @@ const getDate = (date) => {
   return `${date.getDate()} ${month}`;
 };
 
+const getDataIfFunction = (pass, test, obj) => {
+  if (obj.function) {
+    const getData = global.eval(obj.function);
+
+    return getData(pass, test);
+  } else if (obj.data) {
+
+    return obj.data;
+  } else {
+
+    return {};
+  }
+};
+
+function isEmpty(object) {
+  return JSON.stringify(object) === `{}`;
+}
+
 module.exports = {
   async,
   roundUp,
   getPercent,
   getDate,
-  ceilUp
+  ceilUp,
+  getDataIfFunction,
+  isEmpty
 };

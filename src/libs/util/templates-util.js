@@ -24,23 +24,6 @@ const getNumEnding = (iNumber, aEndings) => {
   return sEnding;
 };
 
-const getConclusionPhrase = (previous, current, min, max) => {
-
-  if (current >= max) {
-    return `Уровень эксперта`;
-  }
-
-  if (current >= min) {
-    return `Профессиональный уровень`;
-  }
-
-  if (previous && (current - previous >= 50)) {
-    return `Отличный рост!`;
-  }
-
-  return null;
-};
-
 const QUESTION = [`вопрос`, `вопроса`, `вопросов`];
 const SCORE = [`балл`, `балла`, `баллов`];
 const PEOPLE = [`человек`, `человека`, `человек`];
@@ -50,7 +33,6 @@ const SHOW = [`показал`, `показали`, `показали`];
 const init = (app) => {
   app.locals.temp = {
     getNumEnding,
-    getConclusionPhrase,
     QUESTION,
     SCORE,
     PEOPLE,

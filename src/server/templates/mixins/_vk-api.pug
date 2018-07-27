@@ -1,2 +1,4 @@
 script.
-  VK.init({apiId: #{vkAppId}, onlyWidgets: true});
+  if (window.VK) {
+    VK.init({apiId: #{vkAppId}, onlyWidgets: true});
+  }

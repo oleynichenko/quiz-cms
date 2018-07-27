@@ -11,8 +11,10 @@ mixin socialBtns(elem, id)
   - const likeIdentifier = `${elem}__like-vk`;
   div(id=likeIdentifier class=likeIdentifier)
   script.
-    VK.Widgets.Like(`!{likeIdentifier}`, {
-      type: `button`,
-      height: 20,
-      verb: 1
-    }, `!{id}`);
+    if (window.VK) {
+      window.VK.Widgets.Like(`!{likeIdentifier}`, {
+        type: `button`,
+        height: 20,
+        verb: 1
+      }, `!{id}`);
+    }

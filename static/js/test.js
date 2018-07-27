@@ -11,7 +11,7 @@ const Class = Object.freeze({
   TEST_QUESTIONS: `js-test__questions`,
   TEST_SOCIAL: `js-test__social`,
   SUMMARY_SHARE_FB: `js-summary__share-btn--fb`,
-  SUMMARY_SHARE_FB2: `js-summary__share-btn--fb2`,
+  // SUMMARY_SHARE_FB2: `js-summary__share-btn--fb2`,
   SUMMARY_SHARE_VK: `js-summary__share-btn--vk`,
   SUMMARY_SHARE_TW: `js-summary__share-btn--tw`,
   TEST_SOCIAL_VISIBLE: `test__social--visible`,
@@ -29,6 +29,8 @@ const Class = Object.freeze({
   QUESTION_WRONG: `question--wrong`,
   TEST_SHARE_FB: `js-test__share-fb`,
   TEST_LIKE_FB: `js-test__like-fb`,
+  TEST_DISQUS_VISIBLE: `test__disqus--visible`,
+  TEST_DISQUS: `js-test__disqus`
 });
 
 const getQuestionsAndOptions = () => {
@@ -57,6 +59,7 @@ const dom = {
   retakeMessage: document.querySelector(`.${Class.RETAKE_MESSAGE}`),
   testShareFb: document.querySelector(`.${Class.TEST_SHARE_FB}`),
   testLikeFb: document.querySelector(`.${Class.TEST_LIKE_FB}`),
+  testDisqus: document.querySelector(`.${Class.TEST_DISQUS}`),
 };
 
 const fitty = ((w) => {
@@ -1704,8 +1707,9 @@ const Share = {
     const url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(purl)}`;
     Share.popup(url);
   },
-  fb(purl) {
-    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(purl)}`;
+  fb(purl, hashtag) {
+    const hash = `#${hashtag}`;
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(purl)}&hashtag=${encodeURIComponent(hash)}`;
     Share.popup(url);
   },
   popup(url) {
@@ -1763,13 +1767,34 @@ class TestView {
   changePage(pass, retakeMessage) {
     this._disableSelection(this.dom.testQuestions);
     toggleVisibility(this.dom.resultBtn, false);
-    this.dom.testTag.innerHTML = `Результаты теста от ${formatDate(pass.date)}`;
+    this._changeTestTag(pass.date);
     this._showSocial();
     this._showRetakeBlock(retakeMessage);
     this._markWrongAnsweredQuestion(pass.result.wrongQuestionsIds);
 
     if (pass.answers) {
       this._markChosenOptions(pass.answers);
+    }
+
+    this._handleDisqus();
+  }
+
+  _changeTestTag(date) {
+    this.dom.testTag.innerHTML = `Результаты теста от ${formatDate(date)}`;
+  }
+
+  _handleDisqus() {
+    let disqusLoaded = window.disqusLoaded;
+
+    if (disqusLoaded === false) {
+      window.addEventListener(`scroll`, () => {
+        if (!disqusLoaded && (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+          this.dom.testDisqus.classList.add(Class.TEST_DISQUS_VISIBLE);
+
+          window.startDisqus();
+          disqusLoaded = true;
+        }
+      });
     }
   }
 
@@ -1798,6 +1823,67 @@ class TestView {
     this.dom.testSocial.classList.add(Class.TEST_SOCIAL_VISIBLE);
   }
 
+  _initSocial(data, parent) {
+    const fbShareBtn = parent.querySelector(`.${Class.SUMMARY_SHARE_FB}`);
+    const vkShareBtn = parent.querySelector(`.${Class.SUMMARY_SHARE_VK}`);
+    const twShareBtn = parent.querySelector(`.${Class.SUMMARY_SHARE_TW}`);
+
+    // fbShareBtn.addEventListener(`click`, () => {
+    //   const fbShareData = {
+    //     method: `share_open_graph`,
+    //     hashtag: shareData.hashtag,
+    //     action_type: `og.shares`,
+    //     action_properties: JSON.stringify({
+    //       object: shareData.passUrl
+    //     })
+    //   };
+
+    //   window.FB.ui(fbShareData, function (response) {
+    //     if (response) {
+    //       window.gtag(`event`, `post`, {
+    //         'event_category': `award`,
+    //         'event_label': `FB`
+    //       });
+    //     }
+    //   });
+
+    //   window.gtag(`event`, `clickToShare`, {
+    //     'event_category': `award`,
+    //     'event_label': `FB`
+    //   });
+    // });
+
+    fbShareBtn.addEventListener(`click`, (event) => {
+      event.preventDefault();
+      Share.fb(data.passUrl, data.hashtag);
+
+      window.gtag(`event`, `clickToShare`, {
+        'event_category': `award`,
+        'event_label': `FB`
+      });
+    });
+
+    vkShareBtn.addEventListener(`click`, (event) => {
+      event.preventDefault();
+      Share.vkontakte(data.passUrl);
+
+      window.gtag(`event`, `clickToShare`, {
+        'event_category': `award`,
+        'event_label': `VK`
+      });
+    });
+
+    twShareBtn.addEventListener(`click`, (event) => {
+      event.preventDefault();
+      Share.twitter(data.passUrl);
+
+      window.gtag(`event`, `clickToShare`, {
+        'event_category': `award`,
+        'event_label': `TW`
+      });
+    });
+  }
+
   initAccordion() {
     const accordion = new Accordion(this.dom.test, `accordion__title`);
     accordion.start();
@@ -1823,7 +1909,7 @@ class TestView {
     });
   }
 
-  showSummary(html, awardShareData, isPassCurrent, passUrl) {
+  showSummary(html, shareData, recommendation) {
     this.dom.testTitle.insertAdjacentHTML(`afterEnd`, html);
 
     this.dom.test.classList.add(Class.TEST_IS_CHECKED);
@@ -1833,58 +1919,39 @@ class TestView {
 
     startFitty(summaryPercent, {maxSize: 108});
 
-    if (awardShareData) {
-      const fbShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_FB}`);
-      const fbShareBtn2 = summary.querySelector(`.${Class.SUMMARY_SHARE_FB2}`);
-      const vkShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_VK}`);
-      const twShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_TW}`);
+    if (shareData) {
+      this._initSocial(shareData, summary);
+    }
 
-      fbShareBtn.addEventListener(`click`, () => {
-        window.FB.ui(awardShareData, function (response) {
-          if (response) {
-            window.gtag(`event`, `post`, {
-              'event_category': `award`,
-              'event_label': `FB`
+    if (recommendation && recommendation.isFirstSeen) {
+      const recBlock = summary.querySelector(`.js-summary__recommendation`);
+      const recLinks = recBlock.getElementsByTagName(`a`);
+      const category = `recommend-${recommendation.levelName}`;
+      const action = `goTo-${recommendation.name}`;
+      let isRecommendClicked = false;
+
+      [].forEach.call(recLinks, (link, index) => {
+        link.addEventListener(`click`, () => {
+
+          window.gtag(`event`, action, {
+            'event_category': category,
+            'event_label': index
+          });
+
+          if (!isRecommendClicked) {
+            window.gtag(`event`, `take`, {
+              'event_category': `recommendation`,
+              'event_label': category
             });
           }
-        });
 
-        window.gtag(`event`, `clickToShare`, {
-          'event_category': `award`,
-          'event_label': `FB`
+          isRecommendClicked = true;
         });
       });
 
-      fbShareBtn2.addEventListener(`click`, (event) => {
-        event.preventDefault();
-        Share.fb(passUrl);
+      window.gtag(`event`, `receive`, {
+        'event_category': category,
       });
-
-      vkShareBtn.addEventListener(`click`, (event) => {
-        event.preventDefault();
-        Share.vkontakte(passUrl);
-
-        window.gtag(`event`, `clickToShare`, {
-          'event_category': `award`,
-          'event_label': `VK`
-        });
-      });
-
-      twShareBtn.addEventListener(`click`, (event) => {
-        event.preventDefault();
-        Share.twitter(passUrl);
-
-        window.gtag(`event`, `clickToShare`, {
-          'event_category': `award`,
-          'event_label': `TW`
-        });
-      });
-
-      if (isPassCurrent) {
-        window.gtag(`event`, `receive`, {
-          'event_category': `award`,
-        });
-      }
     }
   }
 
@@ -1928,7 +1995,7 @@ class Test {
 
   showTestResult(data) {
     this._view.changePage(data.pass);
-    this._view.showSummary(data.summaryTemplate, data.awardShareData, data.isPassCurrent, data.passUrl);
+    this._view.showSummary(data.summaryTemplate, data.shareData, data.recommendation);
     this._view.initAccordion();
     scrollToTop();
   }

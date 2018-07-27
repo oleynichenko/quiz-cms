@@ -121,6 +121,15 @@
   margin-left: 10px;
 }
 
+.test__disqus {
+  display: none;
+  margin-top: 5rem;
+}
+
+.test__disqus--visible {
+  display: block;
+}
+
 @media #{$tablet-width} {
 
   .test__title {
@@ -129,12 +138,12 @@
     margin-bottom: 0.75rem;
   }
 
-	.test__lead-text {
+  .test__lead-text {
     & p {
       @include mdc-typography(headline6);
       font-weight: 400;
     }
-	}
+  }
 
   .test__subtitle {
     @include mdc-typography(headline5);

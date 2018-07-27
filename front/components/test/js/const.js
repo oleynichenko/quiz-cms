@@ -26,4 +26,6 @@ export const Class = Object.freeze({
   QUESTION_WRONG: `question--wrong`,
   TEST_SHARE_FB: `js-test__share-fb`,
   TEST_LIKE_FB: `js-test__like-fb`,
+  TEST_DISQUS_VISIBLE: `test__disqus--visible`,
+  TEST_DISQUS: `js-test__disqus`
 });

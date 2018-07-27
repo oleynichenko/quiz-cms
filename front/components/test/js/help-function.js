@@ -145,8 +145,9 @@ export const Share = {
     const url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(purl)}`;
     Share.popup(url);
   },
-  fb(purl) {
-    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(purl)}`;
+  fb(purl, hashtag) {
+    const hash = `#${hashtag}`;
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(purl)}&hashtag=${encodeURIComponent(hash)}`;
     Share.popup(url);
   },
   popup(url) {

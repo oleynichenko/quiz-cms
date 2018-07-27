@@ -11,6 +11,7 @@ const run = require(`run-sequence`);
 const server = require(`browser-sync`).create();
 const pug = require(`gulp-pug`);
 const del = require(`del`);
+const minify = require(`gulp-csso`);
 
 const componentFolder = `test`;
 
@@ -48,7 +49,8 @@ gulp.task(`style-component`, function () {
         ]})
       ]))
       .pipe(gulp.dest(`./front/components/${componentFolder}`))
-      .pipe(rename(`test.css`))
+      .pipe(minify())
+      .pipe(rename(`test.min.css`))
       .pipe(gulp.dest(`static/css`))
       .pipe(server.stream());
 });

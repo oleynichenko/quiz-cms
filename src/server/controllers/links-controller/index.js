@@ -7,10 +7,8 @@ const {
   getSummaryTemplate,
   checkPassAvailability,
   getRetakeMessage,
-  getAwardImageName,
   getTestResult,
   recountTestStat,
-  getAwardImageTwName
 } = require(`./getCheckedTest-methods`);
 
 const {
@@ -57,18 +55,29 @@ const getCheckedTest = async (req, res) => {
 
     // const retakesDate = (pass.usedAttempts < link.attempts) ? link.interval + pass.date : 0;
     const shareData = (level.sharing)
-      ? getDataIfFunction(pass, test.stat, level.sharing)
+      ? getDataIfFunction(pass, test, level.sharing)
       : {};
 
-    const summaryTemplate = getSummaryTemplate(pass, test, shareData.imageName, req.app.locals.temp);
+    const recommendationName = (level.recommendation)
+      ? getDataIfFunction(pass, test, level.recommendation)
+      : {};
+
+    const summaryTemplate = getSummaryTemplate(pass, test, shareData.imageName, recommendationName, req.app.locals.temp);
 
     const data = {
       summaryTemplate,
       pass
     };
 
+    if (!isEmpty(recommendationName)) {
+      data.recommendation = {
+        name: recommendationName,
+        levelName: level.name,
+        isFirstSeen: isPassCurrent
+      };
+    }
+
     if (!isEmpty(shareData)) {
-      shareData.isPassCurrent = isPassCurrent;
       shareData.passUrl = getPassUrl(pass.permalink, pass._id);
       data.shareData = shareData;
     }

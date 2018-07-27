@@ -36,11 +36,11 @@ const getDate = (date) => {
   return `${date.getDate()} ${month}`;
 };
 
-const getDataIfFunction = (pass, stat, obj) => {
+const getDataIfFunction = (pass, test, obj) => {
   if (obj.function) {
     const getData = global.eval(obj.function);
 
-    return getData(pass, stat);
+    return getData(pass, test);
   } else if (obj.data) {
 
     return obj.data;

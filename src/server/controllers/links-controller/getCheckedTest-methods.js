@@ -63,7 +63,7 @@ const getAwardImageName = (score, levels, averageLevel, images) => {
 //   };
 // };
 
-const getSummaryTemplate = (pass, test, imageName, temp) => {
+const getSummaryTemplate = (pass, test, imageName, recommendationName, temp) => {
   const passResult = pass.result;
   const level = test.levels;
   // const passId = pass._id.str;
@@ -76,7 +76,6 @@ const getSummaryTemplate = (pass, test, imageName, temp) => {
     questionsQuantity: Object.keys(pass.answers).length,
     pointsScored: passResult.pointsScored,
     possibleScore: passResult.possibleScore,
-    recommendText: level.recommendation || test.recommendation,
     temp,
   };
 
@@ -90,11 +89,17 @@ const getSummaryTemplate = (pass, test, imageName, temp) => {
   }
 
   const feedback = (level.feedback)
-    ? getDataIfFunction(pass, test.stat, level.feedback)
+    ? getDataIfFunction(pass, test, level.feedback)
     : {};
 
   if (!isEmpty(feedback)) {
     summaryOptions.feedback = feedback;
+  }
+
+  const recommendation = test.recommendation[recommendationName];
+
+  if (recommendation && !isEmpty(recommendationName)) {
+    summaryOptions.recommendation = recommendation;
   }
 
   return pug.renderFile(`./src/server/templates/summary/index.pug`, summaryOptions);

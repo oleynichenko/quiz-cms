@@ -117,6 +117,67 @@ export default class TestView {
     this.dom.testSocial.classList.add(Class.TEST_SOCIAL_VISIBLE);
   }
 
+  _initSocial(data, parent) {
+    const fbShareBtn = parent.querySelector(`.${Class.SUMMARY_SHARE_FB}`);
+    const vkShareBtn = parent.querySelector(`.${Class.SUMMARY_SHARE_VK}`);
+    const twShareBtn = parent.querySelector(`.${Class.SUMMARY_SHARE_TW}`);
+
+    // fbShareBtn.addEventListener(`click`, () => {
+    //   const fbShareData = {
+    //     method: `share_open_graph`,
+    //     hashtag: shareData.hashtag,
+    //     action_type: `og.shares`,
+    //     action_properties: JSON.stringify({
+    //       object: shareData.passUrl
+    //     })
+    //   };
+
+    //   window.FB.ui(fbShareData, function (response) {
+    //     if (response) {
+    //       window.gtag(`event`, `post`, {
+    //         'event_category': `award`,
+    //         'event_label': `FB`
+    //       });
+    //     }
+    //   });
+
+    //   window.gtag(`event`, `clickToShare`, {
+    //     'event_category': `award`,
+    //     'event_label': `FB`
+    //   });
+    // });
+
+    fbShareBtn.addEventListener(`click`, (event) => {
+      event.preventDefault();
+      Share.fb(data.passUrl, data.hashtag);
+
+      window.gtag(`event`, `clickToShare`, {
+        'event_category': `award`,
+        'event_label': `FB`
+      });
+    });
+
+    vkShareBtn.addEventListener(`click`, (event) => {
+      event.preventDefault();
+      Share.vkontakte(data.passUrl);
+
+      window.gtag(`event`, `clickToShare`, {
+        'event_category': `award`,
+        'event_label': `VK`
+      });
+    });
+
+    twShareBtn.addEventListener(`click`, (event) => {
+      event.preventDefault();
+      Share.twitter(data.passUrl);
+
+      window.gtag(`event`, `clickToShare`, {
+        'event_category': `award`,
+        'event_label': `TW`
+      });
+    });
+  }
+
   initAccordion() {
     const accordion = new Accordion(this.dom.test, `accordion__title`);
     accordion.start();
@@ -142,7 +203,7 @@ export default class TestView {
     });
   }
 
-  showSummary(html, shareData) {
+  showSummary(html, shareData, recommendation) {
     this.dom.testTitle.insertAdjacentHTML(`afterEnd`, html);
 
     this.dom.test.classList.add(Class.TEST_IS_CHECKED);
@@ -153,66 +214,42 @@ export default class TestView {
     startFitty(summaryPercent, {maxSize: 108});
 
     if (shareData) {
-      const fbShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_FB}`);
-      // const fbShareBtn2 = summary.querySelector(`.${Class.SUMMARY_SHARE_FB2}`);
-      const vkShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_VK}`);
-      const twShareBtn = summary.querySelector(`.${Class.SUMMARY_SHARE_TW}`);
+      this._initSocial(shareData, summary);
 
-      fbShareBtn.addEventListener(`click`, () => {
-        const fbShareData = {
-          method: `share_open_graph`,
-          hashtag: shareData.hashtag,
-          action_type: `og.shares`,
-          action_properties: JSON.stringify({
-            object: shareData.passUrl
-          })
-        };
+      window.gtag(`event`, `receive`, {
+        'event_category': `award`,
+      });
+    }
 
-        window.FB.ui(fbShareData, function (response) {
-          if (response) {
-            window.gtag(`event`, `post`, {
-              'event_category': `award`,
-              'event_label': `FB`
+    if (recommendation && recommendation.isFirstSeen) {
+      const recBlock = summary.querySelector(`.js-summary__recommendation`);
+      const recLinks = recBlock.getElementsByTagName(`a`);
+      const category = `recommend-${recommendation.levelName}`;
+      const action = `goTo-${recommendation.name}`;
+      let isRecommendClicked = false;
+
+      [].forEach.call(recLinks, (link, index) => {
+        link.addEventListener(`click`, () => {
+
+          window.gtag(`event`, action, {
+            'event_category': category,
+            'event_label': index
+          });
+
+          if (!isRecommendClicked) {
+            window.gtag(`event`, `take`, {
+              'event_category': `recommendation`,
+              'event_label': category
             });
           }
-        });
 
-        window.gtag(`event`, `clickToShare`, {
-          'event_category': `award`,
-          'event_label': `FB`
+          isRecommendClicked = true;
         });
       });
 
-      // fbShareBtn2.addEventListener(`click`, (event) => {
-      //   event.preventDefault();
-      //   Share.fb(passUrl);
-      // });
-
-      vkShareBtn.addEventListener(`click`, (event) => {
-        event.preventDefault();
-        Share.vkontakte(shareData.passUrl);
-
-        window.gtag(`event`, `clickToShare`, {
-          'event_category': `award`,
-          'event_label': `VK`
-        });
+      window.gtag(`event`, `receive`, {
+        'event_category': category,
       });
-
-      twShareBtn.addEventListener(`click`, (event) => {
-        event.preventDefault();
-        Share.twitter(shareData.passUrl);
-
-        window.gtag(`event`, `clickToShare`, {
-          'event_category': `award`,
-          'event_label': `TW`
-        });
-      });
-
-      if (shareData.isPassCurrent) {
-        window.gtag(`event`, `receive`, {
-          'event_category': `award`,
-        });
-      }
     }
   }
 

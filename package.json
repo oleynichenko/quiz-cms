@@ -1,7 +1,7 @@
 {
   "name": "QuizCMS",
-  "version": "1.0.1",
-  "description": "Admin panel for Quiz Project",
+  "version": "1.1.0",
+  "description": "Test project",
   "main": "index.js",
   "scripts": {
     "start": "node index.js --server",
@@ -23,6 +23,7 @@
     "eslint-config-htmlacademy": "0.4.2",
     "gulp": "3.9.1",
     "gulp-better-rollup": "3.1.0",
+    "gulp-csso": "3.0.1",
     "gulp-nodemon": "2.2.1",
     "gulp-plumber": "1.2.0",
     "gulp-postcss": "7.0.1",

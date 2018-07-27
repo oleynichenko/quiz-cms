@@ -1,20 +1,9 @@
-const db = require(`../../database`);
-const logger = require(`../../libs/logger`);
-
-const setupCollection = async () => {
-  const dBase = await db;
-  const collection = dBase.collection(`sessions`);
-
-  return collection;
-};
-
 class SessionsStore {
-  constructor(collection) {
-    this.collection = collection;
+  constructor() {
   }
 
-  async addUseragentToSession(sessionId, useragent, ip) {
-    let shortUseragent = {ip};
+  saveUseragent(session, useragent) {
+    let shortUseragent = {};
 
     for (let key in useragent) {
       if (useragent[key] !== false) {
@@ -22,12 +11,17 @@ class SessionsStore {
       }
     }
 
-    return (await this.collection).updateOne(
-        {"_id": sessionId},
-        {$set: {useragent: shortUseragent}}
-    );
+    delete shortUseragent.source;
+    session.useragent = shortUseragent;
+  }
+
+  saveIp(session, ip) {
+    if (session.ips === void 0) {
+      session.ips = [ip];
+    } else if (session.ips.indexOf(ip) === -1) {
+      session.ips.push(ip);
+    }
   }
 }
 
-module.exports = new SessionsStore(setupCollection()
-    .catch((error) => logger.error(`Failed to set up "sessions"-collection`, error)));
+module.exports = new SessionsStore();

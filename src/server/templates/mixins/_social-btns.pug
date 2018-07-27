@@ -6,5 +6,15 @@
 //-       <use xlink:href="#fb-like"></use>
 //-     </svg> Like
 //-   button(class=FB_SHARE_CLASSES type=`button`) Share <span class="fb-btn__shares-quantity">35</span>
-mixin socialBtns()
+mixin socialBtns(elem, id)
   div(class="fb-like" data-href=`${canonicalUrl}` data-layout="button_count" data-action="like" data-size="small" data-show-faces="false" data-share="true")
+  - const likeIdentifier = `${elem}__like-vk`;
+  div(id=likeIdentifier class=likeIdentifier)
+  script.
+    if (window.VK) {
+      window.VK.Widgets.Like(`!{likeIdentifier}`, {
+        type: `button`,
+        height: 20,
+        verb: 1
+      }, `!{id}`);
+    }

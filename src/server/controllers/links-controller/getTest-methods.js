@@ -18,18 +18,6 @@ const getQuestionsFromTest = async (questions, quantity) => {
   }
 };
 
-const getPermalinks = (links) => {
-  const result = links.reduce(function (permalinks, link) {
-    if (link.goInStat) {
-      permalinks.push(link.permalink);
-    }
-
-    return permalinks;
-  }, []);
-
-  return result;
-};
-
 function formatDate(date) {
   let dd = date.getDate();
 
@@ -56,6 +44,5 @@ module.exports = {
   canPass,
   getQuestionsFromPass,
   getQuestionsFromTest,
-  getPermalinks,
   formatDate
 };

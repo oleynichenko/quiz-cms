@@ -1,0 +1,17 @@
+.test__disqus.js-test__disqus
+  <div id="disqus_thread"></div>
+  script.
+    var disqus_config = function () {
+      this.page.url = `!{canonicalUrl}`;
+      this.page.identifier = `!{canonLink}`;
+      this.page.title = `!{title}`
+    };
+    var disqusLoaded = false;
+    var startDisqus = function() {
+      disqus_loaded = true;
+      var d = document, s = d.createElement('script');
+      s.src = 'https://pumping-tests.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    };
+

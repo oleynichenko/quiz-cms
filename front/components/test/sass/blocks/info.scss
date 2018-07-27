@@ -96,6 +96,14 @@
   line-height: normal;
 }
 
+.info__social {
+  display: flex;
+}
+
+.info__like-vk {
+  margin-left: 10px;
+}
+
 @media #{$tablet-width} {
   .info__container--on {
 

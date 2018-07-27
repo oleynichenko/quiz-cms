@@ -1,23 +1,14 @@
 doctype html
 html(lang=`ru`)
   head
-    include partials/_ga.pug
-    title #{title}
-    meta(name=`description` content=description)
-    meta(name=`viewport` content=`width=device-width, initial-scale=1 user-scalable=no`)
-    link(rel=`canonical` href=canonicalUrl)
-    link(rel=`shortcut icon` href=`/img/favicon.png` type=`image/png`)
-    link(rel=`stylesheet` href=`https://unpkg.com/normalize.css@8.0.0/normalize.css`)
-    link(rel=`stylesheet` href=`https://fonts.googleapis.com/css?family=Roboto+Condensed|Roboto:400,500|Source+Code+Pro&amp;subset=cyrillic,cyrillic-ext,latin-ext`)
-    link(rel=`stylesheet` href=`https://fonts.googleapis.com/icon?family=Material+Icons`)
-    link(rel=`stylesheet` href=`/css/test.css`)
-    include partials/_og.pug
+    include _header.pug
   body
-    include mixins/_fb-sdk.pug
-    include partials/_svg-sprite.pug
+    include ../mixins/_fb-sdk.pug
+    include ../mixins/_vk-api.pug
+    //- include partials/_svg-sprite.pug
     header.header.js-header
       if enabledInfo
-        include _info.pug
+        include ../info/index.pug
       if time
         <section class="header__item timer">#{time}</section>
     main.main.test.js-test
@@ -44,8 +35,9 @@ html(lang=`ru`)
         p.test__retake-message.js-test__retake-message
         //- *После нажатия текущие результаты проверки перестанут быть доступными
       section.test__social.js-test__social
-        include mixins/_social-btns.pug
-        //- +socialBtns(`test`)
-        +socialBtns()
-    include preloader.pug
+        include ../mixins/_social-btns.pug
+        +socialBtns(`test`, canonLink)
+      if isDisqus
+        include _disqus.pug
+    include ../preloader.pug
     <script src="/js/test.js"></script>

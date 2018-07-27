@@ -144,7 +144,8 @@ class PassesStore {
       },
       {
         $project: {
-          _id: 0
+          _id: 0,
+          averagePercentScore: 0
         }
       },
     ];

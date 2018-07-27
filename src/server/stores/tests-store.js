@@ -5,7 +5,7 @@ const logger = require(`../../libs/logger`);
 const setupCollection = async () => {
   const dBase = await db;
   const collection = dBase.collection(`tests`);
-  collection.createIndex({id: -1}, {unique: true});
+  // collection.createIndex({id: -1}, {unique: true});
 
   return collection;
 };
@@ -15,21 +15,102 @@ class TestsStore {
     this.collection = collection;
   }
 
-  async getTestById(id) {
-    const query = {id};
-    return (await this.collection).findOne(query);
+  // async getTestById(id) {
+  //   const query = {id};
+  //   return (await this.collection).findOne(query);
+  // }
+
+  async getTestForChecking(permalink) {
+
+    const pipeline = [
+      {
+        $match: {
+          "links.permalink": permalink
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          id: 1,
+          links: 1,
+          stat: 1
+        }
+      }
+    ];
+
+    return (await (await this.collection).aggregate(pipeline).toArray())[0];
   }
 
-  async getTestByPermalink(permalink) {
+  async getTestForShowing(permalink) {
     const pipeline = [
       {$match: {"links.permalink": permalink}},
-      // {$unwind: `$links`},
-      // {$match: {"links.permalink": permalink}},
+      {$unwind: `$links`},
+      {$match: {"links.permalink": permalink}},
+      {
+        $project: {
+          _id: 0,
+          levels: 0,
+          recommendation: 0
+        }
+      }
     ];
 
     const result = (await (await this.collection).aggregate(pipeline).toArray())[0];
 
     return result;
+  }
+
+  async getTestForPassLink(permalink, percentScored) {
+    const pipeline = [
+      {$match: {"links.permalink": permalink}},
+      {$unwind: `$levels`},
+      {
+        $match: {
+          "links.permalink": permalink,
+          "levels.score.min": {$lte: percentScored},
+          "levels.score.max": {$gt: percentScored}
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          levels: 1,
+          stat: 1,
+          title: 1,
+          benefit: 1,
+          canonLink: 1,
+        }
+      }
+    ];
+
+    const result = (await (await this.collection).aggregate(pipeline).toArray())[0];
+
+    return result;
+  }
+
+  async getTestForSummary(permalink, percentScored) {
+    const pipeline = [
+      {
+        $match: {
+          "links.permalink": permalink,
+        }
+      },
+      {
+        $unwind: `$levels`
+      },
+      {
+        $unwind: `$links`
+      },
+      {
+        $match: {
+          "links.permalink": permalink,
+          "levels.score.min": {$lte: percentScored},
+          "levels.score.max": {$gt: percentScored}
+        }
+      },
+    ];
+
+    return (await (await this.collection).aggregate(pipeline).toArray())[0];
   }
 
   async getTests(ids) {
@@ -48,6 +129,10 @@ class TestsStore {
     const result = (await this.collection).findOne(query, projection);
 
     return (await result).links;
+  }
+
+  async saveTestStat(id, statReport) {
+    return (await this.collection).updateOne({id}, {$set: {"stat.report": statReport}});
   }
 }
 

@@ -179,7 +179,7 @@ const getPassData = async (req, res, next) => {
       const test = await testsStore.getTestForPassLink(permalink, percentScored);
       const level = test.levels;
       const shareData = (level.sharing)
-        ? getDataIfFunction(pass, test.stat, level.sharing)
+        ? getDataIfFunction(pass, test, level.sharing)
         : {};
 
       const renderOptions = {

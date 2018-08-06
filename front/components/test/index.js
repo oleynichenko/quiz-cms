@@ -11,7 +11,6 @@ const Class = Object.freeze({
   TEST_QUESTIONS: `js-test__questions`,
   TEST_SOCIAL: `js-test__social`,
   SUMMARY_SHARE_FB: `js-summary__share-btn--fb`,
-  // SUMMARY_SHARE_FB2: `js-summary__share-btn--fb2`,
   SUMMARY_SHARE_VK: `js-summary__share-btn--vk`,
   SUMMARY_SHARE_TW: `js-summary__share-btn--tw`,
   TEST_SOCIAL_VISIBLE: `test__social--visible`,
@@ -22,6 +21,7 @@ const Class = Object.freeze({
   RETAKE_BLOCK_VISIBLE: `test__retake-block--visible`,
   RETAKE_BTN: `js-test__retake-btn`,
   RETAKE_MESSAGE: `js-test__retake-message`,
+  SUBTITLE_CHECKING: `js-test__subtitle--checking`,
   QUESTION: `js-question`,
   QUESTION_OPTIONS: `js-question__options`,
   QUESTION_OPTION: `js-question__option`,
@@ -57,6 +57,7 @@ const dom = {
   retakeBtn: document.querySelector(`.${Class.RETAKE_BTN}`),
   retakeBlock: document.querySelector(`.${Class.RETAKE_BLOCK}`),
   retakeMessage: document.querySelector(`.${Class.RETAKE_MESSAGE}`),
+  subtitleChecking: document.querySelector(`.${Class.SUBTITLE_CHECKING}`),
   testShareFb: document.querySelector(`.${Class.TEST_SHARE_FB}`),
   testLikeFb: document.querySelector(`.${Class.TEST_LIKE_FB}`),
   testDisqus: document.querySelector(`.${Class.TEST_DISQUS}`),
@@ -1775,8 +1776,23 @@ class TestView {
     if (pass.answers) {
       this._markChosenOptions(pass.answers);
     }
-
+    this._initDisposableListener(this.dom.subtitleChecking);
     this._handleDisqus();
+  }
+
+  _initDisposableListener(elem) {
+    let isClicked = false;
+
+    elem.addEventListener(`click`, function () {
+      if (!isClicked) {
+        window.gtag(`event`, `click`, {
+          'event_category': `interaction`,
+          'event_label': `subtitleChecking`
+        });
+
+        isClicked = true;
+      }
+    });
   }
 
   _changeTestTag(date) {
@@ -1823,7 +1839,7 @@ class TestView {
     this.dom.testSocial.classList.add(Class.TEST_SOCIAL_VISIBLE);
   }
 
-  _initSocial(data, parent) {
+  _initSocial(data, parent, category) {
     const fbShareBtn = parent.querySelector(`.${Class.SUMMARY_SHARE_FB}`);
     const vkShareBtn = parent.querySelector(`.${Class.SUMMARY_SHARE_VK}`);
     const twShareBtn = parent.querySelector(`.${Class.SUMMARY_SHARE_TW}`);
@@ -1858,7 +1874,7 @@ class TestView {
       Share.fb(data.passUrl, data.hashtag);
 
       window.gtag(`event`, `clickToShare`, {
-        'event_category': `award`,
+        'event_category': category,
         'event_label': `FB`
       });
     });
@@ -1868,7 +1884,7 @@ class TestView {
       Share.vkontakte(data.passUrl);
 
       window.gtag(`event`, `clickToShare`, {
-        'event_category': `award`,
+        'event_category': category,
         'event_label': `VK`
       });
     });
@@ -1878,7 +1894,7 @@ class TestView {
       Share.twitter(data.passUrl);
 
       window.gtag(`event`, `clickToShare`, {
-        'event_category': `award`,
+        'event_category': category,
         'event_label': `TW`
       });
     });
@@ -1919,8 +1935,16 @@ class TestView {
 
     startFitty(summaryPercent, {maxSize: 108});
 
+    // переделать под отсутствие уровня или рекомендации
     if (shareData) {
-      this._initSocial(shareData, summary);
+      const category = `award-${recommendation.levelName}`;
+      this._initSocial(shareData, summary, category);
+
+      if (recommendation.isFirstSeen) {
+        window.gtag(`event`, `receive`, {
+          'event_category': category,
+        });
+      }
     }
 
     if (recommendation && recommendation.isFirstSeen) {
@@ -1953,6 +1977,15 @@ class TestView {
         'event_category': category,
       });
     }
+
+    if (recommendation.isFirstSeen) {
+      const label = `${recommendation.levelName}`;
+
+      window.gtag(`event`, `pass`, {
+        'event_category': `test`,
+        'event_label': label
+      });
+    }
   }
 
   bind() {
@@ -1975,12 +2008,7 @@ class TestView {
 
       const userAnswers = this.getUserAnswers(this.dom.questionsAndOptions);
 
-      window.gtag(`event`, `pass`, {
-        'event_category': `test`
-      });
-
       this.handleUserAnswers(userAnswers);
-
     });
 
     MDCRipple.attachTo(this.dom.resultBtn);

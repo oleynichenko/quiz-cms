@@ -37,8 +37,8 @@ const showTestSettings = async (req, res, next) => {
     const title = `Тест ${test.title}`;
     const template = `admin/test`;
     const pageTitle = test.title;
-    const profiScore = test.levels.profi;
-    const expertScore = test.levels.expert;
+    const profiScore = test.stat.levels.profi;
+    const expertScore = test.stat.levels.expert;
 
     const linksReportData = await passesStore.getLinksPassesStat(testId, profiScore, expertScore);
 

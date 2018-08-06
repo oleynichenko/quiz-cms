@@ -16,7 +16,7 @@ html(lang=`ru`)
       <h1 class="test__title js-test__title">#{header}</h1>
       .test__lead-text.js-test__lead-text
         <p>В одном вопросе может быть несколько правильных ответов. Правильные ответы повышают, а неправильные — уменьшают оценку.  После проверки вопрос будет  выделен красным если вы указали хотя бы один лишний или не доуказали хотя бы один правильный ответ.</p>
-      h2.test__subtitle.test__subtitle--checking.accordion__title Проверенные ответы
+      h2.test__subtitle.test__subtitle--checking.js-test__subtitle--checking.accordion__title Проверенные ответы
       ul.test__questions.js-test__questions.accordion__panel
         each question in questions
           li(class="question js-question", id= question.id)

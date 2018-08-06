@@ -15,10 +15,11 @@ class TestsStore {
     this.collection = collection;
   }
 
-  // async getTestById(id) {
-  //   const query = {id};
-  //   return (await this.collection).findOne(query);
-  // }
+  // для админки используется
+  async getTestById(id) {
+    const query = {id};
+    return (await this.collection).findOne(query);
+  }
 
   async getTestForChecking(permalink) {
 

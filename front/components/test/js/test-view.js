@@ -69,8 +69,23 @@ export default class TestView {
     if (pass.answers) {
       this._markChosenOptions(pass.answers);
     }
-
+    this._initDisposableListener(this.dom.subtitleChecking);
     this._handleDisqus();
+  }
+
+  _initDisposableListener(elem) {
+    let isClicked = false;
+
+    elem.addEventListener(`click`, function () {
+      if (!isClicked) {
+        window.gtag(`event`, `click`, {
+          'event_category': `interaction`,
+          'event_label': `subtitleChecking`
+        });
+
+        isClicked = true;
+      }
+    });
   }
 
   _changeTestTag(date) {
@@ -117,7 +132,7 @@ export default class TestView {
     this.dom.testSocial.classList.add(Class.TEST_SOCIAL_VISIBLE);
   }
 
-  _initSocial(data, parent) {
+  _initSocial(data, parent, category) {
     const fbShareBtn = parent.querySelector(`.${Class.SUMMARY_SHARE_FB}`);
     const vkShareBtn = parent.querySelector(`.${Class.SUMMARY_SHARE_VK}`);
     const twShareBtn = parent.querySelector(`.${Class.SUMMARY_SHARE_TW}`);
@@ -152,7 +167,7 @@ export default class TestView {
       Share.fb(data.passUrl, data.hashtag);
 
       window.gtag(`event`, `clickToShare`, {
-        'event_category': `award`,
+        'event_category': category,
         'event_label': `FB`
       });
     });
@@ -162,7 +177,7 @@ export default class TestView {
       Share.vkontakte(data.passUrl);
 
       window.gtag(`event`, `clickToShare`, {
-        'event_category': `award`,
+        'event_category': category,
         'event_label': `VK`
       });
     });
@@ -172,7 +187,7 @@ export default class TestView {
       Share.twitter(data.passUrl);
 
       window.gtag(`event`, `clickToShare`, {
-        'event_category': `award`,
+        'event_category': category,
         'event_label': `TW`
       });
     });
@@ -213,12 +228,16 @@ export default class TestView {
 
     startFitty(summaryPercent, {maxSize: 108});
 
+    // переделать под отсутствие уровня или рекомендации
     if (shareData) {
-      this._initSocial(shareData, summary);
+      const category = `award-${recommendation.levelName}`;
+      this._initSocial(shareData, summary, category);
 
-      window.gtag(`event`, `receive`, {
-        'event_category': `award`,
-      });
+      if (recommendation.isFirstSeen) {
+        window.gtag(`event`, `receive`, {
+          'event_category': category,
+        });
+      }
     }
 
     if (recommendation && recommendation.isFirstSeen) {
@@ -251,6 +270,15 @@ export default class TestView {
         'event_category': category,
       });
     }
+
+    if (recommendation.isFirstSeen) {
+      const label = `${recommendation.levelName}`;
+
+      window.gtag(`event`, `pass`, {
+        'event_category': `test`,
+        'event_label': label
+      });
+    }
   }
 
   bind() {
@@ -273,12 +301,7 @@ export default class TestView {
 
       const userAnswers = this.getUserAnswers(this.dom.questionsAndOptions);
 
-      window.gtag(`event`, `pass`, {
-        'event_category': `test`
-      });
-
       this.handleUserAnswers(userAnswers);
-
     });
 
     MDCRipple.attachTo(this.dom.resultBtn);

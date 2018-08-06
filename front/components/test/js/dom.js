@@ -24,6 +24,7 @@ const dom = {
   retakeBtn: document.querySelector(`.${Class.RETAKE_BTN}`),
   retakeBlock: document.querySelector(`.${Class.RETAKE_BLOCK}`),
   retakeMessage: document.querySelector(`.${Class.RETAKE_MESSAGE}`),
+  subtitleChecking: document.querySelector(`.${Class.SUBTITLE_CHECKING}`),
   testShareFb: document.querySelector(`.${Class.TEST_SHARE_FB}`),
   testLikeFb: document.querySelector(`.${Class.TEST_LIKE_FB}`),
   testDisqus: document.querySelector(`.${Class.TEST_DISQUS}`),

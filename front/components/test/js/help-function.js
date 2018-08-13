@@ -138,7 +138,7 @@ export const scrollToTop = () => {
 
 export const Share = {
   vkontakte(purl) {
-    const url = `http://vkontakte.ru/share.php?url=${encodeURIComponent(purl)}`;
+    const url = `https://vkontakte.ru/share.php?url=${encodeURIComponent(purl)}`;
     Share.popup(url);
   },
   twitter(purl) {
@@ -146,8 +146,7 @@ export const Share = {
     Share.popup(url);
   },
   fb(purl, hashtag) {
-    const hash = `#${hashtag}`;
-    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(purl)}&hashtag=${encodeURIComponent(hash)}`;
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(purl)}&hashtag=${encodeURIComponent(hashtag)}`;
     Share.popup(url);
   },
   popup(url) {

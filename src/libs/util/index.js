@@ -46,7 +46,7 @@ const getDataIfFunction = (pass, test, obj) => {
     return obj.data;
   } else {
 
-    return {};
+    return null;
   }
 };
 

@@ -78,7 +78,7 @@ class TestsStore {
           levels: 1,
           stat: 1,
           title: 1,
-          benefit: 1,
+          description: 1,
           canonLink: 1,
         }
       }

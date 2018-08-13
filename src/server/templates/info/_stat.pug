@@ -8,7 +8,7 @@ ul
     if (statReport.experts > 0)
       li #{statReport.experts} — уровень EXPERT (больше #{statLevels.expert}%),
   else
-    li пока никто не показал уровень PROFI (от #{statLevels.profi}% до #{statLevels.expert}%)
+    li пока никто не показал уровень PROFI (от #{statLevels.profi}% до #{statLevels.expert}%),
 
     if (statReport.experts > 0)
       li #{statReport.experts} #{temp.getNumEnding(statReport.experts, temp.PEOPLE)} #{temp.getNumEnding(statReport.experts, temp.SHOW)} уровень EXPERT (больше #{statLevels.expert}%),

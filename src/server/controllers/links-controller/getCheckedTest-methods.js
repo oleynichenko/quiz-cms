@@ -76,6 +76,7 @@ const getSummaryTemplate = (pass, test, imageName, recommendationName, temp) => 
     questionsQuantity: Object.keys(pass.answers).length,
     pointsScored: passResult.pointsScored,
     possibleScore: passResult.possibleScore,
+    stuffItems: test.stuff,
     temp,
   };
 

@@ -131,7 +131,6 @@ const getTest = async (req, res, next) => {
             imageURL: getImageUrl(test.images.main),
             twitterImageUrl: getImageUrl(test.images.mainTw),
             description: test.description,
-            updateDate: formatDate(test.updateDate),
             benefit: test.benefit,
             canonicalUrl: getTestLinkUrl(test.canonLink),
             authorInfo: test.introText,
@@ -144,6 +143,12 @@ const getTest = async (req, res, next) => {
             canonLink: test.canonLink,
             isDisqus: link.isDisqus
           };
+
+          const updateDate = test.updateDate;
+
+          if (updateDate) {
+            renderOptions.updateDate = formatDate(updateDate);
+          }
 
           const stat = test.stat;
           if (stat.report && stat.report.total > 5) {
@@ -184,7 +189,7 @@ const getPassData = async (req, res, next) => {
 
       const renderOptions = {
         title: `${percentScored}% по тесту «${test.title}»!`,
-        description: test.benefit,
+        description: test.description,
         imageURL: getImageUrl(shareData.imageName),
         twitterImageUrl: getImageUrl(shareData.imageNameTw),
         fbAppId: FB_APP_ID,

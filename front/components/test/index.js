@@ -1701,7 +1701,7 @@ const scrollToTop = () => {
 
 const Share = {
   vkontakte(purl) {
-    const url = `https://vkontakte.ru/share.php?url=${encodeURIComponent(purl)}`;
+    const url = `https://vk.com/share.php?url=${encodeURIComponent(purl)}`;
     Share.popup(url);
   },
   twitter(purl) {
@@ -2171,13 +2171,17 @@ class App {
 
     if (param === `attempt=new`) {
       this.test.init();
-      infoModule.show();
+      if (info) {
+        infoModule.show();
+      }
       showPage();
     } else {
       loader.sendPass({})
           .then((data) => {
             if (Object.keys(data).length === 0) {
-              infoModule.show();
+              if (info) {
+                infoModule.show();
+              }
               this.test.init();
             } else {
               this.handleData(data);

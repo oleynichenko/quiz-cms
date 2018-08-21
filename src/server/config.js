@@ -16,7 +16,9 @@ const getPassUrl = (permalink, id) => {
 };
 
 const getImageUrl = (imgFileName) => {
-  return `https://${HOST}${getImageRef(imgFileName)}`;
+  const imageRef = getImageRef(imgFileName);
+
+  return (imageRef) ? `https://${HOST}${imageRef}` : null;
 };
 
 const getTestLinkRef = (linkName) => {

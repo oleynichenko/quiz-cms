@@ -1,6 +1,7 @@
 .header {
   @include container;
   max-width: none;
+  min-height: 1rem;
 
   margin-top: 1rem;
   margin-bottom: 2rem;

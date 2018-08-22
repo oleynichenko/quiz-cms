@@ -539,6 +539,7 @@ address {
   padding-left: 16px;
   padding-right: 16px;
   max-width: none;
+  min-height: 1rem;
   margin-top: 1rem;
   margin-bottom: 2rem; }
 

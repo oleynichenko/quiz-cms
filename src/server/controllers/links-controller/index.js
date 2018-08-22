@@ -128,12 +128,8 @@ const getTest = async (req, res, next) => {
           const renderOptions = {
             title: `Тест «${test.title}»`,
             header: test.title,
-            imageURL: getImageUrl(test.images.main),
-            twitterImageUrl: getImageUrl(test.images.mainTw),
             description: test.description,
-            benefit: test.benefit,
             canonicalUrl: getTestLinkUrl(test.canonLink),
-            authorInfo: test.introText,
             time: link.time,
             enabledInfo: link.enabledInfo,
             interval: link.interval,
@@ -144,8 +140,18 @@ const getTest = async (req, res, next) => {
             isDisqus: link.isDisqus
           };
 
-          const updateDate = test.updateDate;
+          if (link.enabledInfo) {
+            renderOptions.benefit = test.benefit;
+            renderOptions.authorInfo = test.introText;
+          }
 
+          const images = test.images;
+          if (images) {
+            renderOptions.imageURL = getImageUrl(images.main);
+            renderOptions.twitterImageUrl = getImageUrl(images.mainTw);
+          }
+
+          const updateDate = test.updateDate;
           if (updateDate) {
             renderOptions.updateDate = formatDate(updateDate);
           }
